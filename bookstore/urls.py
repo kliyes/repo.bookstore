@@ -9,7 +9,7 @@ urlpatterns = patterns('',
     url(r'^account/', include('apps.account.urls')),
     url(r'^books/', include('apps.books.urls')),
     url(r'^profiles/', include('apps.profiles.urls')),
-    #######
+    ##########
     # url(r'^bookstore/', include('bookstore.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
