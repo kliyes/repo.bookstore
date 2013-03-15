@@ -3,12 +3,12 @@
 from django.db import models
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
 from django.conf import settings
 
 from idios.models import ProfileBase
 
-from common import utils
+#from common import utils
 
 import logging
 logger = logging.getLogger("mysite")

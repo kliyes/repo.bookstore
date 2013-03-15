@@ -1,10 +1,13 @@
 #coding=utf-8
-import traceback, uuid, datetime
+import traceback, uuid, datetime, threading
+from Queue import Queue
 
 from django.contrib import messages
 from django.http import HttpResponse
 
 from django.utils import simplejson as json 
+from django.conf import settings
+
 
 # 用于求字符串长度，中文汉字计为两个英文字母长度
 ecode = lambda s: s.encode('gb18030')
@@ -121,6 +124,23 @@ def sort(list, sortedBy, reversed=True):
     reversed: True-反向 False-正向  
     """
     return sorted(list, key=lambda item: sortedBy, reverse=reversed)   
+
+mutex = threading.RLock()
+
+class NewQueue(Queue):
+    '''
+    该类是对Python Queue的包装，在get时增加了一个可重入锁，其用意在于当有多个线程同时调用get()并阻塞时，
+    当put()任务到队列后，多个线程会发生得到同一任务的现象。加入可重用锁同时可以防止死锁。
+    '''
+    def __init__(self, maxsize=0):
+        Queue.__init__(self, maxsize)
+    
+    def get(self, block=True, timeout=None):
+        try:
+            mutex.acquire()
+            return Queue.get(self, block, timeout)
+        finally:
+            mutex.release()    
     
     
     

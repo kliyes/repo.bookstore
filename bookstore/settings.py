@@ -31,10 +31,10 @@ INTERNAL_IPS = [
 ]
 
 ADMINS = [
-    ("Admin", "admin@lianbi.com.cn"),
+    ("Admin", "admin@bookstore.com"),
 ]
 
-CONTACT_EMAIL = 'support@lianbi.com.cn'
+CONTACT_EMAIL = 'support@bookstore.com'
 
 MANAGERS = ADMINS
 
@@ -44,10 +44,10 @@ DATABASE_ENGINE = {}
 DATABASES = {
     "default": {
         "ENGINE": 'django.db.backends.mysql', # Add "postgresql_psycopg2", "postgresql", "mysql", "sqlite3" or "oracle".
-        "NAME": 'xizhi_prod_test',              # Or path to database file if using sqlite3.
+        "NAME": 'bookstore',              # Or path to database file if using sqlite3.
         "USER": 'root',                       # Not used with sqlite3.
-        "PASSWORD": 'LBS20120525',              # Not used with sqlite3.
-        "HOST": 'localhost',                  # Set to empty string for localhost. Not used with sqlite3.
+        "PASSWORD": 'root',              # Not used with sqlite3.
+        "HOST": '127.0.0.1',                  # Set to empty string for localhost. Not used with sqlite3.
         "PORT": '3306',                       # Set to empty string for default. Not used with sqlite3.
     }
 }
@@ -57,7 +57,7 @@ DEFAULT_CACHE_TIME_OUT = 600
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': '192.168.1.114:11211',
+        'LOCATION': '127.0.0.1:11211',
         'TIMEOUT': DEFAULT_CACHE_TIME_OUT, 
     }
 }
@@ -95,7 +95,7 @@ IS_SITE_MAINTAINED = False
 USE_I18N = True
 
 # Absolute path to the directory that holds media.
-MEDIA_ROOT = "/home/johnson/media/"
+MEDIA_ROOT = "E:/OnlineBookStore/media/"
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -153,7 +153,7 @@ MIDDLEWARE_CLASSES = [
     "onlineuser.middleware.OnlineUserMiddleware",
 ]
 
-ROOT_URLCONF = "xizhi-server.urls"
+ROOT_URLCONF = "bookstore.urls"
 
 TEMPLATE_DIRS = [
     os.path.join(PROJECT_ROOT, "templates"),
@@ -191,10 +191,9 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "django.contrib.messages",
     "django.contrib.humanize",
+    
     "pinax.templatetags",
     "pinax.apps.signup_codes",
-    
-    # theme
     "pinax_theme_bootstrap",
     
     # external
@@ -214,15 +213,13 @@ INSTALLED_APPS = [
     "onlineuser",
     
     # django wsgi server
-    "gunicorn",
+    #"gunicorn",
     "widget_tweaks",  #to add attrs on html page, not in python form code
      
     "common",
     "account",
     "profiles",
     "activity",
-    "protocol",
-    "api",
 ]
 
 FIXTURE_DIRS = [
@@ -273,8 +270,8 @@ EMAIL_CONFIRMATION_DAYS = 7
 MAX_EMAIL_SENT_COUNT_PERDAY = 5         #每个邮箱每天最大接收邮件次数
 
 #密码重置邮件主题
-EMAIL_CONFIRMATION_SUBJECT = u"激活账号｜习之"
-PASSWD_RESET_SUBJECT = u"密码重置｜习之"
+EMAIL_CONFIRMATION_SUBJECT = u"激活账号｜BookStore"
+PASSWD_RESET_SUBJECT = u"密码重置｜BookStore"
 
 # email message template setup
 EMAIL_CONFIRMATION_MESSAGE = "account/mailtemplates/email_confirmation_message.txt"
@@ -287,12 +284,12 @@ RESERVED_WORDS = [
 
 # Email server setup
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.qq.com' 
+EMAIL_HOST = 'mail.dannywork.org' 
 EMAIL_PORT = 25   
-DEFAULT_FROM_EMAIL = 'no-reply@lianbi.com.cn'
-EMAIL_HOST_USER='no-reply@lianbi.com.cn'
-EMAIL_HOST_PASSWORD='xz_noreply1012'
-EMAIL_USE_TLS = False
+DEFAULT_FROM_EMAIL = 'service@kliyes.com'
+EMAIL_HOST_USER='postman'
+EMAIL_HOST_PASSWORD='gpqsPjHdDBIy4tML'
+EMAIL_USE_TLS = True
 
 # Default Picture setup
 DEFAULT_PIC = "default_pic"
@@ -334,6 +331,21 @@ SIGNUP_ALLOWED = True   # 置为True，则所有人都可注册。置为False,�
 #用于统计当前在线用户数，所配置的时间间隔内登录过的用户都计为当前在线用户，单位秒(s)
 LAST_ONLINE_DURATION = 600  
    
+#线程每次循环等待时间, 单位：秒， added by danny
+THREAD_SLEEP_TIME = 5
+#初始启动的线程数, added by danny
+MIN_THREADS_NUM = 2
+MAX_THREADS_NUM = 10   
+
+BACK_GROUND = (255,255,255)
+LINE_COLOR = (0, 0, 0)
+IMG_WIDTH = 120
+IMG_HEIGHT = 40
+FONT_COLOR =['#000', '#16496b', '#666']  # also can set to FONT_COLOR = ['darkblue','darkred', 'green'] 
+FONT_SIZE = 30
+FONT_PATH = "static/lershare/font/arial.ttf"
+CHAR_RANGE = '0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz'
+
 ########### The following global data is initialized while related class imported 
 CACHED_CITIES = {}          # 所有城市
 CACHED_AREAES = {}          # 所有城市区域
@@ -341,12 +353,16 @@ CACHED_TAGS = {}            # 所有个性标签
 CACHED_ACTIVITY_TAGS = {}   # 所有活动标签
 CACHED_CLIENTS = {}         # 所有客户端(访问key值)
 
+TEMPLATE_TEST = "tests/login.html"
 
+# Start threads to get the waiting-send emails and to sent them
+#from account.threads import run_email_sending_thread
+#run_email_sending_thread()
 # local_settings.py can be used to override environment-specific settings
 # like database and email that differ between development and production.
 try:
-    from log_config import *
+    #from log_config import *
     from template_settings import *
-    from local_settings import *      
+    #from local_settings import *      
 except ImportError:
     pass

@@ -35,8 +35,6 @@ urlpatterns = patterns("",
     url(r"^test/", include("tests.urls")),
     
     # API interface
-    url(r"^api/",       include("api.urls")),
-    url(r"^protocol/",  include("protocol.urls")),
     url(r"^get_json/$", direct_to_template, {"template": "tests/api.json"}, name="get_json"),
     
 #    url(r"^notification/$", "profiles.views.getNotices", {"template": "profiles/notifications.html",}, name="acct_notify"),

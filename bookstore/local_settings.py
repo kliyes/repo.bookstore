@@ -9,23 +9,23 @@ TEST_RUNNER = 'tests.testrunner.NoDbTestRunner'
 DATABASES = {
     "default": {
         "ENGINE": 'django.db.backends.mysql',
-        "NAME": 'xizhi',
+        "NAME": 'bookstore',
         "USER": 'root',
         "PASSWORD": 'root',
-        "HOST": 'localhost',
+        "HOST": '127.0.0.1',
         "PORT": '3306',
     }
 }
 
 # Memcached
-DEFAULT_CACHE_TIME_OUT = 600
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': 'localhost:11211',
-        'TIMEOUT': DEFAULT_CACHE_TIME_OUT, 
-    }
-}
+#DEFAULT_CACHE_TIME_OUT = 600
+#CACHES = {
+#    'default': {
+#        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+#        'LOCATION': 'localhost:11211',
+#        'TIMEOUT': DEFAULT_CACHE_TIME_OUT, 
+#    }
+#}
 
 INSTALLED_APPS = [
     # Django
@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     "idios",
     "metron",
     "PIL",
-    "onlineuser",
+    #"onlineuser",
     
     # django wsgi server
     #"gunicorn",

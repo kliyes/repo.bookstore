@@ -1,5 +1,5 @@
 [
-    {"pk": 1, "model": "sites.site", "fields": {"domain": "www.lianbi.com.cn", "name": "lianbi.com.cn"}},
+    {"pk": 1, "model": "sites.site", "fields": {"domain": "www.kliyes.com", "name": "www.kliyes.com"}},
     {"pk": 2, "model": "sites.site", "fields": {"domain": "192.168.1.114:8000", "name": "host server"}},
     {"pk": 3, "model": "sites.site", "fields": {"domain": "example.com","name": "example"}},
     {"pk": 4, "model": "sites.site", "fields": {"domain": "192.168.1.100:8000","name": "100"}},
