@@ -12,7 +12,7 @@ from pinax.apps.account.openid_consumer import PinaxConsumer
 
 
 handler500 = "pinax.views.server_error"
-
+####
 urlpatterns = patterns("",
     url(r"^$", direct_to_template, {"template": "index.html",}, name="welcome"),
 
