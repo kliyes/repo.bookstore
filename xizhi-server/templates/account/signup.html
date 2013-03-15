@@ -1,0 +1,50 @@
+{% extends "base/theme_base_lyu.html" %}
+
+{% load widget_tweaks %}
+
+{% block head_title %}注册{% endblock %}
+
+{% block message %} {% include "base/messages.html" %} {% endblock %}
+
+{% block body %}
+<div class="container">
+	<form action="{% url acct_signup %}" method="post" >
+	    {% csrf_token %}
+	    <div class="input-prepend">
+			<span class="add-on"><i class="icon-envelope"></i></span>{{form.email|attr:"lyu:Email"|attr:"bl:Email_msg"|attr:"placeholder:邮箱 | Email"|attr:"class:span2"|attr:"type:text"|attr:"style:margin:0px;"}}
+			<label id="Email_msg" class="help-inline error_msg">{{form.email.errors}}</label>
+	  		<p class="help-block">邮箱格式：ex@admin.com</p>
+		</div>
+		<div class="input-prepend">
+			<span class="add-on"><i class="icon-lock"></i></span>{{form.password|attr:"lyu:Password"|attr:"bl:Password_msg"|attr:"placeholder:密码 | Password"|attr:"class:span2"|attr:"type:password"|attr:"style:margin:0px;"|attr:"maxLength:20"}}
+			<label id="Password_msg" class="help-inline error_msg">{{form.password.errors}}</label>
+	  		<p class="help-block">输入预设的用户密码</p>
+		</div>
+		<div class="input-prepend">
+			<span class="add-on"><i class="icon-user"></i></span>{{form.nickname|attr:"lyu:Nickname"|attr:"bl:Nickname_msg"|attr:"placeholder:昵称 | Nickname"|attr:"class:span2"|attr:"type:text"|attr:"style:margin:0px;"|attr:"maxLength:14"}}
+			<label id="Password_msg" class="help-inline error_msg">{{form.nickname.errors}}</label>
+	  		<p class="help-block">怎么称呼您？</p>
+		</div>
+		<div class="input-prepend">
+			<button class="btn btn-small" type="submit" id="btn_reg" onclick="return check_reg()"><i class="icon-user"></i> 注册</button>
+		</div>
+	</form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript" src="{{STATIC_URL}}lyu/plug-in.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		lyu_load();
+	});
+	function check_reg(){
+		if(!check_email_lyu($("[lyu='Email']"))){
+			return false;
+		}
+		if(!check_password_lyu($("[lyu='Password']"))){
+			return false;
+		}
+	}
+</script>
+{% endblock %}

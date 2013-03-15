@@ -1,0 +1,242 @@
+[19/Nov/2012 15:11:07] ERROR [django.request:e:\server-env\lib\site-packages\django\core\handlers\base.py:215] Internal Server Error: /account/confirm_email/ea10e99b2ce75181d837cd6bc4d83f131c470ea4/
+Traceback (most recent call last):
+  File "E:\server-env\lib\site-packages\django\core\handlers\base.py", line 89, in get_response
+    response = middleware_method(request)
+  File "E:\server-env\lib\site-packages\debug_toolbar\middleware.py", line 70, in process_request
+    original_urlconf = __import__(getattr(request, 'urlconf', settings.ROOT_URLCONF), {}, {}, ['*'])
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\..\xizhi-server\urls.py", line 12, in <module>
+    from account.views import requires_login
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\apps\account\views.py", line 600, in <module>
+    from common import img_utils
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\apps\common\img_utils.py", line 185, in <module>
+    font = ImageFont.truetype(font_path, font_size)
+  File "E:\server-env\lib\site-packages\PIL\ImageFont.py", line 227, in truetype
+    return FreeTypeFont(filename, size, index, encoding)
+  File "E:\server-env\lib\site-packages\PIL\ImageFont.py", line 134, in __init__
+    self.font = core.getfont(file, size, index, encoding)
+IOError: cannot open resource
+[19/Nov/2012 15:11:07] ERROR [django.request:e:\server-env\lib\site-packages\django\core\handlers\base.py:215] Internal Server Error: /account/confirm_email/ea10e99b2ce75181d837cd6bc4d83f131c470ea4/
+Traceback (most recent call last):
+  File "E:\server-env\lib\site-packages\django\core\handlers\base.py", line 89, in get_response
+    response = middleware_method(request)
+  File "E:\server-env\lib\site-packages\debug_toolbar\middleware.py", line 70, in process_request
+    original_urlconf = __import__(getattr(request, 'urlconf', settings.ROOT_URLCONF), {}, {}, ['*'])
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\..\xizhi-server\urls.py", line 12, in <module>
+    from account.views import requires_login
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\apps\account\views.py", line 600, in <module>
+    from common import img_utils
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\apps\common\img_utils.py", line 185, in <module>
+    font = ImageFont.truetype(font_path, font_size)
+  File "E:\server-env\lib\site-packages\PIL\ImageFont.py", line 227, in truetype
+    return FreeTypeFont(filename, size, index, encoding)
+  File "E:\server-env\lib\site-packages\PIL\ImageFont.py", line 134, in __init__
+    self.font = core.getfont(file, size, index, encoding)
+IOError: cannot open resource
+[19/Nov/2012 15:11:08] ERROR [django.request:e:\server-env\lib\site-packages\django\core\handlers\base.py:215] Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "E:\server-env\lib\site-packages\django\core\handlers\base.py", line 89, in get_response
+    response = middleware_method(request)
+  File "E:\server-env\lib\site-packages\django\middleware\common.py", line 67, in process_request
+    if (not urlresolvers.is_valid_path(request.path_info, urlconf) and
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 531, in is_valid_path
+    resolve(path, urlconf)
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 420, in resolve
+    return get_resolver(urlconf).resolve(path)
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 298, in resolve
+    for pattern in self.url_patterns:
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 328, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 323, in urlconf_module
+    self._urlconf_module = import_module(self.urlconf_name)
+  File "E:\server-env\lib\site-packages\django\utils\importlib.py", line 35, in import_module
+    __import__(name)
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\..\xizhi-server\urls.py", line 12, in <module>
+    from account.views import requires_login
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\apps\account\views.py", line 600, in <module>
+    from common import img_utils
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\apps\common\img_utils.py", line 185, in <module>
+    font = ImageFont.truetype(font_path, font_size)
+  File "E:\server-env\lib\site-packages\PIL\ImageFont.py", line 227, in truetype
+    return FreeTypeFont(filename, size, index, encoding)
+  File "E:\server-env\lib\site-packages\PIL\ImageFont.py", line 134, in __init__
+    self.font = core.getfont(file, size, index, encoding)
+IOError: cannot open resource
+[19/Nov/2012 15:11:08] ERROR [django.request:e:\server-env\lib\site-packages\django\core\handlers\base.py:215] Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "E:\server-env\lib\site-packages\django\core\handlers\base.py", line 89, in get_response
+    response = middleware_method(request)
+  File "E:\server-env\lib\site-packages\django\middleware\common.py", line 67, in process_request
+    if (not urlresolvers.is_valid_path(request.path_info, urlconf) and
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 531, in is_valid_path
+    resolve(path, urlconf)
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 420, in resolve
+    return get_resolver(urlconf).resolve(path)
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 298, in resolve
+    for pattern in self.url_patterns:
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 328, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 323, in urlconf_module
+    self._urlconf_module = import_module(self.urlconf_name)
+  File "E:\server-env\lib\site-packages\django\utils\importlib.py", line 35, in import_module
+    __import__(name)
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\..\xizhi-server\urls.py", line 12, in <module>
+    from account.views import requires_login
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\apps\account\views.py", line 600, in <module>
+    from common import img_utils
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\apps\common\img_utils.py", line 185, in <module>
+    font = ImageFont.truetype(font_path, font_size)
+  File "E:\server-env\lib\site-packages\PIL\ImageFont.py", line 227, in truetype
+    return FreeTypeFont(filename, size, index, encoding)
+  File "E:\server-env\lib\site-packages\PIL\ImageFont.py", line 134, in __init__
+    self.font = core.getfont(file, size, index, encoding)
+IOError: cannot open resource
+[19/Nov/2012 15:11:09] ERROR [django.request:e:\server-env\lib\site-packages\django\core\handlers\base.py:215] Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "E:\server-env\lib\site-packages\django\core\handlers\base.py", line 89, in get_response
+    response = middleware_method(request)
+  File "E:\server-env\lib\site-packages\django\middleware\common.py", line 67, in process_request
+    if (not urlresolvers.is_valid_path(request.path_info, urlconf) and
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 531, in is_valid_path
+    resolve(path, urlconf)
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 420, in resolve
+    return get_resolver(urlconf).resolve(path)
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 298, in resolve
+    for pattern in self.url_patterns:
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 328, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 323, in urlconf_module
+    self._urlconf_module = import_module(self.urlconf_name)
+  File "E:\server-env\lib\site-packages\django\utils\importlib.py", line 35, in import_module
+    __import__(name)
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\..\xizhi-server\urls.py", line 12, in <module>
+    from account.views import requires_login
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\apps\account\views.py", line 600, in <module>
+    from common import img_utils
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\apps\common\img_utils.py", line 185, in <module>
+    font = ImageFont.truetype(font_path, font_size)
+  File "E:\server-env\lib\site-packages\PIL\ImageFont.py", line 227, in truetype
+    return FreeTypeFont(filename, size, index, encoding)
+  File "E:\server-env\lib\site-packages\PIL\ImageFont.py", line 134, in __init__
+    self.font = core.getfont(file, size, index, encoding)
+IOError: cannot open resource
+[19/Nov/2012 15:11:09] ERROR [django.request:e:\server-env\lib\site-packages\django\core\handlers\base.py:215] Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "E:\server-env\lib\site-packages\django\core\handlers\base.py", line 89, in get_response
+    response = middleware_method(request)
+  File "E:\server-env\lib\site-packages\django\middleware\common.py", line 67, in process_request
+    if (not urlresolvers.is_valid_path(request.path_info, urlconf) and
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 531, in is_valid_path
+    resolve(path, urlconf)
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 420, in resolve
+    return get_resolver(urlconf).resolve(path)
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 298, in resolve
+    for pattern in self.url_patterns:
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 328, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 323, in urlconf_module
+    self._urlconf_module = import_module(self.urlconf_name)
+  File "E:\server-env\lib\site-packages\django\utils\importlib.py", line 35, in import_module
+    __import__(name)
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\..\xizhi-server\urls.py", line 12, in <module>
+    from account.views import requires_login
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\apps\account\views.py", line 600, in <module>
+    from common import img_utils
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\apps\common\img_utils.py", line 185, in <module>
+    font = ImageFont.truetype(font_path, font_size)
+  File "E:\server-env\lib\site-packages\PIL\ImageFont.py", line 227, in truetype
+    return FreeTypeFont(filename, size, index, encoding)
+  File "E:\server-env\lib\site-packages\PIL\ImageFont.py", line 134, in __init__
+    self.font = core.getfont(file, size, index, encoding)
+IOError: cannot open resource
+[19/Nov/2012 15:11:09] ERROR [django.request:e:\server-env\lib\site-packages\django\core\handlers\base.py:215] Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "E:\server-env\lib\site-packages\django\core\handlers\base.py", line 89, in get_response
+    response = middleware_method(request)
+  File "E:\server-env\lib\site-packages\django\middleware\common.py", line 67, in process_request
+    if (not urlresolvers.is_valid_path(request.path_info, urlconf) and
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 531, in is_valid_path
+    resolve(path, urlconf)
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 420, in resolve
+    return get_resolver(urlconf).resolve(path)
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 298, in resolve
+    for pattern in self.url_patterns:
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 328, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 323, in urlconf_module
+    self._urlconf_module = import_module(self.urlconf_name)
+  File "E:\server-env\lib\site-packages\django\utils\importlib.py", line 35, in import_module
+    __import__(name)
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\..\xizhi-server\urls.py", line 12, in <module>
+    from account.views import requires_login
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\apps\account\views.py", line 600, in <module>
+    from common import img_utils
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\apps\common\img_utils.py", line 185, in <module>
+    font = ImageFont.truetype(font_path, font_size)
+  File "E:\server-env\lib\site-packages\PIL\ImageFont.py", line 227, in truetype
+    return FreeTypeFont(filename, size, index, encoding)
+  File "E:\server-env\lib\site-packages\PIL\ImageFont.py", line 134, in __init__
+    self.font = core.getfont(file, size, index, encoding)
+IOError: cannot open resource
+[19/Nov/2012 15:11:09] ERROR [django.request:e:\server-env\lib\site-packages\django\core\handlers\base.py:215] Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "E:\server-env\lib\site-packages\django\core\handlers\base.py", line 89, in get_response
+    response = middleware_method(request)
+  File "E:\server-env\lib\site-packages\django\middleware\common.py", line 67, in process_request
+    if (not urlresolvers.is_valid_path(request.path_info, urlconf) and
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 531, in is_valid_path
+    resolve(path, urlconf)
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 420, in resolve
+    return get_resolver(urlconf).resolve(path)
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 298, in resolve
+    for pattern in self.url_patterns:
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 328, in url_patterns
+    patterns = getattr(self.urlconf_module, "urlpatterns", self.urlconf_module)
+  File "E:\server-env\lib\site-packages\django\core\urlresolvers.py", line 323, in urlconf_module
+    self._urlconf_module = import_module(self.urlconf_name)
+  File "E:\server-env\lib\site-packages\django\utils\importlib.py", line 35, in import_module
+    __import__(name)
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\..\xizhi-server\urls.py", line 12, in <module>
+    from account.views import requires_login
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\apps\account\views.py", line 600, in <module>
+    from common import img_utils
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\apps\common\img_utils.py", line 185, in <module>
+    font = ImageFont.truetype(font_path, font_size)
+  File "E:\server-env\lib\site-packages\PIL\ImageFont.py", line 227, in truetype
+    return FreeTypeFont(filename, size, index, encoding)
+  File "E:\server-env\lib\site-packages\PIL\ImageFont.py", line 134, in __init__
+    self.font = core.getfont(file, size, index, encoding)
+IOError: cannot open resource
+[19/Nov/2012 15:12:26] ERROR [django.request:e:\server-env\lib\site-packages\django\core\handlers\base.py:215] Internal Server Error: /account/confirm_email/ea10e99b2ce75181d837cd6bc4d83f131c470ea4/
+Traceback (most recent call last):
+  File "E:\server-env\lib\site-packages\django\core\handlers\base.py", line 89, in get_response
+    response = middleware_method(request)
+  File "E:\server-env\lib\site-packages\debug_toolbar\middleware.py", line 70, in process_request
+    original_urlconf = __import__(getattr(request, 'urlconf', settings.ROOT_URLCONF), {}, {}, ['*'])
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\..\xizhi-server\urls.py", line 12, in <module>
+    from account.views import requires_login
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\apps\account\views.py", line 600, in <module>
+    from common import img_utils
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\apps\common\img_utils.py", line 185, in <module>
+    font = ImageFont.truetype(font_path, font_size)
+  File "E:\server-env\lib\site-packages\PIL\ImageFont.py", line 227, in truetype
+    return FreeTypeFont(filename, size, index, encoding)
+  File "E:\server-env\lib\site-packages\PIL\ImageFont.py", line 134, in __init__
+    self.font = core.getfont(file, size, index, encoding)
+IOError: cannot open resource
+[19/Nov/2012 15:12:26] ERROR [django.request:e:\server-env\lib\site-packages\django\core\handlers\base.py:215] Internal Server Error: /account/confirm_email/ea10e99b2ce75181d837cd6bc4d83f131c470ea4/
+Traceback (most recent call last):
+  File "E:\server-env\lib\site-packages\django\core\handlers\base.py", line 89, in get_response
+    response = middleware_method(request)
+  File "E:\server-env\lib\site-packages\debug_toolbar\middleware.py", line 70, in process_request
+    original_urlconf = __import__(getattr(request, 'urlconf', settings.ROOT_URLCONF), {}, {}, ['*'])
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\..\xizhi-server\urls.py", line 12, in <module>
+    from account.views import requires_login
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\apps\account\views.py", line 600, in <module>
+    from common import img_utils
+  File "E:\workspace\xz_server_from_GIT\xzserver\repo.server\xizhi-server\apps\common\img_utils.py", line 185, in <module>
+    font = ImageFont.truetype(font_path, font_size)
+  File "E:\server-env\lib\site-packages\PIL\ImageFont.py", line 227, in truetype
+    return FreeTypeFont(filename, size, index, encoding)
+  File "E:\server-env\lib\site-packages\PIL\ImageFont.py", line 134, in __init__
+    self.font = core.getfont(file, size, index, encoding)
+IOError: cannot open resource

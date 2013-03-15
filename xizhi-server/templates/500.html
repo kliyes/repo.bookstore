@@ -1,0 +1,11 @@
+{% extends "base/theme_base.html" %}
+
+{% block title %} 访问异常 {% endblock %}
+
+{% block body %}
+<div class="content">
+    <br /><p class="msg-font">服务器异常了哦， 亲!(500)<br />
+    <p class="msg-font">您可以向我们&nbsp;<a href="{% url us_feedback %}">反馈意见</a>&nbsp;. 谢谢您继续关注习之!</p>
+</div>
+
+{% endblock %}

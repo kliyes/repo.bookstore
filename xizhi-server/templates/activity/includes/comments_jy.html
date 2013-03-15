@@ -1,0 +1,70 @@
+
+{% block body %}
+	<div class="container">
+		<div class="main">
+			<div>
+				<div style="width:100%; height:100px;">	
+					{% for cmt in comments %}
+					<div style="float:left;">
+						<a href="{% url userPage %}?uid={{cmt.publisher.id}}"><img lvy="header" src="{{ MEDIA_URL }}img/{{cmt.publisher.pic}}" /></a>
+					</div>
+					<div style="float:left; margin-left:20px; margin-top:0px;">
+						<label lvy="detail">昵称</label> <label lvy="nick_name"><a href="{% url userPage %}?uid={{cmt.publisher.id}}" title="到Ta的主页">{{cmt.publisher.name}}</a></label> 
+						<br />
+						<br />
+						<label lvy="detail">时间</label> <label lvy="comment_time">{{cmt.created_date|date:"Y-m-d H:i"}}</label>
+						{% if agreed %}
+						<input lvy="agree_yes" name="agree" type="button" value="顶" style="display:none;" />
+						<input lvy="agree_already" name="agree" type="button" value="已顶" style="color:#900;" />
+						{% else %}
+						<input lvy="agree_yes" name="agree" type="button" value="顶" />
+						<input lvy="agree_already" name="agree" type="button" value="已顶" style="display:none; color:#900;" />
+						{% endif %}
+					</div>
+					<div style="clear:both; margin-left:120px;">
+						<label>{{cmt.content}}</label>
+						<hr />
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block extra_js %}	
+<script type="text/javascript">
+$(document).ready(function(e) {
+	//加载模块名称
+	var titlename = $("title").html();
+	$(".title").html(titlename);
+	//加载提示栏目
+	var tooltips = $( "[title]" ).tooltip();
+	//加载按钮样式
+	$( "[lvy='detail']" ).button();
+	$( "input[type=button]" ).button();
+		
+	//点击顶之后灰掉
+	$("[name='agree']").click(function(){
+       switch($(this).attr("lvy")) {
+           case "agree_yes":
+           //执行顶操作
+           $.post('{% url activity_agree_comment  %}', 
+               function(data) {
+                   if(data.status == "success") {
+                       $("[lvy='agree_already']").show();
+                       $("[lvy='agree_yes']").hide();
+                   } else {
+                       alert(data.status);
+                   }
+               },
+           "json");
+            break
+          case "agree_already":
+          //顶后不能取消
+            break
+       }
+    });
+})
+</script>
+{% endblock %}

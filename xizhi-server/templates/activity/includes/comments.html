@@ -1,0 +1,75 @@
+{% block body %}
+<div style="width:100%; height:100px;">
+	<p>
+		热点评论
+	</p>
+	{% for cmt1 in mostAgreedComments %}
+	<div style="float:left;">
+		<a href="{% url profiles_user_home cmt1.publisher.id %}"><img lvy="header" src="{{ MEDIA_URL }}img/{{cmt1.publisher.small_pic}}" /></a>
+	</div>
+	<div style="float: left; margin-left: 10px;">
+		<label lvy="nick_name"><a href="{% url profiles_user_home cmt1.publisher.id %}" title="到Ta的主页">{{cmt1.publisher.name}}</a></label>
+		<label lvy="comment_time">{{cmt1.created_date|date:"Y-m-d H:i"}}</label>
+		<b>{{cmt1.content}}</b>
+		<br /><br />
+		{% if profile != cmt1.publisher %}
+		{% if cmt1.agreed %}
+		<input name="already" type="button" value="您已顶过(共有{{cmt1.agree_count}}人顶过)" style="color:#900;" />
+		{% else %}
+		<input id="{{cmt1.id}}_agree" name="agree" onclick="supportComment({{cmt1.id}})" type="button" value="顶(共有{{cmt1.agree_count}}人顶过)" />
+		<input id="{{cmt1.id}}_agreed" name="agreed" type="button" value="您已顶过" style="display:none; color:#900;" />
+		{% endif %}
+		{% else %}
+		<input type="button" value="不能顶自己发表的评论(共有{{cmt1.agree_count}}人顶过)" style="color:#900;" />
+		{% endif %}
+	</div>
+	<div style="clear: both;"></div>
+	{% endfor %}
+	<p>
+		最新评论
+	</p>
+	{% for cmt in comments %}
+	{% if not cmt.isTop %}
+	<div style="float:left;">
+		<a href="{% url profiles_user_home cmt.publisher.id %}"><img lvy="header" src="{{ MEDIA_URL }}img/{{cmt.publisher.small_pic}}" /></a>
+	</div>
+	<div style="float: left; margin-left: 10px;">
+		<label lvy="nick_name"><a href="{% url profiles_user_home cmt.publisher.id %}" title="到Ta的主页">{{cmt.publisher.name}}</a></label>
+		<label lvy="comment_time">{{cmt.created_date|date:"Y-m-d H:i"}}</label>
+		{{cmt.content}}
+		<br /><br />
+		{% if profile != cmt.publisher %}
+		{% if cmt.agreed %}
+		<input name="already" type="button" value="您已顶过(共有{{cmt.agree_count}}人顶过)" style="color:#900;" />
+		{% else %}
+		<input id="{{cmt.id}}_agree" name="agree" onclick="supportComment({{cmt.id}})" type="button" value="顶(共有{{cmt.agree_count}}人顶过)" />
+		<input id="{{cmt.id}}_agreed" name="agreed" type="button" value="您已顶过" style="display:none; color:#900;" />
+		{% endif %}
+		{% else %}
+		<input type="button" value="不能顶自己发表的评论(共有{{cmt.agree_count}}人顶过)" style="color:#900;" />
+		{% endif %}
+	</div>
+	{% endif %}
+	<div style="clear: both;"></div>
+	{% endfor %}
+</div>
+{% endblock %}
+
+{% block extra_js %}	
+<script type="text/javascript">
+	function supportComment(a){
+           //执行顶操作
+           $.post("/activity/agree_comment/"+a , 
+               function(data) {
+                   if(data.status == "success") {
+                   		//alert("111");
+                   		$("#"+a+"_agreed").show();
+                   		$("#"+a+"_agree").hide();
+                   } else {
+                       alert(data.status);
+                   }
+               },
+           "json");
+    }    
+</script>
+{% endblock %}

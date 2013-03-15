@@ -1,0 +1,98 @@
+{% extends "base/theme_base_lyu.html" %}
+
+{% block title %}设置头像{% endblock %}
+
+{% block message %} {% include "base/messages.html" %} {% endblock %}
+
+{% block extra_js %}
+<link type="text/css" href="{{ STATIC_URL }}jcrop/css/jcrop.css" rel="stylesheet" />
+<script type="text/javascript" src="{{ STATIC_URL }}jcrop/jcrop/jquery.Jcrop.js"></script>
+
+<script type="text/javascript">
+		function isNull(){
+                var v1 =document.getElementById("picture").value;
+                if(v1==null || v1=="")
+                {
+                    alert("您还没有选择头像");
+                    return;
+                }
+                document.submit_form.submit();
+        }
+</script>
+
+<script>	
+	$(document).ready(function(){
+		$("#xuwanting").Jcrop({
+			setSelect: [0 ,0,30,30], //初始位置
+			allowResize:true,
+			onChange:showPreview,
+			onSelect:showPreview,
+			aspectRatio:1,
+			minSize:[30, 30]
+			//maxSize:[120, 120]
+		});	
+	});
+	//响应自onChange,onSelect事件
+	function showPreview(coords){
+		if(parseInt(coords.w) > 0){
+			//计算预览区域图片缩放的比例，通过计算显示区域的宽度(与高度)与剪裁的宽度(与高度)之比得到
+			var rx = $("#preview_box").width() / coords.w; 
+			var ry = $("#preview_box").height() / coords.h;
+			//通过比例值控制图片的样式与显示
+			$("#crop_preview").css({
+				width:Math.round(rx * $("#xuwanting").width()) + "px",		//预览图片 宽 度为计算比例值与原图片宽度的乘积
+				height:Math.round(rx * $("#xuwanting").height()) + "px",	//预览图片 高 度为计算比例值与原图片高度的乘积
+				marginLeft:"-" + Math.round(rx * coords.x) + "px",
+				marginTop:"-" + Math.round(ry * coords.y) + "px"
+			});
+			$("#x1").val(coords.x);
+			$("#y1").val(coords.y);
+			$("#x2").val(coords.x2);
+			$("#y2").val(coords.y2);
+			$("#w").val(coords.w);
+			$("#h").val(coords.h);
+			$("#rx").val(rx);
+			$("#ry").val(ry);
+		}
+	}
+</script>
+<style type="text/css">
+	.crop_preview{position:absolute; left:840px; top:100px; width:64px; height:64px; overflow:hidden;}
+</style>
+
+{% endblock %}
+{% block body %}
+	<div class="container">
+		<form name="submit_form" action="{% url profiles_initpic %}" method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+		<!--原图-->
+			<label for="profile_pic" style="font-size:20px; margin-left:-7px;">设置个人头像</label>
+			<img src="{{ MEDIA_URL }}img/{{profile.tmp_pic}}" id="xuwanting" />
+	        <p>点击输入框，从电脑中选择照片，单击上传按钮. <br/>仅支持JPG, PNG, BMP文件, 且文件小于2M</p>
+	        <input type="file" id="picture" name="picture" />
+	        <p><input type="button" value="上 传" onclick="isNull()" /></p></br>
+		</form>
+	
+	
+		<form action="{% url profiles_setpic %}" method="POST">
+		{% csrf_token %}
+		<div style="display:none;">
+			<b>x1</b><input type="text" size="4" id="x1" name="x1"/>
+			<b class="ml5">y1</b><input type="text" size="4" id="y1" name="y1"/>
+			<b class="ml5">x2</b><input type="text" size="4" id="x2" name="x2"/>
+			<b class="ml5">y2</b><input type="text" size="4" id="y2" name="y2"/>
+			<b class="ml5">w</b><input type="text" size="4" id="w" />
+			<b class="ml5">h</b><input type="text" size="4" id="h" />
+			<b class="ml5">rx</b><input type="text" size="4" id="rx" />
+			<b class="ml5">ry</b><input type="text" size="4" id="ry" />		
+		</div>
+		<!---以上为隐性参数---->
+	    <div style="margin:0px auto;">
+	        <span id="preview_box" class="crop_preview">
+	        	<img id="crop_preview" src="{{ MEDIA_URL }}img/{{profile.tmp_pic}}" />
+	        </span>
+	    </div>	
+		<p><input type="submit" value="确 认" /><a href="{% url profiles_setting %}" class="cancel">撤销</a></p>
+		</form>
+	</div>
+{% endblock %}

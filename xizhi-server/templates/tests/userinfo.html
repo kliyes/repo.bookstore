@@ -1,0 +1,12 @@
+{% extends "base/theme_base.html" %}
+
+{% block title %}测试-显示当前登录用户信息{% endblock %}
+
+{% block body %}
+<div style="font-size:40px;">
+    User: <p style="font-size:40px;">
+        id:{{user.id}} email:{{user.email}}</p>
+    Profile: 
+        <p style="font-size:40px;">id:{{profile.id}} name:{{profile.name}}</p>
+</div>
+{% endblock %}

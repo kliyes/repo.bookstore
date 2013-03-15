@@ -1,0 +1,49 @@
+{% extends "base/theme_base.html" %}
+
+{% block title %}已注册客户端{% endblock %}
+
+{% block body %}
+
+	<h1>已注册客户端</h1>
+
+	<div class="content_container">
+	{% if clients %}
+	<table border="1">
+			<tr>
+				<th>Name</th>
+				<th colspan="2">Credentials</th>
+				<th>Action</th>
+			</tr>
+		{% for client in clients %}
+			<tr>
+				<td rowspan="2">{{ client.name }}</td>
+				<td class="right">Key:</td>
+				<td class="left">{{ client.key }}</td>
+				<td rowspan="2"><a href="{% url protocol_remove_client client.id %}"> Remove</a></td>
+			</tr>
+			<tr>
+				<td class="right">Password:</td>
+				<td class="left">{{ client.password }}</td>
+				
+			</tr>
+						
+		{% endfor %}
+	</table>
+	
+	{% else %}
+	   <p>无</p>
+	{% endif %}
+	
+	</div>
+	
+	<br/>
+	
+	<div class="form_container">
+	<form method="POST" action="{% url protocol_create_client %}">
+	   {% csrf_token %}
+	   <label>客户端名称</label>
+	   <input id="client_name" name="clientName" type="text" /><input type="submit" value="创建客户端" />
+	</form>
+	</div>
+	
+{% endblock %}

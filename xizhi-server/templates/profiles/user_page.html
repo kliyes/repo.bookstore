@@ -1,0 +1,143 @@
+{% extends "base/theme_base_lyu.html" %}
+
+{% block title %}个人主页{% endblock %}
+
+{% block body %}
+
+        
+<div class="container">
+    {% if taProfile and taProfile != profile %}
+        {% include "profiles/includes/ta_homepage.html" %}              
+    {% else %}
+        {% include "profiles/includes/homepage.html" %}
+    {% endif %}
+    <br />
+    <ul class="nav nav-tabs">
+    	{% if taProfile and taProfile != profile %}
+	  	<li><a href="#like" data-toggle="tab">Ta感兴趣的活动</a></li>
+	  	<li><a href="#join" data-toggle="tab">Ta参加的活动</a></li>
+	  	<li><a href="#create" data-toggle="tab">Ta发布的活动</a></li>
+	  	{% else %}
+	  	<li><a href="#like" data-toggle="tab">我感兴趣的活动</a></li>
+	  	<li><a href="#join" data-toggle="tab">我参加的活动</a></li>
+	  	<li><a href="#create" data-toggle="tab">我发布的活动</a></li>
+	  	{% endif %}
+	</ul>
+	<div class="tab-content">
+	  <div class="tab-pane active" id="like">
+	  	{% for lAct in likedActivities %}
+			<table border="0">
+				<tr>
+					<td rowspan="5" style="width:128px; height:128px;"><a href="{% url activity_detail lAct.id %}"> <img src="{{MEDIA_URL}}img/{{lAct.normal_poster}}" style="width:128px; height:128px;" /> </a></td>
+					<td>
+					<p>
+						<a href="{% url activity_detail lAct.id %}">{{lAct.title}}</a>
+					</p></td>
+				</tr>
+				<tr>
+					<td>
+					<p>
+						{{lAct.address}}
+					</p></td>
+				</tr>
+				<tr>
+					<td>
+					<p>
+						活动时间: {{lAct.start_date|date:"Y-m-d H:i"}}&nbsp;-&nbsp;{{lAct.end_date|date:"Y-m-d H:i"}}</a>
+					</td>
+				</tr>
+				<tr>
+					<td><p></p></td>
+				</tr>
+				<tr>
+					<td>
+					<p>
+						{{lAct.desc}}
+					</p></td>
+				</tr>
+			</table>
+		{% endfor %}
+	  </div>
+	  <div class="tab-pane" id="join">
+	  	{% for jAct in joinedActivities %}
+			<table border="0">
+				<tr>
+					<td rowspan="5" style="width:128px; height:128px;"><a href="{% url activity_detail jAct.id %}"> <img src="{{MEDIA_URL}}img/{{jAct.normal_poster}}" style="width:128px; height:128px;" /> </a></td>
+					<td>
+					<p>
+						<a href="{% url activity_detail jAct.id %}">{{jAct.title}}</a>
+					</p></td>
+				</tr>
+				<tr>
+					<td>
+					<p>
+						{{jAct.address}}
+					</p></td>
+				</tr>
+				<tr>
+					<td>
+					<p>
+						活动时间: {{jAct.start_date|date:"Y-m-d H:i"}}&nbsp;-&nbsp;{{jAct.end_date|date:"Y-m-d H:i"}}</a>
+					</td>
+				</tr>
+				<tr>
+					<td><p></p></td>
+				</tr>
+				<tr>
+					<td>
+					<p>
+						{{jAct.desc}}
+					</p></td>
+				</tr>
+			</table>
+		{% endfor %}
+	  </div>
+	  <div class="tab-pane" id="create">
+	  	{% for pAct in publishedActivities %}
+			<table border="0">
+				<tr>
+					<td rowspan="5" style="width:128px; height:128px;"><a href="{% url activity_detail pAct.id %}"> <img src="{{MEDIA_URL}}img/{{pAct.normal_poster}}" style="width:128px; height:128px;" /> </a></td>
+					<td>
+					<p>
+						<a href="{% url activity_detail pAct.id %}">{{pAct.title}}</a>
+					</p></td>
+				</tr>
+				<tr>
+					<td>
+					<p>
+						{{pAct.address}}
+					</p></td>
+				</tr>
+				<tr>
+					<td>
+					<p>
+						活动时间: {{pAct.start_date|date:"Y-m-d H:i"}}&nbsp;-&nbsp;{{pAct.end_date|date:"Y-m-d H:i"}}</a>
+					</td>
+				</tr>
+				<tr>
+					<td><p></p></td>
+				</tr>
+				<tr>
+					<td>
+					<p>
+						{{pAct.desc}}
+					</p></td>
+				</tr>
+			</table>
+		{% endfor %} 
+	  </div>
+	</div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript" src="{{STATIC_URL}}bootstrap/js/bootstrap.min.js"></script>
+
+<!--<script src="facebox.js"></script>-->
+<script type="text/javascript">
+$(document).ready(function(e) {
+    //加载选项卡
+    $( "#tabs" ).tab("show");
+})
+</script>
+{% endblock %}

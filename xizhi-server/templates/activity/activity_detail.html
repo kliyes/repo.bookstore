@@ -1,0 +1,230 @@
+{% extends "base/theme_base_lyu.html" %}
+
+{% block title %}活动详情{% endblock %}
+
+{% block body %}
+<div class="container">
+	<div class="row" style="border:0px solid red;">
+		<div class="span5">
+			<label style="font-size:15px;" class="label label-warning">{{detailAct.title}}</label><p/>
+            <img src="{{MEDIA_URL}}img/{{detailAct.big_poster}}"/>
+            <span id="attend-action">
+                {% if attended %}
+                <!--label lvy="joined">已参加</label--> 
+                <input lvy="join_yes" name="join" type="button" value="参加" style="display:none;" />
+                <input lvy="join_no" name="join" type="button" value="取消参加" style="color:#900;" />
+                {% else %}
+                <!--label lvy="joined" style="display:none;">已参加</label-->
+                <input lvy="join_yes" name="join" type="button" value="参加" />
+                <input lvy="join_no" name="join" type="button" value="取消参加" style="display:none; color:#900;" />
+                {% endif %}
+            </span>
+            <span id="interest-action">
+                {% if interested %}
+                <input lvy="like_yes" name="like" type="button" value="感兴趣" style="display:none;" />
+                <input lvy="like_no" name="like" type="button" value="不感兴趣" style="color:#900;" />
+                {% else %}
+                <input lvy="like_yes" name="like" type="button" value="感兴趣" />
+                <input lvy="like_no" name="like" type="button" value="不感兴趣" style="display:none; color:#900;" />
+                {% endif %}
+            </span>
+            <br />
+            <div id="map" style=" width:300px; height:200px"></div>
+		</div>
+		<div class="span5">
+			<div class="input-prepend">
+				<span class="label">活动类型</span>
+				<b>{{detailAct.categoryShow.label}}</b>
+			</div>
+			<br />
+			<div class="input-prepend">
+				<span class="label">活动城市</span>
+				<b>{{detailAct.city.name}}</b>
+			</div>
+			<br />
+			<div class="input-prepend">
+				<span class="label">开始时间</span>
+				<b>{{detailAct.start_date|date:"Y-m-d H:i"}}</b>
+			</div>
+			<div class="input-prepend">
+				<span class="label">结束时间</span>
+				<b>{{detailAct.end_date|date:"Y-m-d H:i"}}</b>
+			</div>
+			<br />
+			<div class="input-prepend">
+				<span class="label">详细地址</span>
+				<b>{{detailAct.address}}</b>
+			</div>
+			<br />
+			<div class="input-prepend">
+				<span class="label">主办方 </span>
+				<b>{{detailAct.organizer|default_if_none:"未知"}}</b>
+			</div>
+			<br />
+			<div class="input-prepend">
+				<span class="label">发布时间</span>
+				<b>{{detailAct.published_date|date:"Y-m-d H:i"}}</b>
+			</div>
+			<div class="input-prepend">
+				<span class="label">更新时间</span>
+				<b>{{detailAct.last_updated|date:"Y-m-d H:i"}}</b>
+			</div>
+			<br />
+			<div class="input-prepend">
+				<span class="label">发布人员</span>
+				<b><a href="{% url profiles_user_home detailAct.publisher.id %}" title="到Ta的主页">{{detailAct.publisher.name}}</a></b>
+			</div>
+			<br />
+			<div class="input-prepend">
+				<span class="label">活动费用</span>
+				<b>{% if detailAct.price == 0 %}免费{% else %}{{detailAct.price}}&nbsp;元{% endif %}</b>
+			</div>
+			<br />
+			<div class="input-prepend">
+				<span class="label label-important">参加人数</span>
+				<b>{{detailAct.attendee_count}}&nbsp;人</b>
+				<span class="label label-success">感兴趣人数</span>
+				<b>{{detailAct.like_count}}&nbsp;人</b>
+			</div>
+			<br />
+			<div class="input-prepend">
+				<label class="label label-info">活动介绍</label>
+				<b>{{detailAct.desc}}</b>
+			</div>
+		</div>
+	</div>
+	<br />
+	<div class="row">
+		<div class="span5">
+			<p style="font-size:20px;">大家都在说(共有{{detailAct.getCommentsCount}}条评论)</p>
+        	<hr>
+        	<div id="commentsArea">
+        	{% include "activity/includes/comments.html" %}
+        	</div>
+		</div>
+		<div class="span5">
+			<div>
+				<p style="font-size:20px;">我来说一说</p>
+				<hr />
+				<div>
+	                <textarea lvy="comment" lyu="Comment" bl="Comment_msg" class="span5" style="height: 150px;"></textarea>
+	                <label id="Comment_msg" class="err_msg"></label>
+	            </div>
+	            <div>
+	                <input lvy="addcom_submit" type="button" class="btn btn-info" value="提 交">
+	            </div> 
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript">
+$(document).ready(function(e) {
+    //点击感兴趣之后灰掉
+    $("[name='join']").click(function(){
+        switch($(this).attr("lvy")) {
+            case "join_yes":
+             //执行参加操作
+            $.post('{% url activity_join detailAct.id %}', 
+                function(data) {
+                    if(data.status == "success") {
+                        $("[lvy='joined']").css("display", "block");
+                        $("[lvy='join_no']").show();
+                        $("[lvy='join_yes']").hide();
+                    } else {
+                        alert(data.status);
+                    }
+                },
+            "json");
+             break
+           case "join_no":
+                //执行取消参加操作
+                $.post('{% url activity_quit detailAct.id %}', 
+                    function(data) {
+                        if(data.status == "success") {
+                            $("[lvy='joined']").css("display", "none");
+                            $("[lvy='join_yes']").show();
+                            $("[lvy='join_no']").hide();
+                        } else {
+                            alert(data.status);
+                        }
+                    },
+                "json");
+             break
+       }
+    });
+    
+    //感兴趣操作
+    $("[name='like']").click(function(){
+        switch($(this).attr("lvy")) {
+            case "like_yes":
+             //执行感兴趣操作
+            $.post('{% url activity_like detailAct.id %}', 
+                function(data) {
+                    if(data.status == "success") {
+                        $("[lvy='like_no']").show();
+                        $("[lvy='like_yes']").hide();
+                    } else {
+                        alert(data.status);
+                    }
+                },
+            "json");
+             break
+           case "like_no":
+                //执行不感兴趣操作
+                $.post('{% url activity_dislike detailAct.id %}', 
+                    function(data) {
+                        if(data.status == "success") {
+                            $("[lvy='like_yes']").show();
+                            $("[lvy='like_no']").hide();
+                        } else {
+                            alert(data.status);
+                        }
+                    },
+                "json");
+             break
+       }
+    });
+    
+})
+</script>
+<script type="text/javascript" src="{{STATIC_URL}}lyu/plug-in.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(e) {        
+        $("[lvy='addcom_submit']").click(function(){
+        	if(!check_comment_lyu($("[lyu='Comment']"))){
+        		return false;
+        	}
+            //执行评论操作
+            $.post('{% url activity_add_comment detailAct.id %}', {"content":$("[lvy='comment']").val()},
+            	function(data) {
+            		//alert(data.status);
+            		window.location.href='{% url activity_detail detailAct.id %}'
+            	}, 
+            "json");
+        });
+        loadScript();
+    })
+    
+    //load map
+    function loadScript() {
+        var script = document.createElement("script");
+        script.src = "http://api.map.baidu.com/api?v=1.3&callback=initialize";
+        document.body.appendChild(script);
+    }
+    function initialize(){
+        var v1 = "{{detailAct.coordinates}}";
+        var v2 = new Array();
+        v2 = v1.split(",");
+        //v1 = parseFloat(v1);
+        baidu_mp = new BMap.Map('map');
+        var point = new BMap.Point(v2[0],v2[1]);
+        markerNew = new BMap.Marker(point);
+        baidu_mp.addOverlay(markerNew);
+        baidu_mp.centerAndZoom(point, 15);
+    }
+    </script>
+{% endblock %}

@@ -1,0 +1,8 @@
+<div id="messages">
+{% for message in messages %}
+    <div class="success-message">
+        <!--<a class="close" href="#" onclick="$('#messages').hide();">&times;</a>-->
+        <p>{{ message }}</p>
+    </div>
+{% endfor %}
+</div>

@@ -1,0 +1,97 @@
+{% extends "base/theme_base_lyu.html" %}
+
+{% block head_title %}个性标签设置{% endblock %}
+
+{% block message %} {% include "base/messages.html" %} {% endblock %}
+
+{% block body %}
+<br /><br /><br />
+	<div class="container">
+		<div>
+			<a href="{% url profiles_setting %}">返回</a>
+			<fieldset style="width:400px; height:auto;">
+				<legend style="font-size: 16px;">我的标签</legend>
+				<div lvy="minu_tags">
+					<div>
+                        {% for ownedTag in ownedTags %}
+                        <input type="button" value="{{ownedTag.label}}" rel="0" forId="{{ownedTag.id}}" />
+                        {% endfor %}
+					</div>
+				</div>
+			</fieldset>
+			<br />
+			<fieldset style="width:400px; height:auto;">
+				<legend style="font-size: 16px;">推荐标签</legend>
+				<div lvy="add_tag">
+					<div>
+					    {% for tag in tags %}
+						<input type="button" value="{{tag.label}}" rel="0" onlyId="{{tag.id}}" />
+						{% endfor %}
+					</div>
+				</div>
+			</fieldset>
+		</div>
+	</div>
+{% endblock %}
+
+{% block extra_js %}
+	<script type="text/javascript">
+		
+		$(document).ready(function(){			
+			$("[lvy='add_tag'] div input[type='button']").bind("click",function(){
+				add_tags(this);
+			})
+			//注意 这个是在已经含有tags的时候才会生效，从选中的额标签中产生后并不会调用这个方法，而是需要重新绑定噢,亲爱的。
+			//避免没有渲染时调用。
+			$("[lvy='minu_tags'] div input[type='button']").bind("click",function(){
+				minu_tags(this);
+			})
+		});
+		
+		//add
+		function add_tags(obj){
+			//读取属性添加至 lvy minu_tags
+			if($(obj).attr("rel")=="0"){
+			    //在这里执行与服务器的交互操作
+			    $.ajax({
+			        type:"post",
+			        url:"{% url profiles_addtag %}?tagId="+$(obj).attr("onlyId"),
+			        error:function(){
+			            alert("error");
+			        },
+			        success:function(){
+			            //success next do
+			             $(obj).attr("rel","1");
+                        var btn_ele = document.createElement("input");
+                        $(btn_ele).css("margin-right","5px");
+                        $(btn_ele).attr("type","button");
+                        $(btn_ele).attr("forId",$(obj).attr("onlyId"));
+                        $(btn_ele).val($(obj).val());
+                        //$(btn_ele).button();
+                        $(btn_ele).bind("click",function(){minu_tags(this)});
+                        $("[lvy='minu_tags']").append(btn_ele);     
+			        }
+			    });
+            }else{
+                //nothing todo
+                //alert("已经点击过！");
+            }
+            //
+		}
+		//minu
+		function minu_tags(obj){
+            $.ajax({
+                type:"post",
+                url:"{% url profiles_removetag %}?tagId="+$(obj).attr("forId"),
+                error:function(){
+                    alert("error");
+                },
+                success:function(){
+                    var v1 = $(obj).attr("forId");  
+                    $("[onlyId='"+ v1 +"']").attr("rel","0");
+                    $(obj).remove();
+                }
+            });
+		}
+	</script>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base/theme_base.html" %}
+
+{% block head_title %}邮件确认{% endblock %}
+
+{% block body %}
+    {% if verified %}
+        <h4>{{msg}}</h4><br/>
+        <a href="{% url acct_login %}"> 立即登录</a>
+        <p></p>
+    {% else %}
+    	{% if invalid %}
+    		<h4>{{msg}}</h4><br/>
+    	{% else %}
+	        {% if email_address %}
+	            <h4>账号已激活</h4><br/>
+	            <a href="{% url acct_login %}"> 立即登录</a>
+	            <p></p>
+	        {% else %}
+	            <h4>激活失败</h4><br/>
+	        {% endif %}
+	    {% endif %}    
+    {% endif %}
+{% endblock %}

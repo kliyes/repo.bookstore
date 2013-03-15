@@ -1,0 +1,123 @@
+{% extends "base/theme_base_lyu.html" %}
+
+{% load widget_tweaks %}
+
+{% block title %} 个人设置 {% endblock %}
+{% block body %}
+	<div class="container">
+		<div class="row">
+			<div class="span5" style="border:0px solid red;">
+				<h2>个人设置</h2>
+				<br /><br />
+				<form id="tmp_profile" action="{% url profiles_save %}" method="POST" style="display:none;">
+					{% csrf_token %}
+					<input type="text" id="tmp_name" name="tmp_name" />
+					<input type="text" id="tmp_sex" name="tmp_sex" />
+					<input type="text" id="tmp_desc" name="tmp_desc" />
+					<input type="text" id="tmp_city" name="tmp_city" />
+					<input type="text" id="tmp_website" name="tmp_website" />
+					<input type="text" id="tmp_spacename" name="tmp_spacename" />
+					<input type="text" id="next" name="next" />
+				</form>
+				<form action="{% url profiles_setting %}" class="main" method="POST">
+					{% csrf_token %}
+					<div class="input-prepend">
+					    <span class="add-on"><i class="icon-user"></i> 个人昵称</span>{{form.name|attr:"lyu:NickName"|attr:"readonly:true"|attr:"bl:NickName_msg"|attr:"placeholder:昵称 | NickName"|attr:"class:span2"|attr:"type:text"|attr:"style:margin:0px;"}}
+					    <label id="NickName_msg" class="help-inline error_msg">{{form.name.errors}}</label>
+			  			<p class="help-block"></p>
+					</div>
+					<!-- 城市-->	
+					<div class="input-prepend">
+						<span class="add-on"><i class="icon-map-marker"></i> 来自哪里</span>
+						<span id="city-span">{{ form.cityName|default_if_none:"&nbsp;" }}</span>
+						{{form.city|attr:"lyu:city"|attr:"style:display:none;"}}
+		            	<a href="#city-list" rel="facebox">切换城市</a>
+					</div>
+					<!-- 性别 -->
+					<div class="input-prepend">
+						<span class="add-on"><i class="icon-chevron-right"></i> 性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别 </span>
+						{{form.sex|attr:"lyu:sex"}}
+					</div>
+					<!-- 个人主页名 -->
+					<div class="input-prepend">
+						<span class="add-on"><i class="icon-screenshot"></i> 个人主页</span>{{form.spacename|attr:"lyu:Spacename"|attr:"placeholder:个人主页名称"|attr:"bl:Spacename_msg"|attr:"type:text"|attr:"style:margin:0px;"}}
+					    <label id="Spacename_msg" class="help-inline error_msg">{{form.spacename.errors}}</label>
+			  			<p class="help-block"></p>
+					</div>
+					<!-- 个性域名 -->
+					<div class="input-prepend">
+						<span class="add-on"><i class="icon-screenshot"></i> 个性域名</span>{{form.website|attr:"lyu:ProfilesWebSite"|attr:"placeholder:只能修改一次"|attr:"bl:ProfilesWebSite_msg"|attr:"class:span2"|attr:"type:text"|attr:"style:margin:0px;"}}
+					    <label id="ProfilesWebSite_msg" class="help-inline error_msg">{{form.website.errors}}</label>
+			  			<p class="help-block"></p>
+					</div>
+					<div class="input-prepend">
+						<span class="add-on"><i class="icon-flag"></i> 个性标签</span>
+						{% for tag in profile.getOwnedTags %}
+						  <b>{{tag.label}}</b>
+						{% endfor %}
+						<a onclick="doPost('{% url profiles_addtag %}');" href="#">修改标签</a>
+					</div>
+					<!-- 个人介绍 -->
+					<div class="input-prepend">
+						<span class="add-on"><i class="icon-pencil"></i> 个人介绍</span>{{form.desc|attr:"lyu:ProfilesDesc"|attr:"bl:ProfilesDesc_msg"|attr:"placeholder:这个人相当懒惰！"|attr:"class:span4"|attr:"style:margin:0px;"}}
+					    <label id="ProfilesDesc_msg" class="help-inline error_msg"></label>
+			  			<p class="help-block"></p>
+					</div>
+					<div class="input-prepend">
+						<span class="add-on"><i class="icon-envelope"></i> 备用邮箱</span>{{form.email|attr:"lyu:Email"|attr:"readonly:true"|attr:"style:margin:0px"|attr:"value='&nbsp;'"}}
+					</div>
+					<br />
+					<div class="input-prepend">
+						<button class="btn btn-large" type="submit" id="btn_login" onclick="return check_update()"><i class="icon-ok"></i> 更新</button>
+					</div>
+				</form>
+				
+				{% include "base/citylist.html" %}
+			</div>
+			<div class="span4">
+				<br /><br /><br /><br />
+				<!-- 头像 -->
+				<div class="input-prepend">
+					<img id="preview" src="{{ MEDIA_URL }}img/{{profile.small_pic}}" />
+					<br />
+					<a onclick="doPost('{% url profiles_initpic %}');" href="#" lvy="headimg" title="点击更新头像">更新头像</a>
+				</div>
+				<div class="input-prepend">
+					<span class="add-on"><i class="icon-lock"></i> 密码相关</span>
+					<a onclick="doPost('{% url acct_change_pwd %}');" lvy="updatepwd" href="#" title="点击修改密码">修改密码</a>
+				</div>
+			</div>
+		</div>		
+	</div>
+{% endblock %}
+	
+{% block extra_css %}
+<link type="text/css" rel="stylesheet" href="{{STATIC_URL}}facebox/css/facebox.css" />
+{% endblock %}
+{% block extra_js %}
+<script type="text/javascript" src="{{STATIC_URL}}facebox/js/facebox.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}lyu/plug-in.js"></script>
+<script>
+	$(document).ready(function(){
+		lyu_load();
+		$('a[rel*=facebox]').facebox({
+	        loadingImage : '{{ STATIC_URL }}facebox/img/loading.gif',
+	        closeImage   : '{{ STATIC_URL }}facebox/img/closelabel.png'
+	    });
+	    
+	    //get draft city
+	    //$("#city-span").html("test");
+	});
+	
+	function doPost(nextUrl){
+		$("#tmp_name").val($("[lyu='NickName']").val());
+		$("#tmp_sex").val($("[lyu='sex']").val());
+		$("#tmp_desc").val($("[lyu='ProfilesDesc']").val());
+		$("#tmp_city").val($("[lyu='city']").val());
+		$("#tmp_website").val($("[lyu='ProfilesWebSite']").val());
+		$("#tmp_spacename").val($("[lyu='Spacename']").val());
+		$("#next").val(nextUrl);
+		$("#tmp_profile").submit(); 
+	}
+</script>
+{% endblock %} 

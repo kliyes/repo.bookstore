@@ -1,0 +1,32 @@
+<!-- 分页处理 -->
+<br />
+{% if pageItems.paginator.num_pages > 1 %}
+<div class="page-navi">
+<ul>
+	<!-- use ajax request future --> 
+	{% if pageItems.has_previous %}
+		<li><a href="#" onclick="requestPage({{ pageItems.previous_page_number }});" title="上一页">&laquo; 上一页</a></li>
+		<input id="prev-page" type="hidden" value="{{pageItems.previous_page_number}}" />
+	{% endif %}
+	
+	{% for pageNo in pageRange %}
+		{% ifequal pageNo pageItems.number %}
+			<li class="current" title="当前页">{{ pageNo }}</li>        
+		{% else %}
+			<li><a href="#" onclick="requestPage({{pageNo}});" title="第{{pageNo}}页">{{ pageNo }}</a></li>
+			<input id="x-page" type="hidden" value="{{pageNo}}" />
+		{% endifequal %}
+	{% endfor %}    
+	
+	{% if pageItems.has_next %}
+		<li><a href="#" onclick="requestPage({{ pageItems.next_page_number }});" title="下一页">下一页 &raquo;</a></li>
+		<input id="next-page" type="hidden" value="{{pageItems.next_page_number}}" />
+	{% endif %}  
+	
+	<!-- total pages are not needed	to show
+		<li>共 {{ pageItems.paginator.num_pages|default_if_none:0 }} 页 </li>
+	-->
+</ul>
+</div>
+{% endif %}
+<div></div>

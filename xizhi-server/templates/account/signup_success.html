@@ -1,0 +1,11 @@
+{% extends "base/theme_base.html" %}
+{% load widget_tweaks %}
+
+<h5>
+注册成功!<p/>
+账号: <p/>
+    Email: {{email}}<p/>
+    Nickname:{{nickname}}<p/>
+
+</h5>
+点击 <a href="{% url acct_login %}">登录</a>

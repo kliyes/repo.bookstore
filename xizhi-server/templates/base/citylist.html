@@ -1,0 +1,18 @@
+<script>
+//页面上切换城市
+function switchCity(cityId, cityName) {
+    $("#city-span").html(cityName);
+    $("#id_city").val(cityId);
+    jQuery(document).trigger('close.facebox');
+}
+</script>
+
+<div id="city-list" class="city-list"  style="display:none;">
+	<span class="tab-subject">选择地点</span>
+	<hr/><br/>
+	<div id="locations" class="locations">
+		{% for city in cities %}<!-- cities is gotten from server -->
+		<a onclick="switchCity('{{city.id}}', '{{city.name}}');" href="#">{{city.name}}</a>&nbsp;&nbsp;
+		{% endfor %}
+	</div>
+</div>

@@ -1,0 +1,13 @@
+<p style="font-size: 50px;">最热活动</p>
+<br />
+{% for act1 in hotestActivities %}
+<div>
+    <a href="{% url activity_detail act1.id %}"><img lvy="poster" style="width:100px; height:100px;" src="{{MEDIA_URL}}img/{{act1.big_poster}}"  /></a>
+    <a href="{% url activity_detail act1.id %}" class="label label-success"> {{act1.title}}</a><br /><br />
+    <label lvy="event_time"><i class="icon-time"></i> 开始时间 {{act1.start_date|date:"Y年m月d日 H:i"}}</label> 
+    <label lvy="event_address"><i class="icon-map-marker"></i> {{act1.address}}</label>
+    <label lvy="publisher"><a href="{% url profiles_user_home act1.publisher.id %}"><i class="icon-user"></i> {{act1.publisher.name}}</a></label>
+    <label lvy="creat_time"><i class="icon-time"></i> 发布时间 {{act1.published_date|date:"Y年m月d日 H:i"}}</label>
+    <label lvy="join_num"><i class="icon-star"></i> {{act1.attendee_count}} <i class="icon-heart"></i> {{act1.like_count}}</label>
+</div>
+{% endfor %}

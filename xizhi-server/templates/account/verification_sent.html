@@ -1,0 +1,34 @@
+{% extends "base/theme_base.html" %}
+
+<!-- more detail later -->
+
+{% block head_title %}查收验证邮件{% endblock %}
+
+
+{% block message %} {% include "base/messages.html" %} {% endblock %}
+
+{% block subject_bar %}
+<h4>查收验证邮件</h4>
+{% endblock %}
+
+{% block body %}
+<div class="summary">
+    <p class="textarea-style">注册成功!<br/>已发送激活邮件到&nbsp;{{ email }} &nbsp;，请登录邮箱激活账号.</p>
+    <p><a href="{{ success_url }}"></a></p>
+    
+    <br /><br /><br />
+    
+    
+    <div class="job">
+    <h2>若未收到邮件，你可以尝试：</h2>
+    <p class="textarea-style">
+        请检查Email地址是否正确，输错了可以&nbsp;<a href="{% url acct_signup %}">重新注册</a><br/>
+        或者耐心等待几分钟再检查邮件，同时看看会不会在垃圾邮件里<br/>
+        
+        也可以&nbsp;<a href="{% url acct_send_email %}?email={{email}}" rel="facebox">重发邮件</a>
+    </p>
+    </div>  
+</div>
+
+      
+{% endblock %}
