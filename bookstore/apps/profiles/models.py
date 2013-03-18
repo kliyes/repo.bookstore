@@ -167,6 +167,15 @@ class Profile(ProfileBase):
         verbose_name=u"用户赞成的评论列表"
     )
     
+    #===============================================
+    #code in bookstore
+    bought_books = models.ManyToManyField(
+        "books.Book", related_name="boughtBooks",  
+        verbose_name=u"用户买过的书籍列表", 
+        db_table='t_bought_books'
+    )
+    #===============================================
+    
     tags = models.ManyToManyField(
         Tag, related_name="tags", 
         verbose_name=u"个性标签"
