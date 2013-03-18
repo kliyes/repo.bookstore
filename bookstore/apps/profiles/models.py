@@ -11,6 +11,7 @@ from idios.models import ProfileBase
 #from common import utils
 
 import logging
+from books.models import Comment
 logger = logging.getLogger("mysite")
 NOTICE_UNREAD = 0
 NOTICE_READ = 1
@@ -150,6 +151,12 @@ class Profile(ProfileBase):
     # user's spacename
     spacename = models.CharField(max_length=50, null=True, blank=True)
     
+    #===============================================
+    #code in bookstore
+    contact = models.CharField(max_length=20) # 联系方式（手机号码）
+    addr = models.CharField(max_length=200) # 送货地址
+    #===============================================
+    
     attend_activities = models.ManyToManyField(
         "activity.Activity", 
         related_name="attendActivities", 
@@ -167,6 +174,11 @@ class Profile(ProfileBase):
         verbose_name=u"用户赞成的评论列表"
     )
     
+    tags = models.ManyToManyField(
+        Tag, related_name="tags", 
+        verbose_name=u"个性标签"
+    )
+    
     #===============================================
     #code in bookstore
     bought_books = models.ManyToManyField(
@@ -175,11 +187,6 @@ class Profile(ProfileBase):
         db_table='t_bought_books'
     )
     #===============================================
-    
-    tags = models.ManyToManyField(
-        Tag, related_name="tags", 
-        verbose_name=u"个性标签"
-    )
     
     objects = ProfileManager()
 
@@ -197,6 +204,17 @@ class Profile(ProfileBase):
         """登录次数加1"""
         self.login_count += 1
         self.save() 
+    
+    #===============================================
+    #code in bookstore
+    def getBoughtBooks(self):
+        '''获取所购买书籍'''
+        return self.bought_books.all()
+    
+    def getOwnedComments(self):
+        '''获取该用户发表的评论'''
+        return Comment.objects.filter(owner=self)
+    #===============================================
     
     def addTag(self, tag):
         self.tags.add(tag)

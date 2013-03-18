@@ -26,6 +26,9 @@ class Author(models.Model):
         
     def __unicode__(self):
         return u"id:%s name:%s" % (self.id, self.name)
+    
+    def getBooks(self):
+        return Book.objects.filter(author=self)
 
 
 class Category(models.Model):
@@ -94,12 +97,55 @@ class Comment(models.Model):
         return u"id:%s owner:%s content:%s" % (self.id, self.owner, self.content)
         
 
-
-
-
-
-
-
+class Order(models.Model):
+    '''定义订单模型'''
+    owner = models.ForeignKey('profiles.Profile', related_name="orderOwner") # 订单所有者
+    total_fee = models.FloatField() # 总金额
+    is_charged = models.BooleanField(default=False) # 是否付款
+    charge_type = models.SmallIntegerField(default=1) # 付款方式, 1-货到付款 2-在线支付
+    addr = models.CharField(max_length=200) # 送货地址
+    created_date = models.DateTimeField(default=datetime.datetime.now()) # 订单生成时间
+    
+    books = models.ManyToManyField(
+        "books.Book", related_name="book_books", 
+        verbose_name=u"订单中的书目"
+    )
+    
+    class Meta:
+        db_table = 't_order'
+        verbose_name = 'Order'
+        app_label = 'books'
+    
+    def __unicode__(self):
+        return u"id:%s owner:%s total_fee:%s" % (self.id, self.owner, self.total_fee)
+    
+    def charge(self):
+        self.is_charged = True
+        self.save()
+        return True
+    
+    def addBook(self, book):
+        '''向订单中添加书籍'''
+        self.book.add(book)
+        return True
+        
+    def addBooks(self, books):
+        '''批量添加书籍'''
+        for book in books:
+            self.addBook(book)
+        return True
+    
+    def removeBook(self, book):
+        '''移除书籍'''
+        self.books.remove(book)
+        return True
+    
+    def removeBooks(self, books):
+        '''批量移除书籍'''
+        for book in books:
+            self.removeBook(book)
+        return True
+    
 
 
 
