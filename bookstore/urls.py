@@ -40,14 +40,14 @@ urlpatterns = patterns("",
 #    url(r"^notification/$", "profiles.views.getNotices", {"template": "profiles/notifications.html",}, name="acct_notify"),
 #    
      # site navigation
-     url(r"^us/555/$", 'sites.views.siteAnnouncement', name="us_555"),
+    url(r"^us/555/$", 'sites.views.siteAnnouncement', name="us_555"),
 #    url(r"^us/about/$", direct_to_template, {"template": "site/about.html"}, name="us_about"),
 #    url(r"^us/contact/$", direct_to_template, {"template": "site/contact.html"}, name="us_contact"),
 #    url(r"^us/join/$", direct_to_template, {"template": "site/job.html"}, name="us_job"),
-#    url(r"^us/feedback/$", "sites.views.submitFeedback", name="us_feedback"),
+    url(r"^us/feedback/$", "sites.views.submitFeedback", name="us_feedback"),
 #    url(r"^us/feedback/view$", "sites.views.viewFeedbacks", name="us_feedback_view"),
 #    url(r"^us/onlines/$", "sites.views.getOnlines", name="online_info"),
-#
+    url(r"^addbooks/$", "sites.views.regBooks"),
 
 #    url(r"^notices/", include("notification.urls")),
     

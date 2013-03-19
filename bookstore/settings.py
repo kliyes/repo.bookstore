@@ -9,7 +9,7 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 # log level on console
 LOG_LEVEL = 'INFO'
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 # tells Pinax to serve media through the staticfiles app.

@@ -11,7 +11,8 @@ from idios.models import ProfileBase
 #from common import utils
 
 import logging
-from books.models import Comment
+from books.models import BookComment
+
 logger = logging.getLogger("mysite")
 NOTICE_UNREAD = 0
 NOTICE_READ = 1
@@ -213,7 +214,7 @@ class Profile(ProfileBase):
     
     def getOwnedComments(self):
         '''获取该用户发表的评论'''
-        return Comment.objects.filter(owner=self)
+        return BookComment.objects.filter(owner=self)
     #===============================================
     
     def addTag(self, tag):

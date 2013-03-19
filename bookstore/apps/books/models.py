@@ -43,12 +43,24 @@ class Category(models.Model):
         
     def __unicode__(self):
         return u"id:%s name:%s" % (self.id, self.name)
-    
+
 
 class BookManager(models.Manager):
     def totalBooks(self):
         return Book.objects.all().count()
-
+    
+    def regBook(self, name, author, price, isbn, press, desc, binding, pages, 
+                img, category, stock, publish_date):
+        '''书籍入库'''
+        try:
+            book = Book(name=name, author=author, price=price, isbn=isbn, press=press, 
+                        desc=desc, binding= binding, pages=pages, img=img, category=category, 
+                        stock=stock, publish_date)
+            book.save()
+            return True
+        except Exception, e:
+            return False
+        
 class Book(models.Model):
     '''定义Book模型'''
     name = models.CharField(max_length=100) # 书名
@@ -57,10 +69,10 @@ class Book(models.Model):
     isbn = models.CharField(max_length=20) # ISBN号
     press = models.CharField(max_length=200) # 出版社
     desc = models.CharField(max_length=8000) # 简介
-    binding = models.CharField(max_length=10) # 装潢类型
+    binding = models.CharField(max_length=10) # 装潢类型, 精装或平装
     pages = models.CharField(max_length=9999) # 页数 
     img = models.CharField(max_length=80) # 图片
-    bought_count = models.IntegerField() # 被购次数
+    bought_count = models.IntegerField(default=0) # 被购次数
     category = models.ForeignKey(Category) # 类别
     stock = models.IntegerField() # 库存
     publish_date = models.DateTimeField() # 出版日期
@@ -76,33 +88,87 @@ class Book(models.Model):
     def __unicode__(self):
         return u"id:%s name:%s" % (self.id, self.name)
     
+    def updateStock(self):
+        '''更新库存'''
+        
+    
     def getComments(self):
         '''获得该书的所有评论'''
-        return Comment.objects.filter(book=self).order_by('-created_date')
+        return BookComment.objects.filter(book=self).order_by('-created_date')
+    
+    def getMarkers(self):
+        '''获取打分用户'''
+        markers = []
+        grades = Grade.objects.filter(book=self)
+        for grade in grades:
+            markers.append(grade.marker)
+        return markers
+    
+    def getTotalGrade(self):
+        '''获取总分'''
+        total = 0
+        grades = Grade.objects.filter(book=self)
+        for grade in grades:
+            total += grade.value
+        return total
+    
+    def getMarkersCount(self):
+        '''获取打分人数'''
+        return len(self.getMarkers())
+    
+    def getAverage(self):
+        '''获取平均分 总分除以总人数'''
+        return self.getTotalGrade()/self.getMarkersCount()
     
 
-class Comment(models.Model):
+class Grade(models.Model):
+    '''定义书籍得分模型'''
+    marker = models.ForeignKey("profiles.Profile") # 打分用户
+    book = models.ForeignKey(Book) # 打分书籍
+    value = models.SmallIntegerField(default=5) # 用户对书籍打分的分值, 满分5分, 最少1分
+    mark_date = models.DateTimeField(default=datetime.datetime.now()) # 打分时间
+    
+    class Meta:
+        db_table = 't_grade'
+        verbose_name = 'BookGrade'
+        app_label = 'books'
+    
+    def __unicode__(self):
+        return u"id:%s marker:%s value:%s" % (self.id, self.marker, self.value)
+
+
+class BookComment(models.Model):
     '''定义评论模型'''
-    owner = models.ForeignKey('profiles.Profile', related_name="commenter") # 评论发表者
+    owner = models.ForeignKey("profiles.Profile") # 评论发表者
     book = models.ForeignKey(Book) # 所评论的书籍
     content = models.CharField(max_length=1000) # 评论内容
     created_date = models.DateTimeField(default=datetime.datetime.now()) # 评论时间
     
     class Meta:
-        db_table = 't_comment'
-        verbose_name = 'Comment'
+        db_table = 't_bookcomment'
+        verbose_name = 'BookComment'
         app_label = 'books'
     
     def __unicode__(self):
         return u"id:%s owner:%s content:%s" % (self.id, self.owner, self.content)
-        
+
+
+class OrderManager(models.Manager):
+    def totalOrders(self):
+        '''订单总量'''
+        return Order.objects.all().count()  
+    
+    def getOrdersByDate(self, fDate, tDate):
+        '''按日期范围获取订单'''
+        return Order.objects.filter(created_date__range=(fDate, tDate))
 
 class Order(models.Model):
     '''定义订单模型'''
-    owner = models.ForeignKey('profiles.Profile', related_name="orderOwner") # 订单所有者
+    owner = models.ForeignKey("profiles.Profile") # 订单所有者
     total_fee = models.FloatField() # 总金额
     is_charged = models.BooleanField(default=False) # 是否付款
     charge_type = models.SmallIntegerField(default=1) # 付款方式, 1-货到付款 2-在线支付
+    status = models.SmallIntegerField(default=2) # 订单状态, 1-完成交易 0-取消 2-等待发货 3-等待收货 
     addr = models.CharField(max_length=200) # 送货地址
     created_date = models.DateTimeField(default=datetime.datetime.now()) # 订单生成时间
     
@@ -110,6 +176,8 @@ class Order(models.Model):
         "books.Book", related_name="book_books", 
         verbose_name=u"订单中的书目"
     )
+    
+    objects = OrderManager()
     
     class Meta:
         db_table = 't_order'
@@ -127,23 +195,27 @@ class Order(models.Model):
     def addBook(self, book):
         '''向订单中添加书籍'''
         self.book.add(book)
+        book.bought_count -= 1
         return True
         
     def addBooks(self, books):
         '''批量添加书籍'''
         for book in books:
             self.addBook(book)
+            book.bought_count -= 1
         return True
     
     def removeBook(self, book):
-        '''移除书籍'''
+        '''从订单中移除书籍'''
         self.books.remove(book)
+        book.bought_count += 1
         return True
     
     def removeBooks(self, books):
-        '''批量移除书籍'''
+        '''从订单中批量移除书籍'''
         for book in books:
             self.removeBook(book)
+            book.bought_count += 1
         return True
     
 

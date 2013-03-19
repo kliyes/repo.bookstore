@@ -5,13 +5,14 @@ Created on Jul 30, 2012
 @author: junn
 '''
 from django.conf import settings
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.views.generic.simple import direct_to_template
 from django.contrib import messages
 from django.core.urlresolvers import reverse 
+from django.utils import simplejson
 
 from onlineuser.models import getOnlineInfos
 from onlineuser.models import Online
@@ -23,7 +24,24 @@ from sites.forms import FeedbackForm
 from sites.models import Feedback 
 
 import logging
+import urllib
+import sys
 log = logging.getLogger("mysite")
+
+
+def regBooks(request):
+    '''利用豆瓣API获取书籍信息加入数据库'''
+    DOUBAN = "https://api.douban.com/v2/book/search?q="
+    q = request.REQUEST.get('q', '')
+    q = urllib.quote(q.decode('utf8').encode('utf8'))  
+    DOUBAN += q
+
+    req = urllib.urlopen(DOUBAN)
+    resp = req.read()
+    result = simplejson.loads(resp)
+    for i in range(len(result)):
+        print result['books'][i]['author']
+    return HttpResponse('aaa')
 
 @admin_required
 def getOnlines(request):
@@ -36,7 +54,9 @@ def getOnlines(request):
 def viewFeedbacks(request):
     return render_to_response(
         "site/view_feedbacks.html", 
-        RequestContext(request,{"feeds": Feedback.objects.getAllFeedbacks(),})) 
+        RequestContext(request, 
+                       {"feeds": Feedback.objects.getAllFeedbacks()}
+                       )) 
     
 
 def submitFeedback(request):
