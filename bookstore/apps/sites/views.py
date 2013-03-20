@@ -26,8 +26,22 @@ from sites.models import Feedback
 import logging
 import urllib
 import sys
+from books.models import Book, Author
+import os
 log = logging.getLogger("mysite")
 
+def _downloadImg(url):
+    '''下载书籍图片'''
+    imgPath = settings.BOOKPIC_ROOT
+    urlOpen = urllib.urlopen(url)
+    imgDataRead = urlOpen.read(8192)
+    imgDir = os.path.join(imgPath, os.path.basename(url))
+    imgSave = open(imgDir, 'wb')
+    while imgDataRead:
+        imgSave.write(imgDataRead)
+        imgDataRead = urlOpen.read(8192)
+    imgSave.close()
+    return "books/%s" % (os.path.basename(url))
 
 def regBooks(request):
     '''利用豆瓣API获取书籍信息加入数据库'''
@@ -39,9 +53,32 @@ def regBooks(request):
     req = urllib.urlopen(DOUBAN)
     resp = req.read()
     result = simplejson.loads(resp)
-    for i in range(len(result)):
-        print result['books'][i]['author']
-    return HttpResponse('aaa')
+    books = result['books']
+    booksCount = len(books)
+    for i in range(booksCount):
+        author = Author()
+        author.name = books[i]['author'][0]
+        author.desc = books[i]['author_intro']
+        author.save()
+        
+        book = Book()
+        book.name = books[i]['title']
+        book.author = author
+        book.price = float(''.join([ item for item in books[i]['price'] if item in '1234567890.' ]))
+        if not books[i]['isbn13']:
+            book.isbn = books[i]['isbn10']
+        else:
+            book.isbn = books[i]['isbn13']
+        book.press = books[i]['publisher']
+        book.desc = books[i]['summary']
+        book.binding = books[i]['binding']
+        book.pages = books[i]['pages']
+        book.img = _downloadImg(books[i]['image'])   
+        book.stock = 140
+        book.publish_date = books[i]['pubdate']
+        book.save()
+        
+    return HttpResponse('success')
 
 @admin_required
 def getOnlines(request):

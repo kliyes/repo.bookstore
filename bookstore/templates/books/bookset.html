@@ -1,0 +1,15 @@
+<html>
+	<body>
+		{% if not books %}
+		查无此书
+		{% endif %}
+		{% for book in books %}
+		<a href="{% url book_detail book.id %}"><img src="{{ MEDIA_URL }}img/{{book.img}}" /></a><br />
+		书名：{{book.name}}<br />
+		作者：{{book.author.name}}<br />
+		出版社：{{book.press}}<br />
+		ISBN：{{book.isbn}}<br />
+		定价：{{book.price}}元<br /><br />
+		{% endfor %}
+	</body>
+</html>

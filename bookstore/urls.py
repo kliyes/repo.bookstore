@@ -25,6 +25,7 @@ urlpatterns = patterns("",
     url(r"^admin/login/$", "account.views.adminLogin", name="admin_login"),
     url(r"^profiles/", include("profiles.urls")),
     url(r"^activity/", include("activity.urls")),
+    url(r"^books/", include("books.urls")),
     
     # user home page
     url(r"^u/(\d+)/$", "profiles.views.goUserHome", name="profiles_user_home"),

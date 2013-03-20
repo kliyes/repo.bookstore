@@ -9,15 +9,16 @@
 import datetime
 
 from django.db import models
+from django.conf import settings
 
 '''
 File feature description here
 '''
 class Author(models.Model):
     '''定义Author模型'''
-    name = models.CharField(max_length=40) # 姓名
+    name = models.CharField(max_length=200) # 姓名
     desc = models.CharField(max_length=8000) # 简介
-    work_count = models.IntegerField() # 作品数量
+    work_count = models.IntegerField(default=1) # 作品数量
     
     class Meta:
         db_table = 't_author'
@@ -49,33 +50,21 @@ class BookManager(models.Manager):
     def totalBooks(self):
         return Book.objects.all().count()
     
-    def regBook(self, name, author, price, isbn, press, desc, binding, pages, 
-                img, category, stock, publish_date):
-        '''书籍入库'''
-        try:
-            book = Book(name=name, author=author, price=price, isbn=isbn, press=press, 
-                        desc=desc, binding= binding, pages=pages, img=img, category=category, 
-                        stock=stock, publish_date)
-            book.save()
-            return True
-        except Exception, e:
-            return False
-        
 class Book(models.Model):
     '''定义Book模型'''
-    name = models.CharField(max_length=100) # 书名
+    name = models.CharField(max_length=800) # 书名
     author = models.ForeignKey(Author) # 作者
     price = models.FloatField() # 定价
     isbn = models.CharField(max_length=20) # ISBN号
     press = models.CharField(max_length=200) # 出版社
-    desc = models.CharField(max_length=8000) # 简介
-    binding = models.CharField(max_length=10) # 装潢类型, 精装或平装
+    desc = models.CharField(max_length=8000, blank=True, null=True) # 简介
+    binding = models.CharField(max_length=10, blank=True, null=True) # 装潢类型, 精装或平装
     pages = models.CharField(max_length=9999) # 页数 
-    img = models.CharField(max_length=80) # 图片
+    img = models.CharField(max_length=80, default=settings.DEFAULT_IMG) # 图片
     bought_count = models.IntegerField(default=0) # 被购次数
-    category = models.ForeignKey(Category) # 类别
+    category = models.ForeignKey(Category, null=True, blank=True) # 类别
     stock = models.IntegerField() # 库存
-    publish_date = models.DateTimeField() # 出版日期
+    publish_date = models.CharField(max_length=50) # 出版日期
     reg_date = models.DateTimeField(default=datetime.datetime.now()) # 上架时间
     
     objects = BookManager()
@@ -87,10 +76,6 @@ class Book(models.Model):
     
     def __unicode__(self):
         return u"id:%s name:%s" % (self.id, self.name)
-    
-    def updateStock(self):
-        '''更新库存'''
-        
     
     def getComments(self):
         '''获得该书的所有评论'''
@@ -118,7 +103,9 @@ class Book(models.Model):
     
     def getAverage(self):
         '''获取平均分 总分除以总人数'''
-        return self.getTotalGrade()/self.getMarkersCount()
+        if self.getMarkersCount() != 0:
+            return self.getTotalGrade()/self.getMarkersCount()
+        return 0
     
 
 class Grade(models.Model):
@@ -202,7 +189,6 @@ class Order(models.Model):
         '''批量添加书籍'''
         for book in books:
             self.addBook(book)
-            book.bought_count -= 1
         return True
     
     def removeBook(self, book):
@@ -215,7 +201,6 @@ class Order(models.Model):
         '''从订单中批量移除书籍'''
         for book in books:
             self.removeBook(book)
-            book.bought_count += 1
         return True
     
 

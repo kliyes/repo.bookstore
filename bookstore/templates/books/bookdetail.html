@@ -1,0 +1,18 @@
+<html>
+	<body>
+		<img src="{{ MEDIA_URL }}img/{{book.img}}" /><br />
+		书名：{{book.name}}<br />
+		作者：{{book.author.name}}<br />
+		出版社：{{book.press}}<br />
+		ISBN：{{book.isbn}}<br />
+		定价：{{book.price}}元<br />
+		评分：{{book.getAverage}}分（共有{{book.getMarkersCount}}人打过分）<br />
+		共有{{book.bought_count}}人购买过这本书<br /><br /><br />
+		书籍简介：{{book.desc}}<br /><br />
+		作者简介：{{book.author.desc}}<br /><br /><br />
+		评论：<br />
+		{% for cmt in comments %}
+		{{cmt.owner.name}}于{{cmt.created_date|date:"Y-m-d H:i"}}评论到：{{cmt.content}}<br /><br />
+		{% endfor %}
+	</body>
+</html>

@@ -95,7 +95,7 @@ IS_SITE_MAINTAINED = False
 USE_I18N = True
 
 # Absolute path to the directory that holds media.
-MEDIA_ROOT = "E:/OnlineBookStore/media/"
+MEDIA_ROOT = "E:/OnlineBookStore/"
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -300,6 +300,8 @@ DEFAULT_POSTER = "default_poster"
 DEFAULT_POSTER_NORMAL = "default_poster_normal"
 DEFAULT_POSTER_SMALL = "default_poster_small"
 
+DEFAULT_IMG = "default_img"
+
 #上传图片大小限制
 PIC_UPPER_BOUND = 2  # 2M
 POSTER_UPPER_BOUND = 5 #5M
@@ -307,6 +309,10 @@ POSTER_UPPER_BOUND = 5 #5M
 ALLOWED_IMG_FORMAT = (".jpg", ".jpe", ".gif", ".jpeg", ".bmp", ".png")
 
 PIC_ROOT = os.path.join(MEDIA_ROOT, "img")
+
+BOOKPIC_ROOT = os.path.join(PIC_ROOT, "books")
+USERPIC_ROOT = os.path.join(PIC_ROOT, "profiles")
+
 
 # Picture size
 PIC_SIZE_BIG = (330, 330)         #大图像素宽高
