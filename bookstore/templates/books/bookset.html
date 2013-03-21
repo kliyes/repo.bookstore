@@ -4,8 +4,8 @@
 		查无此书
 		{% endif %}
 		{% for book in books %}
-		<a href="{% url book_detail book.id %}"><img src="{{ MEDIA_URL }}img/{{book.img}}" /></a><br />
-		书名：{{book.name}}<br />
+		<a href="{% url book_detail book.id %}"><img src="{{ MEDIA_URL }}img/{{book.mpic}}" /></a><br />
+		书名：<a href="{% url book_detail book.id %}">{{book.name}}</a><br />
 		作者：{{book.author.name}}<br />
 		出版社：{{book.press}}<br />
 		ISBN：{{book.isbn}}<br />

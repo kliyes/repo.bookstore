@@ -313,6 +313,13 @@ PIC_ROOT = os.path.join(MEDIA_ROOT, "img")
 BOOKPIC_ROOT = os.path.join(PIC_ROOT, "books")
 USERPIC_ROOT = os.path.join(PIC_ROOT, "profiles")
 
+SBPIC_ROOT = os.path.join(BOOKPIC_ROOT, "small")  # 书籍小图
+MBPIC_ROOT = os.path.join(BOOKPIC_ROOT, "medium") # 书籍中图
+LBPIC_ROOT = os.path.join(BOOKPIC_ROOT, "large")  # 书籍大图
+
+SUPIC_ROOT = os.path.join(USERPIC_ROOT, "small")  # 用户小图
+MUPIC_ROOT = os.path.join(USERPIC_ROOT, "medium") # 用户中图
+LUPIC_ROOT = os.path.join(USERPIC_ROOT, "large")  # 用户大图
 
 # Picture size
 PIC_SIZE_BIG = (330, 330)         #大图像素宽高

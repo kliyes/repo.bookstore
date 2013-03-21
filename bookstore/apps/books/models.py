@@ -45,6 +45,7 @@ class Category(models.Model):
     def __unicode__(self):
         return u"id:%s name:%s" % (self.id, self.name)
 
+bookList = []
 
 class BookManager(models.Manager):
     def totalBooks(self):
@@ -60,7 +61,9 @@ class Book(models.Model):
     desc = models.CharField(max_length=8000, blank=True, null=True) # 简介
     binding = models.CharField(max_length=10, blank=True, null=True) # 装潢类型, 精装或平装
     pages = models.CharField(max_length=9999) # 页数 
-    img = models.CharField(max_length=80, default=settings.DEFAULT_IMG) # 图片
+    spic = models.CharField(max_length=80, default=settings.DEFAULT_IMG) # 小图
+    mpic = models.CharField(max_length=80) # 中图(书籍列表中显示)
+    lpic = models.CharField(max_length=80) # 大图(书籍详情中显示)
     bought_count = models.IntegerField(default=0) # 被购次数
     category = models.ForeignKey(Category, null=True, blank=True) # 类别
     stock = models.IntegerField() # 库存
@@ -107,6 +110,10 @@ class Book(models.Model):
             return self.getTotalGrade()/self.getMarkersCount()
         return 0
     
+    def addToList(self):
+        '''加入购物列表'''
+        bookList.append(self)
+        return bookList
 
 class Grade(models.Model):
     '''定义书籍得分模型'''
@@ -140,6 +147,55 @@ class BookComment(models.Model):
         return u"id:%s owner:%s content:%s" % (self.id, self.owner, self.content)
 
 
+class Cart(models.Model):
+    '''定义购物车模型'''
+    owner = models.ForeignKey("profiles.Profile") # 购物车所属用户
+    update_time = models.DateTimeField(auto_now=True) # 最后更新时间
+    
+    books = models.ManyToManyField(
+        "books.Book", related_name="book_books", 
+        verbose_name=u"购物车中的书目"
+    )
+    
+    class Meta:
+        db_table = 't_cart'
+        verbose_name = 'Cart'
+        app_label = 'books'
+    
+    def __unicode__(self):
+        return u"id:%s owner:%s" % (self.id, self.owner)
+    
+    def getBooks(self):
+        '''获取购物车中书籍列表'''
+        return self.books.all()
+    
+    def addBook(self, book):
+        '''向购物车中添加书籍'''
+        self.books.add(book)
+        book.bought_count -= 1
+        book.save()
+        return True
+        
+    def addBooks(self, books):
+        '''批量加入书籍'''
+        for book in books:
+            self.addBook(book)
+        return True
+    
+    def removeBook(self, book):
+        '''从购物车中移除书籍'''
+        self.books.remove(book)
+        book.bought_count += 1
+        book.save()
+        return True
+    
+    def removeBooks(self, books):
+        '''从购物车中批量移除书籍'''
+        for book in books:
+            self.removeBook(book)
+        return True
+
+
 class OrderManager(models.Manager):
     def totalOrders(self):
         '''订单总量'''
@@ -155,14 +211,10 @@ class Order(models.Model):
     total_fee = models.FloatField() # 总金额
     is_charged = models.BooleanField(default=False) # 是否付款
     charge_type = models.SmallIntegerField(default=1) # 付款方式, 1-货到付款 2-在线支付
-    status = models.SmallIntegerField(default=2) # 订单状态, 1-完成交易 0-取消 2-等待发货 3-等待收货 
+    status = models.SmallIntegerField(default=2) # 订单状态, 1-完成交易 0-取消 2-等待发货 3-等待收货
+    cart = models.ForeignKey(Cart) # 订单对应的购物车, 物品清单只能在购物车中进行修改(+, -)
     addr = models.CharField(max_length=200) # 送货地址
     created_date = models.DateTimeField(default=datetime.datetime.now()) # 订单生成时间
-    
-    books = models.ManyToManyField(
-        "books.Book", related_name="book_books", 
-        verbose_name=u"订单中的书目"
-    )
     
     objects = OrderManager()
     
@@ -179,35 +231,4 @@ class Order(models.Model):
         self.save()
         return True
     
-    def addBook(self, book):
-        '''向订单中添加书籍'''
-        self.book.add(book)
-        book.bought_count -= 1
-        return True
-        
-    def addBooks(self, books):
-        '''批量添加书籍'''
-        for book in books:
-            self.addBook(book)
-        return True
-    
-    def removeBook(self, book):
-        '''从订单中移除书籍'''
-        self.books.remove(book)
-        book.bought_count += 1
-        return True
-    
-    def removeBooks(self, books):
-        '''从订单中批量移除书籍'''
-        for book in books:
-            self.removeBook(book)
-        return True
-    
-
-
-
-
-
-
-
     

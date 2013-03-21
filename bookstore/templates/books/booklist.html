@@ -1,0 +1,9 @@
+<html>
+	<body>
+		成功加入购物车：<br /><br />
+		<img src="{{ MEDIA_URL }}img/{{book.spic}}" />&nbsp;&nbsp;{{book.name}}&nbsp;&nbsp;{{book.price}}元
+		<br /><br /><br />
+		<a href="{% url book_detail book.id %}"><input type="button" value="返回继续选书" /></a><br />
+		<a href="{% url book_cart_check %}"><input type="button" value="进入购物车" /></a><br />
+	</body>
+</html>

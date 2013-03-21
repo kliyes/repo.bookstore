@@ -30,9 +30,14 @@ from books.models import Book, Author
 import os
 log = logging.getLogger("mysite")
 
-def _downloadImg(url):
-    '''下载书籍图片'''
-    imgPath = settings.BOOKPIC_ROOT
+def _downloadImg(url, size="medium"):
+    '''下载书籍图片 size: 图片尺寸'''
+    if size == "small":
+        imgPath = settings.SBPIC_ROOT
+    elif size == "medium":
+        imgPath = settings.MBPIC_ROOT
+    else:
+        imgPath = settings.LBPIC_ROOT
     urlOpen = urllib.urlopen(url)
     imgDataRead = urlOpen.read(8192)
     imgDir = os.path.join(imgPath, os.path.basename(url))
@@ -41,7 +46,7 @@ def _downloadImg(url):
         imgSave.write(imgDataRead)
         imgDataRead = urlOpen.read(8192)
     imgSave.close()
-    return "books/%s" % (os.path.basename(url))
+    return "books/%s/%s" % (size, os.path.basename(url))
 
 def regBooks(request):
     '''利用豆瓣API获取书籍信息加入数据库'''
@@ -73,7 +78,9 @@ def regBooks(request):
         book.desc = books[i]['summary']
         book.binding = books[i]['binding']
         book.pages = books[i]['pages']
-        book.img = _downloadImg(books[i]['image'])   
+        book.spic = _downloadImg(books[i]['images']['small'], 'small')   
+        book.mpic = _downloadImg(books[i]['images']['medium'], 'medium')   
+        book.lpic = _downloadImg(books[i]['images']['large'], 'large')   
         book.stock = 140
         book.publish_date = books[i]['pubdate']
         book.save()

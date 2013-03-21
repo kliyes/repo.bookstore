@@ -1,6 +1,6 @@
 <html>
 	<body>
-		<img src="{{ MEDIA_URL }}img/{{book.img}}" /><br />
+		<img src="{{ MEDIA_URL }}img/{{book.lpic}}" /><br />
 		书名：{{book.name}}<br />
 		作者：{{book.author.name}}<br />
 		出版社：{{book.press}}<br />
@@ -14,5 +14,7 @@
 		{% for cmt in comments %}
 		{{cmt.owner.name}}于{{cmt.created_date|date:"Y-m-d H:i"}}评论到：{{cmt.content}}<br /><br />
 		{% endfor %}
+		<br /><br /><br />
+		<a href="{% url book_cart_add book.id %}"><input type="button" value="加入购物车" /></a>
 	</body>
 </html>

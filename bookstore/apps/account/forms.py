@@ -22,6 +22,7 @@ from account.signals import signedup
 from account.models import Account, PasswordReset, EmailAddress, EmailConfirmation
 from account.utils import perform_login, change_password
 from profiles.models import Profile, City
+from books.models import Cart
 
 from common import utils 
 from account.decorators import check_reset_email_sent_count
@@ -216,6 +217,17 @@ class SignupForm(GroupForm):
         profile.name = self.cleaned_data.get("nickname")
         profile.city = City.objects.getById(id=2)  #TODO, load from cities cache
         profile.save()
+        
+        #=======================================================
+        #code in the bookstore
+        '''为注册用户创建购物车'''
+        try:
+            cart = Cart.objects.get(owner=profile)
+        except Cart.DoesNotExist:
+            cart = Cart(owner=profile)
+        
+        cart.save()
+        #=======================================================
 
 class OpenIDSignupForm(SignupForm):
     

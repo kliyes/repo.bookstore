@@ -11,7 +11,7 @@ from idios.models import ProfileBase
 #from common import utils
 
 import logging
-from books.models import BookComment
+from books.models import BookComment, Cart
 
 logger = logging.getLogger("mysite")
 NOTICE_UNREAD = 0
