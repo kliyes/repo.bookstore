@@ -5,5 +5,6 @@ urlpatterns = patterns("",
     url(r"^(\d+)$", "books.views.bookDetail", name="book_detail"), 
     url(r"^add_to_cart/(\d+)$", "books.views.addToCart", name="book_cart_add"), 
     url(r"^check_the_cart/$", "books.views.checkCart", name="book_cart_check"), 
+    url(r"^make_order/$", "books.views.makeOrder", name="book_order"), 
     
 )

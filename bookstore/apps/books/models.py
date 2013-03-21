@@ -45,7 +45,6 @@ class Category(models.Model):
     def __unicode__(self):
         return u"id:%s name:%s" % (self.id, self.name)
 
-bookList = []
 
 class BookManager(models.Manager):
     def totalBooks(self):
@@ -110,10 +109,6 @@ class Book(models.Model):
             return self.getTotalGrade()/self.getMarkersCount()
         return 0
     
-    def addToList(self):
-        '''加入购物列表'''
-        bookList.append(self)
-        return bookList
 
 class Grade(models.Model):
     '''定义书籍得分模型'''

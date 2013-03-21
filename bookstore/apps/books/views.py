@@ -6,10 +6,10 @@
 #
 # This file is part of lershare.com.
 #
-from books.models import Book, Cart
+from books.models import Book, Cart, Order
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 '''
 File feature description here
@@ -64,7 +64,30 @@ def checkCart(request):
     return render_to_response('books/bookcart.html', RequestContext(request, 
         {'booklist': bookList}))
     
+def makeOrder(request):
+    '''填写订单'''
+    profile = request.user.get_profile()
+    cart = Cart.objects.get(owner=profile)
+    bookList = cart.getBooks()
     
+    if request.method != 'POST':
+        return render_to_response('books/bookorder.html', RequestContext(request, 
+            {'booklist': bookList}))
+        
+    addr = request.REQUEST.get('addr', None)
+    print addr
+    order = Order()
+    order.owner = profile
+    totalFee = 0.0
+    for book in bookList:
+        totalFee += book.price
+    order.total_fee = totalFee
+    order.cart = cart
+    order.addr = addr
+    order.save()
+    
+    return HttpResponse('Thanks!')
+      
     
     
     
