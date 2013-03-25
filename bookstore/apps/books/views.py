@@ -59,32 +59,28 @@ def checkCart(request):
     '''查看购物车'''
     profile = request.user.get_profile()
     cart = Cart.objects.get(owner=profile)
-    bookList = cart.getBooks()
     
     return render_to_response('books/bookcart.html', RequestContext(request, 
-        {'booklist': bookList}))
+        {'cart': cart}))
     
 def makeOrder(request):
     '''填写订单'''
     profile = request.user.get_profile()
     cart = Cart.objects.get(owner=profile)
-    bookList = cart.getBooks()
     
-    if request.method != 'POST':
+    if request.method != 'POST': # 'POST'必须大写！ 
         return render_to_response('books/bookorder.html', RequestContext(request, 
-            {'booklist': bookList}))
+            {'cart': cart}))
         
     addr = request.REQUEST.get('addr', None)
-    print addr
     order = Order()
     order.owner = profile
-    totalFee = 0.0
-    for book in bookList:
-        totalFee += book.price
-    order.total_fee = totalFee
+    order.total_fee = cart.getTotalFee()
     order.cart = cart
     order.addr = addr
     order.save()
+    # 提交订单后清空购物车中书籍
+    cart.removeBooks(cart.getBooks())
     
     return HttpResponse('Thanks!')
       

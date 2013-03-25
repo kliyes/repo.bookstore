@@ -1,11 +1,14 @@
 <html>
 	<body>
 		{{profile.name}}，欢迎进入您的购物车！<br /><br />
-		{% for book in booklist %}
+		{% for book in cart.getBooks %}
 			<img src="{{ MEDIA_URL }}img/{{book.spic}}" />&nbsp;&nbsp;
 			《{{book.name}}》&nbsp;&nbsp;
 			{{book.price}}元<br /><br />
 		{% endfor %}
+		<br /><br />
+		共计：{{cart.getTotalFee}}元
+		<br /><br />
 		<a href="{% url book_order %}"><input type="button" value="下订单" /></a>
 	</body>
 </html>

@@ -1,14 +1,15 @@
 <html>
 	<body>
-		<form action="." method="POST">
+		<form action="." method="post">
 			{% csrf_token %}
-			送货地址：<input type="text" name="addr" id="addr" /><br />
 			以下是您选购的书籍：<br />
-			{% for book in booklist %}
+			{% for book in cart.getBooks %}
 				<img src="{{ MEDIA_URL }}img/{{book.spic}}" />&nbsp;&nbsp;
 				《{{book.name}}》&nbsp;&nbsp;
 				 {{book.price}}元<br /><br />
 			{% endfor %}
+			送货地址：<input type="text" name="addr" id="addr" /><br />
+			总计：{{cart.getTotalFee}}元
 			<input type="submit" value="提交" />
 		</form>
 	</body>

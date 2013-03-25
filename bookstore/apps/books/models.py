@@ -164,6 +164,13 @@ class Cart(models.Model):
         '''获取购物车中书籍列表'''
         return self.books.all()
     
+    def getTotalFee(self):
+        '''获取购物车中书籍总价'''
+        totalFee = 0.0
+        for book in self.getBooks():
+            totalFee += book.price
+        return totalFee
+    
     def addBook(self, book):
         '''向购物车中添加书籍'''
         self.books.add(book)
