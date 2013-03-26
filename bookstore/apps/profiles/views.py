@@ -108,15 +108,11 @@ def setProfile(request, **kwargs):
             profile = form.save(request)
             if profile:
                 utils.addMsg(request, messages.SUCCESS, ugettext(u"更新设置成功."))
-                #return render_to_response(settings.TEMPLATE_SETTINGS, 
-                #    RequestContext(request, {"form": form, })
-                #)
                 return HttpResponseRedirect(reverse("profiles_setting"))
     else :
         draftProfile = request.session.get("draftProfile", None)
         form = ProfileForm(user=request.user, draftProfile=draftProfile)
         
-        # if draftProfile is not null, clear draftProfile after initialized ProfileForm 
         if draftProfile:
             request.session["draftProfile"] = None
         
