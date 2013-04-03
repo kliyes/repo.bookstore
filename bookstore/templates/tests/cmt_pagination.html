@@ -1,0 +1,34 @@
+<div class="dominate_p">
+	<div class="shuzi">
+		<ul>
+			{% ifnotequal pageItems.paginator.num_pages 1 %}
+			
+			{% if pageItems.has_previous %}
+			<li><a id="pre" href="javascript:void(0)" rel ="{{ pageItems.previous_page_number }}"><div class="shuzi_weixuanzhong_2">&lt;</div></a></li>
+			{% else %}
+			<li><a href="javascript:void(0)"><div class="shuzi_weixuanzhong_2">&lt;</div></a></li>
+			{% endif %}
+			
+			{% for i in pageRange %}
+			{% ifequal i pageItems.number %}
+			<li><div class="shuzi_xuanzhong_2 yanse_baise">{{ i }}</div></li>
+			{% else %}
+			<li><a id="num" href="#show_cmts" rel="{{ i }}" ><div class="shuzi_weixuanzhong_2">{{ i }}</div></a></li>
+			{% endifequal %}
+			{% endfor %}
+			
+			{% if pageItems.has_next %}
+			<li><a id="next" href="javascript:void(0)" rel="{{ pageItems.next_page_number }}"><div class="shuzi_weixuanzhong_2">&gt;</div></a></li>
+			{% else %}
+			<li><a href="javascript:void(0)"><div class="shuzi_weixuanzhong_2">&gt;</div></a></li>
+			{% endif %}
+
+			{% endifnotequal %}
+		</ul>
+	</div>
+	<div class="xianshi">
+		<div class="go"><a id="goto_page" href="javascript:void(0)" rel="userinput" class="comment_fenye"><input type="button" value="" /></a></div>
+		<div class="wenzi" id="page_current" >共{{ pageItems.paginator.num_pages }}页 到第 <input id="userinput_page" name="textfield" type="text" class="tiaozhuan" maxlength="3"> 页</div>
+		</div>
+	</div>
+<div style="clear:both;"></div>
