@@ -29,6 +29,34 @@ logger = logging.getLogger("mysite")
 
 from common.consts import getActivityCategorys
 
+#def pagingComments(request, actId):
+#    '''分页活动评论'''
+#    if not request.is_ajax():
+#        raise Http404
+#    
+#    act = Activity.objects.get(id=int(actId))
+#    pageNo = pages.getRequestPageNo(request)
+#    
+#    request.session[CURRENT_PAGENO_KEY] = pageNo
+#    paging = pages.getSessionPaging(request, CMT_DATA_KEY)
+#    if not paging:
+#        cmtlist = act.getAllComments()
+#        paging = initSessionCmtlistPaging(request, CMT_DATA_KEY, cmtlist, CMT_PAGE_SIZE)
+#        
+#    t = get_template(settings.TEMPLATE_COMMENT_LIST)
+#    ctx = paging.result(pageNo)
+#    
+#    if request.user.is_authenticated() and request.user.get_profile():
+#        request.user.get_profile().markAgreed(ctx["pageItems"].object_list)
+#    
+#    if pageNo == 1:
+#        ctx.update(_handleCmtsPageOne(request, act))
+#        
+#    return utils.jsonResponse({'status': "success", 
+#        'html': t.render(RequestContext(request, ctx))})
+
+
+
 #@login_required
 def goHome(request):
         
