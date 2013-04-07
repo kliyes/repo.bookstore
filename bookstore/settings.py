@@ -219,7 +219,7 @@ INSTALLED_APPS = [
     "common",
     "account",
     "profiles",
-    "activity",
+    #"activity",
     "books", 
 ]
 

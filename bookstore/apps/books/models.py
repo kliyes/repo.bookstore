@@ -174,7 +174,7 @@ class Cart(models.Model):
     def addBook(self, book):
         '''向购物车中添加书籍'''
         self.books.add(book)
-        book.bought_count -= 1
+        book.stock -= 1
         book.save()
         return True
         
@@ -187,7 +187,7 @@ class Cart(models.Model):
     def removeBook(self, book):
         '''从购物车中移除书籍'''
         self.books.remove(book)
-        book.bought_count += 1
+        book.stock += 1
         book.save()
         return True
     
