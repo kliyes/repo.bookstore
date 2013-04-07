@@ -80,6 +80,7 @@ def makeOrder(request):
     order.addr = addr
     order.save()
     # 提交订单后清空购物车中书籍
+    profile.buyBooks(cart.getBooks())
     cart.removeBooks(cart.getBooks())
     
     return HttpResponse('Thanks!')

@@ -158,22 +158,22 @@ class Profile(ProfileBase):
     addr = models.CharField(max_length=200) # 送货地址
     #===============================================
     
-    attend_activities = models.ManyToManyField(
-        "activity.Activity", 
-        related_name="attendActivities", 
-        verbose_name=u"用户参加的活动列表"
-    )
-    
-    interested_activities = models.ManyToManyField(
-        "activity.Activity", 
-        related_name="interestedActivities", 
-        verbose_name=u"用户感兴趣的活动列表"
-    )
-    
-    agreed_comments = models.ManyToManyField(
-        "activity.Comment", related_name="agreedComments", 
-        verbose_name=u"用户赞成的评论列表"
-    )
+#    attend_activities = models.ManyToManyField(
+#        "activity.Activity", 
+#        related_name="attendActivities", 
+#        verbose_name=u"用户参加的活动列表"
+#    )
+#    
+#    interested_activities = models.ManyToManyField(
+#        "activity.Activity", 
+#        related_name="interestedActivities", 
+#        verbose_name=u"用户感兴趣的活动列表"
+#    )
+#    
+#    agreed_comments = models.ManyToManyField(
+#        "activity.Comment", related_name="agreedComments", 
+#        verbose_name=u"用户赞成的评论列表"
+#    )
     
     tags = models.ManyToManyField(
         Tag, related_name="tags", 
@@ -208,6 +208,14 @@ class Profile(ProfileBase):
     
     #===============================================
     #code in bookstore
+    def buyBooks(self, books):
+        '''购买图书'''
+        for book in books:
+            self.bought_books.add(book)
+            book.bought_count += 1
+            book.save()
+        return True
+    
     def getBoughtBooks(self):
         '''获取所购买书籍'''
         return self.bought_books.all()
@@ -243,56 +251,56 @@ class Profile(ProfileBase):
     def getAgreedComments(self):
         return self.agreed_comments.all()
     
-    def getJoinedActivities(self):
-        return self.attend_activities.all()
+#    def getJoinedActivities(self):
+#        return self.attend_activities.all()
+#    
+#    def getLikedActivities(self):
+#        return self.interested_activities.all()
+#    
+#    def getPublishedActivities(self):
+#        from activity.models import Activity
+#        return Activity.objects.filter(publisher=self)
     
-    def getLikedActivities(self):
-        return self.interested_activities.all()
-    
-    def getPublishedActivities(self):
-        from activity.models import Activity
-        return Activity.objects.filter(publisher=self)
-    
-    def joinActivity(self, act):
-        '''参加活动'''
-        try:
-            self.attend_activities.add(act)
-            act.attendee_count += 1
-            act.save()
-            return True
-        except:
-            logger.warning("Profile %s joins into activity %s exception" % (self.id, act.id))
-            return False
-    
-    def quitActivity(self, act):
-        try:
-            self.attend_activities.remove(act)
-            act.attendee_count -= 1
-            act.save()
-            return True
-        except:
-            logger.warning("Profile %s quit activity %s exception" % (self.id, act.id))
-            return False
-        
-    def likeActivity(self, act):
-        try:
-            self.interested_activities.add(act)
-            act.like_count += 1
-            act.save()
-            return True
-        except:
-            logger.warning("Profile %s liking activity %s exception" % (self.id, act.id))
-            return False   
-        
-    def dislikeActivity(self, act):
-        try:
-            self.interested_activities.remove(act)
-            act.like_count -= 1
-            act.save()
-            return True
-        except:
-            logger.warning("Profile %s disliking activity %s exception" % (self.id, act.id))
-            return False       
+#    def joinActivity(self, act):
+#        '''参加活动'''
+#        try:
+#            self.attend_activities.add(act)
+#            act.attendee_count += 1
+#            act.save()
+#            return True
+#        except:
+#            logger.warning("Profile %s joins into activity %s exception" % (self.id, act.id))
+#            return False
+#    
+#    def quitActivity(self, act):
+#        try:
+#            self.attend_activities.remove(act)
+#            act.attendee_count -= 1
+#            act.save()
+#            return True
+#        except:
+#            logger.warning("Profile %s quit activity %s exception" % (self.id, act.id))
+#            return False
+#        
+#    def likeActivity(self, act):
+#        try:
+#            self.interested_activities.add(act)
+#            act.like_count += 1
+#            act.save()
+#            return True
+#        except:
+#            logger.warning("Profile %s liking activity %s exception" % (self.id, act.id))
+#            return False   
+#        
+#    def dislikeActivity(self, act):
+#        try:
+#            self.interested_activities.remove(act)
+#            act.like_count -= 1
+#            act.save()
+#            return True
+#        except:
+#            logger.warning("Profile %s disliking activity %s exception" % (self.id, act.id))
+#            return False       
         
     def agreeComment(self, cmt):
         try:
