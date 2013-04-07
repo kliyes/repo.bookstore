@@ -48,7 +48,7 @@ def _downloadImg(url, size="medium"):
     imgSave.close()
     return "books/%s/%s" % (size, os.path.basename(url))
 
-def regBooks(request):
+def regFromDouban(request):
     '''利用豆瓣API获取书籍信息加入数据库'''
     DOUBAN = "https://api.douban.com/v2/book/search?q="
     q = request.REQUEST.get('q', '')
@@ -86,6 +86,88 @@ def regBooks(request):
         book.save()
         
     return HttpResponse('success')
+
+
+def regBooks(request):
+    '''调用豆瓣API,根据图书isbn号获取图书信息'''
+    URL = 'https://api.douban.com/v2/book/isbn/'
+    if request.method != "POST":
+        return render_to_response('books/regbook.html', RequestContext(request))
+    
+    isbn = request.REQUEST.get('isbn', '')
+    if isbn != '':
+        req = urllib.urlopen(URL+str(isbn))
+        resp = req.read()
+        result = simplejson.loads(resp)
+        #author = Author()
+        author_name = result['author'][0]
+        author_desc = result['author_intro']
+        #author.save()
+        
+        #ook = Book()
+        book_name = result['title']
+        #book.author = author
+        book_price = result['price']
+        if not result['isbn13']:
+            book_isbn = result['isbn10']
+        else:
+            book_isbn = result['isbn13']
+        book_press = result['publisher']
+        book_desc = result['summary']
+        book_binding = result['binding']
+        book_pages = result['pages']
+        book_spic = _downloadImg(result['images']['small'], 'small')   
+        book_mpic = _downloadImg(result['images']['medium'], 'medium')   
+        book_lpic = _downloadImg(result['images']['large'], 'large')   
+        #book_stock = 140
+        book_publish_date = result['pubdate']
+        #book.save()
+        
+    ctx = {'authorName': author_name, 
+           'authorDesc': author_desc, 
+           'bookName': book_name, 
+           'bookPrice': book_price, 
+           'bookIsbn': book_isbn, 
+           'bookPress': book_press, 
+           'bookDesc': book_desc, 
+           'bookBinding': book_binding, 
+           'bookPages': book_pages, 
+           'bookSpic': book_spic, 
+           'bookMpic': book_mpic, 
+           'bookLpic': book_lpic, 
+           'bookPublishDate': book_publish_date}
+    return render_to_response('books/regbook.html', RequestContext(request, ctx))
+    
+def addBook(request):
+    if request.method != "POST":
+        raise Http404
+    
+    authorName = request.REQUEST.get('authorName', None)
+    authorDesc = request.REQUEST.get('authorDesc', None)
+    bookName = request.REQUEST.get('bookName', None)
+    bookPrice = request.REQUEST.get('bookPrice', None)
+    bookIsbn = request.REQUEST.get('bookIsbn', None)
+    bookPress = request.REQUEST.get('bookPress', None)
+    bookDesc = request.REQUEST.get('bookDesc', None)
+    bookBinding = request.REQUEST.get('bookBinding', None)
+    bookPages = request.REQUEST.get('bookPages', None)
+    bookSpic = request.REQUEST.get('bookSpic', None)
+    bookMpic = request.REQUEST.get('bookMpic', None)
+    bookLpic = request.REQUEST.get('bookLpic', None)
+    bookPublishDate = request.REQUEST.get('bookPublishDate', None)
+    stock = request.REQUEST.get('stock', None)
+    #category = request.REQUEST.get('category', None)
+    
+    author = Author(name=authorName, desc=authorDesc)
+    author.save()
+    
+    price = float(''.join([ item for item in bookPrice if item in '1234567890.' ]))
+    book = Book(name=bookName, author=author, price=price, isbn=bookIsbn, 
+                press=bookPress, desc=bookDesc, binding=bookBinding, 
+                pages=bookPages, spic=bookSpic, mpic=bookMpic, lpic=bookLpic, 
+                publish_date=bookPublishDate, stock=stock)
+    book.save()
+    return HttpResponseRedirect('/manage/reg_book/')
 
 @admin_required
 def getOnlines(request):

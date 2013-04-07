@@ -48,8 +48,9 @@ urlpatterns = patterns("",
     url(r"^us/feedback/$", "sites.views.submitFeedback", name="us_feedback"),
 #    url(r"^us/feedback/view$", "sites.views.viewFeedbacks", name="us_feedback_view"),
 #    url(r"^us/onlines/$", "sites.views.getOnlines", name="online_info"),
-    url(r"^addbooks/$", "sites.views.regBooks"),
-
+    url(r"^addbooks/$", "sites.views.regFromDouban"),
+    url(r"^manage/", include("sites.urls")),
+    
 #    url(r"^notices/", include("notification.urls")),
     
 )
