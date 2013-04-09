@@ -26,9 +26,21 @@ from sites.models import Feedback
 import logging
 import urllib
 import sys
-from books.models import Book, Author
+from books.models import Book, Author, Category
 import os
 log = logging.getLogger("mysite")
+
+letterCate = Category.objects.get(name='letter')   #文学
+novelCate = Category.objects.get(name='novel')     #小说
+artCate = Category.objects.get(name='art')         #艺术
+bioCate = Category.objects.get(name='bio')         #传记
+motiCate = Category.objects.get(name='moti')       #励志
+examCate = Category.objects.get(name='exam')       #应试
+txtbookCate = Category.objects.get(name='txtbook') #教材
+manageCate = Category.objects.get(name='manage')   #管理
+funCate = Category.objects.get(name='fun')         #娱乐
+techCate = Category.objects.get(name='tech')       #科技
+historyCate = Category.objects.get(name='history') #历史
 
 def _downloadImg(url, size="medium"):
     '''下载书籍图片 size: 图片尺寸'''
@@ -92,36 +104,50 @@ def regBooks(request):
     '''调用豆瓣API,根据图书isbn号获取图书信息'''
     URL = 'https://api.douban.com/v2/book/isbn/'
     if request.method != "POST":
-        return render_to_response('books/regbook.html', RequestContext(request))
+        return render_to_response('sites/regbook.html', RequestContext(request))
     
     isbn = request.REQUEST.get('isbn', '')
     if isbn != '':
-        req = urllib.urlopen(URL+str(isbn))
-        resp = req.read()
-        result = simplejson.loads(resp)
-        #author = Author()
-        author_name = result['author'][0]
-        author_desc = result['author_intro']
-        #author.save()
-        
-        #ook = Book()
-        book_name = result['title']
-        #book.author = author
-        book_price = result['price']
-        if not result['isbn13']:
-            book_isbn = result['isbn10']
-        else:
-            book_isbn = result['isbn13']
-        book_press = result['publisher']
-        book_desc = result['summary']
-        book_binding = result['binding']
-        book_pages = result['pages']
-        book_spic = _downloadImg(result['images']['small'], 'small')   
-        book_mpic = _downloadImg(result['images']['medium'], 'medium')   
-        book_lpic = _downloadImg(result['images']['large'], 'large')   
-        #book_stock = 140
-        book_publish_date = result['pubdate']
-        #book.save()
+        try:
+            book = Book.objects.get(isbn=isbn)
+            author_name = book.author.name
+            author_desc = book.author.desc
+            book_name = book.name
+            book_price = book.price
+            book_isbn = book.isbn
+            book_press = book.press
+            book_desc = book.desc
+            book_binding = book.binding
+            book_pages = book.pages
+            book_spic = book.spic
+            book_mpic = book.mpic
+            book_lpic = book.lpic
+            book_publish_date = book.publish_date
+            book_stock = book.stock
+            book_cate = book.category.name
+        except Book.DoesNotExist:
+            req = urllib.urlopen(URL+str(isbn))
+            resp = req.read()
+            result = simplejson.loads(resp)
+            author_name = result['author'][0]
+            author_desc = result['author_intro']
+            
+            book_name = result['title']
+            book_price = result['price']
+            if not result['isbn13']:
+                book_isbn = result['isbn10']
+            else:
+                book_isbn = result['isbn13']
+            book_press = result['publisher']
+            book_desc = result['summary']
+            book_binding = result['binding']
+            book_pages = result['pages']
+            book_spic = _downloadImg(result['images']['small'], 'small')   
+            book_mpic = _downloadImg(result['images']['medium'], 'medium')   
+            book_lpic = _downloadImg(result['images']['large'], 'large')   
+            book_publish_date = result['pubdate']
+            book_stock = 0
+            book_cate = letterCate.name
         
     ctx = {'authorName': author_name, 
            'authorDesc': author_desc, 
@@ -135,8 +161,10 @@ def regBooks(request):
            'bookSpic': book_spic, 
            'bookMpic': book_mpic, 
            'bookLpic': book_lpic, 
-           'bookPublishDate': book_publish_date}
-    return render_to_response('books/regbook.html', RequestContext(request, ctx))
+           'bookPublishDate': book_publish_date, 
+           'bookstock': book_stock, 
+           'bookcate': book_cate}
+    return render_to_response('sites/regbook.html', RequestContext(request, ctx))
     
 def addBook(request):
     if request.method != "POST":
@@ -156,18 +184,80 @@ def addBook(request):
     bookLpic = request.REQUEST.get('bookLpic', None)
     bookPublishDate = request.REQUEST.get('bookPublishDate', None)
     stock = request.REQUEST.get('stock', None)
-    #category = request.REQUEST.get('category', None)
+    category = request.REQUEST.get('category', None)
     
     author = Author(name=authorName, desc=authorDesc)
     author.save()
     
     price = float(''.join([ item for item in bookPrice if item in '1234567890.' ]))
-    book = Book(name=bookName, author=author, price=price, isbn=bookIsbn, 
-                press=bookPress, desc=bookDesc, binding=bookBinding, 
-                pages=bookPages, spic=bookSpic, mpic=bookMpic, lpic=bookLpic, 
-                publish_date=bookPublishDate, stock=stock)
+    try:
+        cate = Category.objects.get(name=category)
+    except Category.DoesNotExist:
+        raise Http404
+    try:
+        book = Book.objects.get(isbn=bookIsbn)
+    except Book.DoesNotExist:
+        book = Book()
+    book.name=bookName
+    book.author=author 
+    book.price=price
+    book.isbn=bookIsbn
+    book.press=bookPress
+    book.desc=bookDesc
+    book.binding=bookBinding
+    book.pages=bookPages
+    book.spic=bookSpic
+    book.mpic=bookMpic
+    book.lpic=bookLpic 
+    book.publish_date=bookPublishDate
+    book.stock=stock
+    book.category=cate
     book.save()
     return HttpResponseRedirect('/manage/reg_book/')
+
+def bookShow(request):
+    '''按ISBN书籍信息查询'''
+    if request.method != "POST":
+        return render_to_response('sites/showbook.html', RequestContext(request))
+    
+    isbn = request.REQUEST.get('isbn', None)
+    try:
+        book = Book.objects.get(isbn=isbn)
+    except Book.DoesNotExist:
+        return HttpResponseRedirect('/manage/reg_book/')
+    except Exception:
+        return HttpResponse('error')
+    return render_to_response('sites/showbook.html', 
+        RequestContext(request, {'book': book}))
+    
+
+def bookStat(request):
+    '''按分类统计书籍信息'''
+    letterCateCount = letterCate.getCount()
+    novelCateCount = novelCate.getCount()
+    artCateCount = artCate.getCount()
+    bioCateCount = bioCate.getCount()
+    motiCateCount = motiCate.getCount()
+    examCateCount = examCate.getCount()
+    txtbookCateCount = txtbookCate.getCount()
+    manageCateCount = manageCate.getCount()
+    funCateCount = funCate.getCount()
+    techCateCount = techCate.getCount()
+    historyCateCount = historyCate.getCount()
+    totalCount = letterCateCount+novelCateCount+artCateCount+bioCateCount+motiCateCount+examCateCount+txtbookCateCount+manageCateCount+funCateCount+techCateCount+historyCateCount
+    return render_to_response('sites/stat.html', RequestContext(request, 
+        {'letterCateCount': letterCateCount, 'letterPercent': str((letterCateCount/float(totalCount))*100)+'%', 
+         'novelCateCount': novelCateCount, 'novelPercent': str((novelCateCount/float(totalCount))*100)+'%', 
+         'artCateCount': artCateCount, 'artPercent': str((artCateCount/float(totalCount))*100)+'%', 
+         'bioCateCount': bioCateCount, 'bioPercent': str((bioCateCount/float(totalCount))*100)+'%', 
+         'motiCateCount': motiCateCount, 'motiPercent': str((motiCateCount/float(totalCount))*100)+'%', 
+         'examCateCount': examCateCount, 'examPercent': str((examCateCount/float(totalCount))*100)+'%', 
+         'txtbookCateCount': txtbookCateCount, 'txtbookPercent': str((txtbookCateCount/float(totalCount))*100)+'%', 
+         'manageCateCount': manageCateCount, 'managePercent': str((manageCateCount/float(totalCount))*100)+'%', 
+         'funCateCount': funCateCount, 'funPercent': str((funCateCount/float(totalCount))*100)+'%', 
+         'techCateCount': techCateCount, 'techPercent': str((techCateCount/float(totalCount))*100)+'%', 
+         'historyCateCount': historyCateCount, 'historyPercent': str((historyCateCount/float(totalCount))*100)+'%', }))
+    
 
 @admin_required
 def getOnlines(request):

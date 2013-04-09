@@ -1,0 +1,17 @@
+<html>
+	<body>
+		<form action="." method="post">
+			{% csrf_token %}
+			ISBN:<input type="text" id="isbn" name="isbn" />
+			<input type="submit" value="查询" />
+		</form>
+		<br />
+		<img src="{{ MEDIA_URL }}img/{{book.lpic}}" /><br />
+		书名：{{book.name}}<br />
+		作者：{{book.author.name}}<br />
+		定价：{{book.price}}<br />
+		出版：{{book.press}}<br />
+		分类：{{book.category.name}}<br />
+		库存：{{book.stock}}
+	</body>
+</html>

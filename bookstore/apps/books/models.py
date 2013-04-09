@@ -35,7 +35,6 @@ class Author(models.Model):
 class Category(models.Model):
     '''定义书籍分类模型'''
     name = models.CharField(max_length=20) # 名称
-    count = models.IntegerField() # 该分类下的书籍数量
     
     class Meta:
         db_table = 't_category'
@@ -44,6 +43,9 @@ class Category(models.Model):
         
     def __unicode__(self):
         return u"id:%s name:%s" % (self.id, self.name)
+    
+    def getCount(self):
+        return Book.objects.filter(category=self).count()
 
 
 class BookManager(models.Manager):
