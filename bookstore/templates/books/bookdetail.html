@@ -1,4 +1,8 @@
 <html>
+	<head>
+		<script src="{{STATIC_URL}}xizhi/js/jquery-1.8.2.min.js"></script>
+		<script src="{{STATIC_URL}}xizhi/js/secure.js"></script>
+	</head>
 	<body>
 		<img src="{{ MEDIA_URL }}img/{{book.lpic}}" /><br />
 		书名：{{book.name}}<br />
@@ -6,15 +10,106 @@
 		出版社：{{book.press}}<br />
 		ISBN：{{book.isbn}}<br />
 		定价：{{book.price}}元<br />
+		分类：{{book.category.label}}<br />
 		评分：{{book.getAverage}}分（共有{{book.getMarkersCount}}人打过分）<br />
 		共有{{book.bought_count}}人购买过这本书<br /><br /><br />
 		书籍简介：{{book.desc}}<br /><br />
 		作者简介：{{book.author.desc}}<br /><br /><br />
-		评论：<br />
-		{% for cmt in comments %}
-		{{cmt.owner.name}}于{{cmt.created_date|date:"Y-m-d H:i"}}评论到：{{cmt.content}}<br /><br />
-		{% endfor %}
+		{% if user.is_authenticated %}
+			关于这本书，您想说点什么：<textarea id="comment" name="comment" style="height: 150px;"> </textarea>
+			<input type="button" onclick="addComment({{book.id}})" value="发表" /><br />
+			{% if book in profile.getBoughtBooks %}
+				{% if profile in book.getMarkers %}
+					您已经买过了这本书，并且为它打了{{grade.value}}分
+				{% else %}
+					<div id="mark_grade">
+						您已经买过了这本书，来打个分吧：<input type="text" id="grade" name="grade" value="1" />
+						<input type="button" onclick="mark({{book.id}})" value="打分" />
+					</div>
+					<div id="marked" style="display:none;" >
+						感谢您的打分
+					</div>
+				{% endif %}
+			{% endif %}
+		{% else %}
+			您需要登录才能发表评论
+		{% endif %}
+		<br />
+		<h1>评论列表</h1>
+		<div id="commentsArea">
+			{% include "books/includes/commentlist.html" %}
+		</div>
 		<br /><br /><br />
 		<a href="{% url book_cart_add book.id %}"><input type="button" value="加入购物车" /></a>
+		
+		<script type="text/javascript">
+			//检查字符串是否为空 true表示为空 false表示不为空
+			function isNull(value){
+				if(trim(value)==""){
+					return true;
+				}else{
+					return false;
+				}
+			}
+			function trim(str){
+				return str.replace(/(^\s*)|(\s*$)/g,"");
+			}
+			
+			function mark(bookId){
+				var grade = $("#grade").val();
+				if(grade < 1){
+					alert("最低分为1分");
+					return;
+				}
+				
+				$.ajax({
+					url: "/books/mark_book/" + bookId,
+					data: {"grade": grade}, 
+					type: "post",
+					async: "true", 
+					success: function(data){
+						if(data.status=="success"){
+							$("#mark_grade").hide();
+							$("#marked").show();
+						}
+						else{
+							alert(data.status);
+						}
+					},
+					error: function(){
+						alert("error");
+					},
+					dataType: "json"
+				});
+			}
+			
+			function addComment(bookId){
+				var cmtContent = $("#comment").val();
+				if(isNull(cmtContent)){
+					alert("评论内容不能为空！");
+					return;
+				}
+				
+				$.ajax({
+					url: "/books/add_comment/" + bookId,
+					data: {"cmtContent": cmtContent}, 
+					type: "post",
+					async: "true",
+					success: function(data){
+						if(data.status=="success"){
+							$("#commentsArea").html(data.html);
+						}
+						else{
+							alert(data.status);
+						}
+					},
+					error: function(){
+						alert("error");
+					}, 
+					dataType: "json"
+				});
+				$("#comment").val('')
+			}
+		</script>
 	</body>
 </html>

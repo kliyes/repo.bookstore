@@ -1,5 +1,10 @@
 <html>
 	<body>
+		<form action="." method="post">
+			{% csrf_token %}
+			<input type="text" id="name" name="name" />
+			<input type="submit" value="搜书" />
+		</form>
 		{% if not books %}
 		查无此书
 		{% endif %}
@@ -9,7 +14,8 @@
 		作者：{{book.author.name}}<br />
 		出版社：{{book.press}}<br />
 		ISBN：{{book.isbn}}<br />
-		定价：{{book.price}}元<br /><br />
+		定价：{{book.price}}元<br />
+		分类：{{book.category.label}}<br /><br />
 		{% endfor %}
 	</body>
 </html>

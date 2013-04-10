@@ -34,7 +34,8 @@ class Author(models.Model):
 
 class Category(models.Model):
     '''定义书籍分类模型'''
-    name = models.CharField(max_length=20) # 名称
+    name = models.CharField(max_length=20)  # 名称
+    label = models.CharField(max_length=20) # 显示的名称
     
     class Meta:
         db_table = 't_category'
@@ -69,7 +70,7 @@ class Book(models.Model):
     category = models.ForeignKey(Category, null=True, blank=True) # 类别
     stock = models.IntegerField() # 库存
     publish_date = models.CharField(max_length=50) # 出版日期
-    reg_date = models.DateTimeField(default=datetime.datetime.now()) # 上架时间
+    reg_date = models.DateTimeField(default=datetime.datetime.now) # 上架时间
     
     objects = BookManager()
     
@@ -84,6 +85,16 @@ class Book(models.Model):
     def getComments(self):
         '''获得该书的所有评论'''
         return BookComment.objects.filter(book=self).order_by('-created_date')
+    
+    def getMarkedGrade(self, profile):
+        '''获取某用户为本书的打分'''
+        if profile in self.getMarkers():
+            try:
+                grade = Grade.objects.get(marker=profile, book=self)
+            except Grade.DoesNotExist:
+                return False
+            return grade
+        return False
     
     def getMarkers(self):
         '''获取打分用户'''
@@ -117,7 +128,7 @@ class Grade(models.Model):
     marker = models.ForeignKey("profiles.Profile") # 打分用户
     book = models.ForeignKey(Book) # 打分书籍
     value = models.SmallIntegerField(default=5) # 用户对书籍打分的分值, 满分5分, 最少1分
-    mark_date = models.DateTimeField(default=datetime.datetime.now()) # 打分时间
+    mark_date = models.DateTimeField(default=datetime.datetime.now) # 打分时间
     
     class Meta:
         db_table = 't_grade'
@@ -133,7 +144,7 @@ class BookComment(models.Model):
     owner = models.ForeignKey("profiles.Profile") # 评论发表者
     book = models.ForeignKey(Book) # 所评论的书籍
     content = models.CharField(max_length=1000) # 评论内容
-    created_date = models.DateTimeField(default=datetime.datetime.now()) # 评论时间
+    created_date = models.DateTimeField(default=datetime.datetime.now) # 评论时间
     
     class Meta:
         db_table = 't_bookcomment'
@@ -216,9 +227,14 @@ class Order(models.Model):
     is_charged = models.BooleanField(default=False) # 是否付款
     charge_type = models.SmallIntegerField(default=1) # 付款方式, 1-货到付款 2-在线支付
     status = models.SmallIntegerField(default=2) # 订单状态, 1-完成交易 0-取消 2-等待发货 3-等待收货
-    cart = models.ForeignKey(Cart) # 订单对应的购物车, 物品清单只能在购物车中进行修改(+, -)
     addr = models.CharField(max_length=200) # 送货地址
-    created_date = models.DateTimeField(default=datetime.datetime.now()) # 订单生成时间
+    created_date = models.DateTimeField(default=datetime.datetime.now) # 订单生成时间
+    updated_date = models.DateTimeField(default=datetime.datetime.now) # 订单更新时间
+    
+    books = models.ManyToManyField(
+        "books.Book", related_name="order_books", 
+        verbose_name=u"订单中的书目"
+    )
     
     objects = OrderManager()
     
@@ -235,4 +251,12 @@ class Order(models.Model):
         self.save()
         return True
     
+    def addBooks(self, books):
+        for book in books:
+            self.books.add(book)
+        return True
+        
+    def getBooks(self):
+        '''获取购物车中书籍列表'''
+        return self.books.all()
     

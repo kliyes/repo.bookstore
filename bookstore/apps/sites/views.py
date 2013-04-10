@@ -26,8 +26,9 @@ from sites.models import Feedback
 import logging
 import urllib
 import sys
-from books.models import Book, Author, Category
+from books.models import Book, Author, Category, Order
 import os
+import datetime
 log = logging.getLogger("mysite")
 
 letterCate = Category.objects.get(name='letter')   #文学
@@ -71,32 +72,35 @@ def regFromDouban(request):
     resp = req.read()
     result = simplejson.loads(resp)
     books = result['books']
-    booksCount = len(books)
-    for i in range(booksCount):
+    for i in range(len(books)):
         author = Author()
         author.name = books[i]['author'][0]
         author.desc = books[i]['author_intro']
         author.save()
         
-        book = Book()
-        book.name = books[i]['title']
-        book.author = author
-        book.price = float(''.join([ item for item in books[i]['price'] if item in '1234567890.' ]))
-        if not books[i]['isbn13']:
-            book.isbn = books[i]['isbn10']
-        else:
-            book.isbn = books[i]['isbn13']
-        book.press = books[i]['publisher']
-        book.desc = books[i]['summary']
-        book.binding = books[i]['binding']
-        book.pages = books[i]['pages']
-        book.spic = _downloadImg(books[i]['images']['small'], 'small')   
-        book.mpic = _downloadImg(books[i]['images']['medium'], 'medium')   
-        book.lpic = _downloadImg(books[i]['images']['large'], 'large')   
-        book.stock = 140
-        book.publish_date = books[i]['pubdate']
-        book.save()
-        
+        try:
+            book = Book.objects.get(isbn=books[i]['isbn13'])
+        except Book.DoesNotExist:
+            book = Book()
+            book.name = books[i]['title']
+            book.author = author
+            book.price = float(''.join([ item for item in books[i]['price'] if item in '1234567890.' ]))
+            if not books[i]['isbn13']:
+                book.isbn = books[i]['isbn10']
+            else:
+                book.isbn = books[i]['isbn13']
+            book.press = books[i]['publisher']
+            book.desc = books[i]['summary']
+            book.binding = books[i]['binding']
+            book.pages = books[i]['pages']
+            book.spic = _downloadImg(books[i]['images']['small'], 'small')   
+            book.mpic = _downloadImg(books[i]['images']['medium'], 'medium')   
+            book.lpic = _downloadImg(books[i]['images']['large'], 'large')   
+            book.stock = 140
+            book.publish_date = books[i]['pubdate']
+            book.category = letterCate
+            book.save()
+            
     return HttpResponse('success')
 
 
@@ -124,7 +128,7 @@ def regBooks(request):
             book_lpic = book.lpic
             book_publish_date = book.publish_date
             book_stock = book.stock
-            book_cate = book.category.name
+            book_cate = book.category.label
         except Book.DoesNotExist:
             req = urllib.urlopen(URL+str(isbn))
             resp = req.read()
@@ -147,7 +151,7 @@ def regBooks(request):
             book_lpic = _downloadImg(result['images']['large'], 'large')   
             book_publish_date = result['pubdate']
             book_stock = 0
-            book_cate = letterCate.name
+            book_cate = letterCate.label
         
     ctx = {'authorName': author_name, 
            'authorDesc': author_desc, 
@@ -191,7 +195,7 @@ def addBook(request):
     
     price = float(''.join([ item for item in bookPrice if item in '1234567890.' ]))
     try:
-        cate = Category.objects.get(name=category)
+        cate = Category.objects.get(label=category)
     except Category.DoesNotExist:
         raise Http404
     try:
@@ -257,7 +261,35 @@ def bookStat(request):
          'funCateCount': funCateCount, 'funPercent': str((funCateCount/float(totalCount))*100)+'%', 
          'techCateCount': techCateCount, 'techPercent': str((techCateCount/float(totalCount))*100)+'%', 
          'historyCateCount': historyCateCount, 'historyPercent': str((historyCateCount/float(totalCount))*100)+'%', }))
+
+
+def _getOrderById(orderId):
+    '''按订单Id获取订单'''
+    try:
+        order = Order.objects.get(id=orderId)
+    except Order.DoesNotExist:
+        return False
+    return order
+   
+def updateOrders(request):
+    '''更新订单'''
+    if request.method != "POST":
+        return render_to_response('sites/update_orders.html', RequestContext(request, 
+            {'orders1': Order.objects.filter(status=1), 
+             'orders2': Order.objects.filter(status=2), 
+             'orders3': Order.objects.filter(status=3), 
+             'orders0': Order.objects.filter(status=0)}))
     
+    status = request.REQUEST.get('status', '')
+    orderIds = request.REQUEST.get('orderIds', '').split() # 多个id用空格分开
+    
+    for orderId in orderIds:
+        order = _getOrderById(int(orderId))
+        order.status = int(status)
+        order.updated_date = datetime.datetime.now()
+        order.save()
+    
+    return HttpResponseRedirect('/manage/update_orders/')
 
 @admin_required
 def getOnlines(request):

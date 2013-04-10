@@ -6,15 +6,22 @@
 #
 # This file is part of lershare.com.
 #
-from books.models import Book, Cart, Order
+from books.models import Book, Cart, Order, BookComment, Grade
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.contrib.auth.decorators import login_required
+from django.template.loader import get_template
+import json
+import datetime
 
 '''
 File feature description here
 '''
 def getBooksByName(request):
+    if request.method != "POST":
+        return render_to_response('books/bookset.html', RequestContext(request))
+    
     name = request.REQUEST.get('name', '')
     books = Book.objects.filter(name__icontains=name)
     
@@ -37,10 +44,14 @@ def bookDetail(request, bookId):
         return HttpResponse(u'查无此书')
     
     comments = book.getComments()
+    grade = 1
+    if request.user.is_authenticated():
+        grade = book.getMarkedGrade(request.user.get_profile())
     
     return render_to_response('books/bookdetail.html', RequestContext(request, 
-        {'book': book, 'comments': comments}))
-
+        {'book': book, 'comments': comments, 'grade': grade}))
+    
+@login_required
 def addToCart(request, bookId):
     '''加入购物车'''
     book = _getBookById(bookId)
@@ -76,16 +87,49 @@ def makeOrder(request):
     order = Order()
     order.owner = profile
     order.total_fee = cart.getTotalFee()
-    order.cart = cart
     order.addr = addr
     order.save()
+    order.addBooks(cart.getBooks())
     # 提交订单后清空购物车中书籍
     profile.buyBooks(cart.getBooks())
     cart.removeBooks(cart.getBooks())
     
     return HttpResponse('Thanks!')
       
+def addComment(request, bookId):
+    '''添加书籍评论,ajax request only'''
+    if not request.is_ajax():
+        raise Http404
     
+    cmtContent = request.REQUEST.get('cmtContent', '')
+    profile = request.user.get_profile()
+    book = _getBookById(bookId)
+    cmt = BookComment(owner=profile, book=book, content=cmtContent)
+    cmt.save()
     
+    cmts = book.getComments()
+    t = get_template('books/includes/commentlist.html')
+    return HttpResponse(json.dumps({'status': 'success', 
+        'html': t.render(RequestContext(request, {'comments': cmts}))}))
+
+def markBook(request, bookId):
+    '''为书籍打分,ajax request only'''
+    if not request.is_ajax():
+        raise Http404
+    try:
+        grade = request.REQUEST.get('grade', '')
+        print grade
+        profile = request.user.get_profile()
+        book = _getBookById(bookId)
+        bookGrade = Grade(marker=profile, book=book, value=int(grade))
+        bookGrade.save()
+    except Exception, e:
+        print e
+        return HttpResponse(json.dumps({'status': 'failed'}))
     
+    return HttpResponse(json.dumps({'status': 'success'}))
+
+
+
+
     

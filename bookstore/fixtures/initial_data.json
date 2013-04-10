@@ -5,6 +5,18 @@
     {"pk": 4, "model": "sites.site", "fields": {"domain": "192.168.1.100:8000","name": "100"}},
     {"pk": 9, "model": "sites.site", "fields": {"domain": "localhost:8000","name": "localhost:8000"}},
     
+    {"pk": 1, "model": "books.category", "fields": {"name": "letter","label": "文学"}},
+    {"pk": 2, "model": "books.category", "fields": {"name": "novel","label": "小说"}},
+    {"pk": 3, "model": "books.category", "fields": {"name": "art","label": "艺术"}},
+    {"pk": 4, "model": "books.category", "fields": {"name": "bio","label": "传记"}},
+    {"pk": 5, "model": "books.category", "fields": {"name": "moti","label": "励志"}},
+    {"pk": 6, "model": "books.category", "fields": {"name": "exam","label": "应试"}},
+    {"pk": 7, "model": "books.category", "fields": {"name": "txtbook","label": "教材"}},
+    {"pk": 8, "model": "books.category", "fields": {"name": "manage","label": "管理"}},
+    {"pk": 9, "model": "books.category", "fields": {"name": "fun","label": "娱乐"}},
+    {"pk": 10, "model": "books.category", "fields": {"name": "tech","label": "科技"}},
+    {"pk": 11, "model": "books.category", "fields": {"name": "history","label": "历史"}},
+    
     {"pk":1, "model": "profiles.province", "fields": {"name": "四川", "desc": "天府之国"}},
     {"pk":2, "model": "profiles.province", "fields": {"name": "云南", "desc": "彩云之南"}},
     {"pk":3, "model": "profiles.province", "fields": {"name": "北京", "desc": "首都"}},

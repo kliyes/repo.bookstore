@@ -115,10 +115,11 @@ def setProfile(request, **kwargs):
         
         if draftProfile:
             request.session["draftProfile"] = None
-        
+            
     return render_to_response(template, 
         RequestContext(request, {"form": form, 
-            "cities": City.objects.getAll(),   #TODO 单独提取出作一个请求
+            "cities": City.objects.getAll(),
+            "orders": request.user.get_profile().getOrders() #TODO 单独提取出作一个请求
         }))  
 
 def changeCity(request, cityId):
@@ -269,10 +270,3 @@ def setPic(request, template=settings.TEMPLATE_SETTINGS):
     return HttpResponseRedirect(reverse("profiles_setpic"))
     
 
-      
-        
-        
-        
-        
-        
-        
