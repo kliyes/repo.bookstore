@@ -1,5 +1,9 @@
 <html>
+	<head>
+		<script src="{{STATIC_URL}}xizhi/js/jquery-1.8.2.min.js"></script>
+	</head>
 	<body>
+		{% if cart.getBooks %}
 		<form action="." method="post">
 			{% csrf_token %}
 			以下是您选购的书籍：<br />
@@ -8,9 +12,24 @@
 				《{{book.name}}》&nbsp;&nbsp;
 				 {{book.price}}元<br /><br />
 			{% endfor %}
-			送货地址：<input type="text" name="addr" id="addr" /><br />
+			送货地址：<input type="text" name="addr" id="addr" value="{{profile.addr}}"/><br />
+			联系方式：<input type="text" name="contact" id="contact" value="{{profile.contact}}"/>
+			<input type="checkbox" id="default" name="default" value="0" onclick="doCheck()"/>保存为默认收货方式<br />
 			总计：{{cart.getTotalFee}}元
 			<input type="submit" value="提交" />
 		</form>
+		
+		<script type="text/javascript">
+			function doCheck(){
+				if($("#default").is(':checked')){
+					$("#default").val("1");
+				}else{
+					$("#default").val("0");
+				}
+			}
+		</script>
+		{% else %}
+			您还没有选择书籍呢！
+		{% endif %}
 	</body>
 </html>

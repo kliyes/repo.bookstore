@@ -53,7 +53,10 @@ def bookDetail(request, bookId):
     
 @login_required
 def addToCart(request, bookId):
-    '''加入购物车'''
+    '''加入购物车, ajax request only'''
+    if not request.is_ajax:
+        raise Http404
+    
     book = _getBookById(bookId)
     if not book:
         return HttpResponse(u'查无此书')
@@ -61,11 +64,13 @@ def addToCart(request, bookId):
     profile = request.user.get_profile()
     cart = Cart.objects.get(owner=profile)
     if not cart.addBook(book):
-        return HttpResponse(u'操作失败')
+        return HttpResponse(json.dumps({'status': 'failed'}))
     
-    return render_to_response('books/booklist.html', RequestContext(request, 
-        {'book': book}))
-    
+    return HttpResponse(json.dumps({'status': 'success'}))
+
+def delFromCart(request, bookId):
+    '''从购物车中移除书籍, ajax request only'''
+
 def checkCart(request):
     '''查看购物车'''
     profile = request.user.get_profile()
@@ -84,10 +89,17 @@ def makeOrder(request):
             {'cart': cart}))
         
     addr = request.REQUEST.get('addr', None)
+    contact = request.REQUEST.get('contact', None)
+    makeDefault = request.REQUEST.get('default', '0')
+    if int(makeDefault):
+        profile.addr = addr
+        profile.contact = contact
+        profile.save()
     order = Order()
     order.owner = profile
     order.total_fee = cart.getTotalFee()
     order.addr = addr
+    order.contact = contact
     order.save()
     order.addBooks(cart.getBooks())
     # 提交订单后清空购物车中书籍
