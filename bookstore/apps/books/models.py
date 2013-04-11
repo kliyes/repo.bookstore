@@ -228,6 +228,7 @@ class Order(models.Model):
     charge_type = models.SmallIntegerField(default=1) # 付款方式, 1-货到付款 2-在线支付
     status = models.SmallIntegerField(default=2) # 订单状态, 1-完成交易 0-取消 2-等待发货 3-等待收货
     addr = models.CharField(max_length=200) # 送货地址
+    contact = models.CharField(max_length=20) # 联系方式
     created_date = models.DateTimeField(default=datetime.datetime.now) # 订单生成时间
     updated_date = models.DateTimeField(default=datetime.datetime.now) # 订单更新时间
     
