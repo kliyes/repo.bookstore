@@ -44,13 +44,16 @@ def bookDetail(request, bookId):
     if not book:
         return HttpResponse(u'查无此书')
     
+    profile = request.user.get_profile()
+    cart = Cart.objects.get(owner=profile)
+    
     comments = book.getComments()
     grade = 1
     if request.user.is_authenticated():
         grade = book.getMarkedGrade(request.user.get_profile())
     
     return render_to_response('books/bookdetail.html', RequestContext(request, 
-        {'book': book, 'comments': comments, 'grade': grade}))
+        {'book': book, 'comments': comments, 'grade': grade, 'cart': cart}))
     
 @login_required
 def addToCart(request, bookId):
@@ -71,7 +74,22 @@ def addToCart(request, bookId):
 
 def delFromCart(request, bookId):
     '''从购物车中移除书籍, ajax request only'''
-    pass
+    if not request.is_ajax:
+        raise Http404
+    
+    book = _getBookById(bookId)
+    if not book:
+        return HttpResponse(u'查无此书')
+    
+    profile = request.user.get_profile()
+    cart = Cart.objects.get(owner=profile)
+    if not cart.removeBook(book):
+        return HttpResponse(json.dumps({'status': 'failed'}))
+    
+    t = get_template('books/includes/booklist.html')
+    html = t.render(RequestContext(request, {'cart': cart}))
+    
+    return HttpResponse(json.dumps({'status': 'success', 'html': html}))
 
 def checkCart(request):
     '''查看购物车'''
@@ -86,14 +104,14 @@ def makeOrder(request):
     profile = request.user.get_profile()
     cart = Cart.objects.get(owner=profile)
     
-    if request.method != 'POST': # 'POST'必须大写！ 
+    if request.method != 'POST' or not cart.getBooks(): # 'POST'必须大写！ 
         return render_to_response('books/bookorder.html', RequestContext(request, 
             {'cart': cart}))
         
     addr = request.REQUEST.get('addr', None)
     contact = request.REQUEST.get('contact', None)
-    makeDefault = request.REQUEST.get('default', '0')
-    if int(makeDefault):
+    makeDefault = request.REQUEST.get('default', None)
+    if makeDefault == 'on':
         profile.addr = addr
         profile.contact = contact
         profile.save()
