@@ -2,5 +2,4 @@
 *.pyc
 *.project
 *.pydevproject
-
-/bookstore/local_settings.py
+local_settings.py
