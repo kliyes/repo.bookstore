@@ -2,3 +2,5 @@
 *.pyc
 *.project
 *.pydevproject
+
+/bookstore/local_settings.py
