@@ -377,6 +377,6 @@ TEMPLATE_TEST = "tests/login.html"
 try:
     #from log_config import *
     from template_settings import *
-    #from local_settings import *      
+    from local_settings import *      
 except ImportError:
     pass
