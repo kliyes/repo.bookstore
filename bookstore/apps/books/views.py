@@ -70,6 +70,7 @@ def addToCart(request, bookId):
 
 def delFromCart(request, bookId):
     '''从购物车中移除书籍, ajax request only'''
+    pass
 
 def checkCart(request):
     '''查看购物车'''
