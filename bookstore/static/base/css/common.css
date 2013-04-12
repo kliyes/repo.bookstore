@@ -1,0 +1,127 @@
+/*!
+ * Book Store v1.0
+ *
+ * Copyright 2013 YANG.LYU, Inc
+ * http:www.yanduren.com
+ *
+ * NOTICE!! DO NOT USE ANY OF THIS CODE
+ * IT'S ALL JUST JUNK FOR OUR ITEM!
+ * 
+ */
+
+/* font color */
+.f-red{
+	color:#C03;
+	font-size:14px;
+}
+.f-gray{
+	color:#CCC;
+	font-size:13px;
+}
+.f-black{
+	color:#333;
+	font-size:13px;
+}
+
+.mbtn{
+	width:90px;
+	height:30px;
+	background-color:#cccccc;
+	border:0px;
+	margin:1px;
+	cursor:pointer;
+}
+
+/* 提示 */
+.mbtn-info{
+	background-color:#008287;	
+}
+/* 错误 */
+.mbtn-danger{
+	background-color:#b91d47;	
+}
+/* 成功 */
+.mbtn-success{
+	background-color:#2d89ef;
+}
+
+/* 翻页按钮 */
+.mbtn-page{
+	background-color:#333;
+	color:#CCC;
+	width:30px;
+	height:30px;
+}
+.mbtn-page-active{
+	background-color:#CCC;
+	color:#333;
+}
+
+/* 搜索按钮 */
+.search-btn > .search-inp{
+	width:200px;
+	height:28px;
+	margin:1px;
+	margin-right:-1px;
+	border:1px solid #cccccc;
+}
+
+/* box */
+.box{
+	width:150px;
+	height:50px;
+	border:0px;
+	float:left;
+}
+.box-large{
+	width:300px;
+	height:150px;
+	margin-right:15px;
+	background-color:#333333;
+}
+.box-medium{
+	width:80px;
+	height:80px;
+	background-color:#CCC;
+}
+.box-big{
+	width:180px;
+	height:180px;
+	background-color:#333;
+}
+.box-small{
+	width:30px;
+	height:30px;
+	background-color:#000;
+}
+.box-next{
+	width:50px;
+	height:50px;
+	float:right;
+	background-image:url(/static/base/img/open.png);
+	background-repeat:no-repeat;
+	cursor:pointer;
+}
+.box-next-close{
+	width:50px;
+	height:50px;
+	float:right;
+	background-image:url(/static/base/img/close.png);
+	background-repeat:no-repeat;
+	cursor:pointer;
+}
+.box-like{
+	background-color:none;
+	color:#F00;
+	width:30px;
+	height:20px;
+	position:relative;
+	top:15px;
+	left:-7px;
+}
+.lfloat{
+	float:left;
+}
+.rfloat{
+	float:right;
+}

@@ -1,0 +1,178 @@
+/*!
+ * Book Store v1.0
+ *
+ * Copyright 2013 YANG.LYU, Inc
+ * http:www.yanduren.com
+ *
+ * NOTICE!! DO NOT USE ANY OF THIS CODE
+ * IT'S ALL JUST JUNK FOR OUR ITEM!
+ * 
+ */
+
+.booktype-top{
+	height:170px;
+}
+.booktype-other{
+	height:170px;
+	display:none;
+}
+.booktype-img{
+	margin:10px 10px 0px 10px;
+}
+.booktype-img img{
+	width:auto;
+	height:auto;	
+}
+.booktype-title{
+	display:block;
+	text-decoration: none;
+	font-size:30px;
+	margin:10px 0px 10px 0px;
+	color:#FFF;
+}
+.booktype-desc{
+	font-size:15px;
+	color:#FFF;
+}
+.booktype-books{
+	clear:both;
+	margin:15px 0px 0px 10px;
+}
+.booktype-books div{
+	margin-right:10px;
+}
+.main .box-next{
+	position:relative;
+	top:100px;
+}
+
+
+/** 推荐
+=========================**/
+.books-recommend > div{
+	float:left;
+	width:500px;
+	height:520px;
+}
+.books-recommend-p{
+	font-size:50px;
+	font-weight:800;
+}
+.books-recommend-ul{
+	width:450px;
+	height:80px;
+	padding-left:10px;
+	padding-top:15px;
+	padding-bottom:15px;
+	cursor: pointer;
+}
+.active{
+	background-color:#09F;
+}
+.books-recommend-ul div{
+	float:left;
+}
+.books-recommend-simple{
+	width:300px;
+	height:75px;
+	padding-left:20px;
+	padding-top:5px;
+}
+.books-recommend-simple .title{
+	font-size:14px;
+	font-weight:500;
+	color:#000;
+	text-decoration:none;
+}
+.books-recommend-simple ul li{
+	padding:2px;
+	list-style:none;
+}
+.books-recommend-simple .author{
+	font-size:12px;
+	color:#CCC;
+}
+.books-recommend-simple .desc{
+	width:98%;
+	height:30px;
+	overflow:hidden;
+}
+
+.books-recommend-info .box{
+	float:left;
+}
+.books-recommend-info .books-recommend-detail{
+	float:left;
+}
+.books-recommend-detail{
+	position:relative;
+	left:20px;
+}
+.books-recommend-detail .title{
+	display:block;
+	font-size:25px;
+	text-decoration:none;
+	color:#000;
+	padding-bottom:2px;
+	font-weight:900;
+}
+.books-recommend-detail .author{
+	color:#000;
+	font-size:14px;
+	font-weight:500;
+}
+.books-recommend-detail .evaluate{
+	position:relative;
+	top:15px;
+}
+.books-recommend-info .desc{
+	clear:both;
+	height:320px;
+	overflow:hidden;
+}
+.books-recommend-info .desc pre{
+	margin-top:15px;
+	font-size:13px;
+}
+
+/** 所有书籍
+=====================**/
+.books-all{
+	width:100%;
+}
+.books-all .bt{
+	font-size:50px;
+	font-weight:800;
+}
+.books-all .info{
+	margin-top:15px;
+	width:50%;
+	height:80px;
+	float:left;
+}
+.books-all .info .poster,.books-all .info .books-info{
+	float:left;
+}
+.books-all .info .books-info ul{
+	padding-top:5px;
+	padding-left:30px;
+}
+.books-all .info .books-info ul li{
+	list-style:none;
+}
+.books-all .info .books-info ul li .title{
+	font-size:14px;
+	text-decoration:none;
+	color:#000;
+}
+.books-all .info .books-info ul li .author{
+	font-size:12px;
+	color:#999;
+}
+.books-all .info .books-info ul li .desc{
+	position:relative;
+	top:5px;
+	width:350px;
+	height:30px;
+	overflow:hidden;
+}
