@@ -1,0 +1,48 @@
+<!--
+ * Book Store v1.0
+ *
+ * Copyright 2013 YANG.LYU, Inc
+ * http:www.yanduren.com
+ *
+ * NOTICE!! DO NOT USE ANY OF THIS CODE
+ * IT'S ALL JUST JUNK FOR OUR ITEM!
+ * 
+ *-->
+<!DOCTYPE>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- Other Page Single Title Name
+	==============-->
+<title>{% block page_title %}{% endblock %}</title>
+<!-- Other Page Single Javascript File
+	==============-->
+{% block single_js %}{% endblock %}
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}base/css/base.css" />
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}base/css/header.css" />
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}base/css/footer.css" />
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}base/css/common.css" />
+<!-- Other Page Single Style File
+===============-->
+{% block style_css %}{% endblock %}
+</head>
+
+<body class="container">
+<!-- HEADER
+	==============-->
+{% block header_base %}
+		{% block header %} {% include "base/header.html" %} {% endblock %}
+{% endblock %}
+<!-- BODY
+	==============-->
+{% block body_base %}
+		
+{% endblock %}
+<!-- FOOTER
+	==============-->
+{% block footer_base %}
+		{% block footer %} {% include "base/footer.html" %} {% endblock %}
+{% endblock %}
+</body>
+
+</html>

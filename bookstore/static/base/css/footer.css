@@ -1,0 +1,39 @@
+/*!
+ * Book Store v1.0
+ *
+ * Copyright 2013 YANG.LYU, Inc
+ * http:www.yanduren.com
+ *
+ * NOTICE!! DO NOT USE ANY OF THIS CODE
+ * IT'S ALL JUST JUNK FOR OUR ITEM!
+ * 
+ */
+
+.footer .center{
+	width:690px;
+	height:200px;
+	margin:0px auto;
+}
+.footer .center .part{
+	width:140px;
+	height:150px;
+	float:left;
+	margin-right:85px;
+	border-right:1px solid #999;
+	position:relative;
+	top:30px;
+	color:#FFF;
+}
+.footer .center .part p{
+	font-size:25px;
+	font-weight:900;
+}
+.footer .center .part ul{
+	position:relative;
+	top:10px;
+}
+.footer .center .part ul li{
+	list-style:none;
+	line-height:30px;
+	color:#CCC;	
+}

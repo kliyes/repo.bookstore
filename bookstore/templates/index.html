@@ -1,10 +1,600 @@
-{% extends "base/theme_base.html" %}
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}/base/css/main.css" />
 
-{% block title %} Kliyes {% endblock %}
+<body class="container">
+	<div class="header">
+    	<div class="logo">
+        	<img src="">
+        </div>
+        <div class="search">
+        	<div class="search-btn">
+            	<input type="text" class="search-inp" placeholder="Search" value="" /><input type="button" value="搜 索" class="mbtn mbtn-info" />
+            </div>
+            <div class="search-hot">
+            	<label class="f-red">热门搜索:</label>
+                <label class="f-black">三国演义</label>
+                <label class="f-black">水浒传</label>
+                <label class="f-black">离离原上草</label>
+                <label class="f-black">只是嫌水少</label>
+            </div>
+        </div>
+        <div class="userinfo">
+        	<input type="button" class="mbtn mbtn-info" value="登 录" />
+        	<input type="button" class="mbtn" value="注 册" />
+        </div>
+    </div>
+    
+    <div class="separate"></div>
+    
+    <div class="main">
+    	
+        <div class="booktype-top">
+            <div class="box box-large">
+                <div class="box box-medium booktype-img">
+                    <img src="#" />
+                </div>
+                <div class="booktype-info">
+                    <h1 class="booktype-title">科普</h1>
+                    <label class="booktype-desc">我是科普类的书籍，你自己看着办！！！</label>
+                </div>
+                <div class="booktype-books">
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-like rfloat">
+                        999999
+                    </div>
+                    <div class="box box-small rfloat">
+                        <img src="static/img/like.png" />
+                    </div>
+                </div>
+            </div>
+            
+            <div class="box box-large">
+                <div class="box box-medium booktype-img">
+                    <img src="#" />
+                </div>
+                <div class="booktype-info">
+                    <h1 class="booktype-title">科普</h1>
+                    <label class="booktype-desc">我是科普类的书籍，你自己看着办！！！</label>
+                </div>
+                <div class="booktype-books">
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-like rfloat">
+                        999999
+                    </div>
+                    <div class="box box-small rfloat">
+                        <img src="static/img/like.png" />
+                    </div>
+                </div>
+            </div>
+            
+            <div class="box box-large">
+                <div class="box box-medium booktype-img">
+                    <img src="#" />
+                </div>
+                <div class="booktype-info">
+                    <h1 class="booktype-title">科普</h1>
+                    <label class="booktype-desc">我是科普类的书籍，你自己看着办！！！</label>
+                </div>
+                <div class="booktype-books">
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-like rfloat">
+                        999999
+                    </div>
+                    <div class="box box-small rfloat">
+                        <img src="static/img/like.png" />
+                    </div>
+                </div>
+            </div>
+			<div class="box box-next"></div>
+        </div>
+        
+        <div class="booktype-other">
+            <div class="box box-large">
+                <div class="box box-medium booktype-img">
+                    <img src="#" />
+                </div>
+                <div class="booktype-info">
+                    <h1 class="booktype-title">科普</h1>
+                    <label class="booktype-desc">我是科普类的书籍，你自己看着办！！！</label>
+                </div>
+                <div class="booktype-books">
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-like rfloat">
+                        999999
+                    </div>
+                    <div class="box box-small rfloat">
+                        <img src="static/img/like.png" />
+                    </div>
+                </div>
+            </div>
+            
+            <div class="box box-large">
+                <div class="box box-medium booktype-img">
+                    <img src="#" />
+                </div>
+                <div class="booktype-info">
+                    <h1 class="booktype-title">科普</h1>
+                    <label class="booktype-desc">我是科普类的书籍，你自己看着办！！！</label>
+                </div>
+                <div class="booktype-books">
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-like rfloat">
+                        999999
+                    </div>
+                    <div class="box box-small rfloat">
+                        <img src="static/img/like.png" />
+                    </div>
+                </div>
+            </div>
+            
+            <div class="box box-large">
+                <div class="box box-medium booktype-img">
+                    <img src="#" />
+                </div>
+                <div class="booktype-info">
+                    <h1 class="booktype-title">科普</h1>
+                    <label class="booktype-desc">我是科普类的书籍，你自己看着办！！！</label>
+                </div>
+                <div class="booktype-books">
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-like rfloat">
+                        999999
+                    </div>
+                    <div class="box box-small rfloat">
+                        <img src="static/img/like.png" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="booktype-other">
+            <div class="box box-large">
+                <div class="box box-medium booktype-img">
+                    <img src="#" />
+                </div>
+                <div class="booktype-info">
+                    <h1 class="booktype-title">科普</h1>
+                    <label class="booktype-desc">我是科普类的书籍，你自己看着办！！！</label>
+                </div>
+                <div class="booktype-books">
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-like rfloat">
+                        999999
+                    </div>
+                    <div class="box box-small rfloat">
+                        <img src="static/img/like.png" />
+                    </div>
+                </div>
+            </div>
+            
+            <div class="box box-large">
+                <div class="box box-medium booktype-img">
+                    <img src="#" />
+                </div>
+                <div class="booktype-info">
+                    <h1 class="booktype-title">科普</h1>
+                    <label class="booktype-desc">我是科普类的书籍，你自己看着办！！！</label>
+                </div>
+                <div class="booktype-books">
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-like rfloat">
+                        999999
+                    </div>
+                    <div class="box box-small rfloat">
+                        <img src="static/img/like.png" />
+                    </div>
+                </div>
+            </div>
+            
+            <div class="box box-large">
+                <div class="box box-medium booktype-img">
+                    <img src="#" />
+                </div>
+                <div class="booktype-info">
+                    <h1 class="booktype-title">科普</h1>
+                    <label class="booktype-desc">我是科普类的书籍，你自己看着办！！！</label>
+                </div>
+                <div class="booktype-books">
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-like rfloat">
+                        999999
+                    </div>
+                    <div class="box box-small rfloat">
+                        <img src="static/img/like.png" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="booktype-other">
+            <div class="box box-large">
+                <div class="box box-medium booktype-img">
+                    <img src="#" />
+                </div>
+                <div class="booktype-info">
+                    <h1 class="booktype-title">科普</h1>
+                    <label class="booktype-desc">我是科普类的书籍，你自己看着办！！！</label>
+                </div>
+                <div class="booktype-books">
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-like rfloat">
+                        999999
+                    </div>
+                    <div class="box box-small rfloat">
+                        <img src="static/img/like.png" />
+                    </div>
+                </div>
+            </div>
+            
+            <div class="box box-large">
+                <div class="box box-medium booktype-img">
+                    <img src="#" />
+                </div>
+                <div class="booktype-info">
+                    <h1 class="booktype-title">科普</h1>
+                    <label class="booktype-desc">我是科普类的书籍，你自己看着办！！！</label>
+                </div>
+                <div class="booktype-books">
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-like rfloat">
+                        999999
+                    </div>
+                    <div class="box box-small rfloat">
+                        <img src="static/img/like.png" />
+                    </div>
+                </div>
+            </div>
+            
+            <div class="box box-large">
+                <div class="box box-medium booktype-img">
+                    <img src="#" />
+                </div>
+                <div class="booktype-info">
+                    <h1 class="booktype-title">科普</h1>
+                    <label class="booktype-desc">我是科普类的书籍，你自己看着办！！！</label>
+                </div>
+                <div class="booktype-books">
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-small"><img src="#" /></div>
+                    <div class="box box-like rfloat">
+                        999999
+                    </div>
+                    <div class="box box-small rfloat">
+                        <img src="static/img/like.png" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="separate"></div>
+        
+        <!-- 推荐 -->
+        <div class="books-recommend">
+        	<div class="books-recommend-list">
+            	<div>
+                	<p class="books-recommend-p">推荐|Recommend</p>
+                </div>
+                
+                <div class="books-recommend-ul">
+                	<div class="box box-medium">
+                    	<img src="#" />
+                    </div>
+                    <div class="books-recommend-simple">
+                    	<ul>
+                        	<li><a href="#" class="title">标题</a></li>
+                            <li><label class="author">作者</label></li>
+                            <li><div class="desc">简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介</div></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="books-recommend-ul active">
+                	<div class="box box-medium">
+                    	<img src="#" />
+                    </div>
+                    <div class="books-recommend-simple">
+                    	<ul>
+                        	<li><a href="#" class="title">标题</a></li>
+                            <li><label class="author">作者</label></li>
+                            <li><div class="desc">简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介</div></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="books-recommend-ul">
+                	<div class="box box-medium">
+                    	<img src="#" />
+                    </div>
+                    <div class="books-recommend-simple">
+                    	<ul>
+                        	<li><a href="#" class="title">标题</a></li>
+                            <li><label class="author">作者</label></li>
+                            <li><div class="desc">简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介</div></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="books-recommend-ul">
+                	<div class="box box-medium">
+                    	<img src="#" />
+                    </div>
+                    <div class="books-recommend-simple">
+                    	<ul>
+                        	<li><a href="#" class="title">标题</a></li>
+                            <li><label class="author">作者</label></li>
+                            <li><div class="desc">简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="books-recommend-info">
+            	<div class="box box-big">ddd</div>
+                <div class="books-recommend-detail">
+                	<a class="title" href="#">梦里花落知多少</a>
+                    <label class="author">作者：小四</label>
+                    <div class="evaluate">
+                    	<label class="author">评价：</label> ★★★★☆
+                    </div>
+                </div>
+                <div class="desc">
+<pre>
+在爱的幸福国度你就是我唯一 在爱的幸福国度你就是我唯一但我珍惜你但我珍惜你但我珍惜
+我唯一爱的就是你	我唯一爱的就是你但我珍惜你但我珍惜你但我珍惜你
+我真的爱就是你	我真的爱就是你但我珍惜你但我珍惜你
 
-{% block body %}
-		
-	<h6 style="font-size: 40px;">Kliyes</h6>		
-	<h8 style="font-size: 30px;">welcome to Kliyes BookStore! </h8>
-	
-{% endblock %}
+但我珍惜你但我珍惜你但我珍惜你但我珍惜你但我珍惜你但我珍但我珍惜你但我珍
+失去才会懂得珍惜 失去才会懂得珍惜但我珍惜你但我珍惜你
+但我珍惜你 但我珍惜你但我珍惜你但我珍惜你
+伤越痛就是爱越深 但我珍惜你但我珍惜你但我珍惜你
+
+我不相信但我珍惜你但我珍惜你但我珍惜你但我珍惜你
+你和我同时停止但我珍惜你但我珍惜你呼吸
+每一次我们靠近但我珍惜你但我珍惜你
+你让我忘了困惑但我珍惜你但我珍惜你但我珍惜你但我珍但我珍惜你但我珍但我珍惜你但我珍
+
+忘了所有烦心但我珍惜你但我珍惜你
+我把你紧紧拥入怀里但我珍惜你但我珍惜你
+捧你在我手心但我珍惜你但我珍惜你但我珍惜你但我珍但我珍惜你但我珍但我珍惜你但我珍
+谁叫我真的爱的就是你但我珍惜你但我珍惜你
+</pre>
+                </div>
+            </div>
+        </div>
+        
+        <div class="separate"></div>
+        <!-- 书籍列表 -->
+        <div class="books-all">
+        	<div>
+            	<p class="bt">All</p>
+            </div>
+            <div class="info">
+            	<div class="poster">
+                	<div class="box box-medium"></div>
+                </div>
+                <div class="books-info">
+                	<ul>
+                    	<li><a href="#" class="title" >遗精大法</a></li>
+                        <li><label class="author">Tom.Jing</label></li>
+                        <li>
+                        	<div class="desc">睡觉前请先苦思冥想半小时</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info">
+            	<div class="poster">
+                	<div class="box box-medium"></div>
+                </div>
+                <div class="books-info">
+                	<ul>
+                    	<li><a href="#" class="title" >遗精大法</a></li>
+                        <li><label class="author">Tom.Jing</label></li>
+                        <li>
+                        	<div class="desc">睡觉前请先苦思冥想半小时</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info">
+            	<div class="poster">
+                	<div class="box box-medium"></div>
+                </div>
+                <div class="books-info">
+                	<ul>
+                    	<li><a href="#" class="title" >遗精大法</a></li>
+                        <li><label class="author">Tom.Jing</label></li>
+                        <li>
+                        	<div class="desc">睡觉前请先苦思冥想半小时</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info">
+            	<div class="poster">
+                	<div class="box box-medium"></div>
+                </div>
+                <div class="books-info">
+                	<ul>
+                    	<li><a href="#" class="title" >遗精大法</a></li>
+                        <li><label class="author">Tom.Jing</label></li>
+                        <li>
+                        	<div class="desc">睡觉前请先苦思冥想半小时</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info">
+            	<div class="poster">
+                	<div class="box box-medium"></div>
+                </div>
+                <div class="books-info">
+                	<ul>
+                    	<li><a href="#" class="title" >遗精大法</a></li>
+                        <li><label class="author">Tom.Jing</label></li>
+                        <li>
+                        	<div class="desc">睡觉前请先苦思冥想半小时</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info">
+            	<div class="poster">
+                	<div class="box box-medium"></div>
+                </div>
+                <div class="books-info">
+                	<ul>
+                    	<li><a href="#" class="title" >遗精大法</a></li>
+                        <li><label class="author">Tom.Jing</label></li>
+                        <li>
+                        	<div class="desc">睡觉前请先苦思冥想半小时</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info">
+            	<div class="poster">
+                	<div class="box box-medium"></div>
+                </div>
+                <div class="books-info">
+                	<ul>
+                    	<li><a href="#" class="title" >遗精大法</a></li>
+                        <li><label class="author">Tom.Jing</label></li>
+                        <li>
+                        	<div class="desc">睡觉前请先苦思冥想半小时</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info">
+            	<div class="poster">
+                	<div class="box box-medium"></div>
+                </div>
+                <div class="books-info">
+                	<ul>
+                    	<li><a href="#" class="title" >遗精大法</a></li>
+                        <li><label class="author">Tom.Jing</label></li>
+                        <li>
+                        	<div class="desc">睡觉前请先苦思冥想半小时</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info">
+            	<div class="poster">
+                	<div class="box box-medium"></div>
+                </div>
+                <div class="books-info">
+                	<ul>
+                    	<li><a href="#" class="title" >遗精大法</a></li>
+                        <li><label class="author">Tom.Jing</label></li>
+                        <li>
+                        	<div class="desc">睡觉前请先苦思冥想半小时</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="info">
+            	<div class="poster">
+                	<div class="box box-medium"></div>
+                </div>
+                <div class="books-info">
+                	<ul>
+                    	<li><a href="#" class="title" >遗精大法</a></li>
+                        <li><label class="author">Tom.Jing</label></li>
+                        <li>
+                        	<div class="desc">睡觉前请先苦思冥想半小时</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="separate"></div>
+        <!-- 翻页 -->
+        <div>
+        	<input type="button" class="mbtn" value="Prev" />
+            <input type="button" class="mbtn mbtn-page" value="1" />
+            <input type="button" class="mbtn mbtn-page" value="2" />
+            <input type="button" class="mbtn mbtn-page mbtn-page-active" value="3" />
+            <input type="button" class="mbtn mbtn-page" value="4" />
+            <input type="button" class="mbtn mbtn-page" value="5" />
+            <input type="button" class="mbtn mbtn-page" value="6" />
+            <input type="button" class="mbtn" value="Next" />
+        </div>
+    </div>
+    
+    <div class="separate"></div>
+    <!-- 页面底部 -->
+    <div class="footer">
+    	<div class="center">
+            <div class="part">
+            	<p>关于我们</p>
+                <ul>
+                	<li>人才招聘</li>
+                    <li>联系我们</li>
+                    <li>新闻中心</li>
+                </ul>
+            </div>
+            <div class="part">
+            	<p>友情链接</p>
+                <ul>
+                	<li>Yanduren</li>
+                    <li>DannySite</li>
+                    <li>Google</li>
+                </ul>
+            </div>
+            <div class="part">
+            	<p>帮助中心</p>
+                <ul>
+                	<li>付款与退换</li>
+                    <li>发货和配送</li>
+                    <li>购物指南</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
