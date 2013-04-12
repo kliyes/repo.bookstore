@@ -40,8 +40,12 @@
 			{% include "books/includes/commentlist.html" %}
 		</div>
 		<br /><br /><br />
-		<input id="add" type="button" value="加入购物车" onclick="addToCart({{book.id}})"/>
-		<a href="/books/check_the_cart/"><input id="added" type="button" value="已加入购物车，去购物车中看看" style="display:none;"/></a>
+		{% if book in cart.getBooks %}
+			<a href="/books/check_the_cart/"><input type="button" value="已加入购物车，去购物车中看看"/></a>
+		{% else %}
+			<input id="add" type="button" value="加入购物车" onclick="addToCart({{book.id}})"/>
+			<a href="/books/check_the_cart/"><input id="added" type="button" value="已加入购物车，去购物车中看看" style="display:none;"/></a>
+		{% endif %}
 		
 		<script type="text/javascript">
 			//检查字符串是否为空 true表示为空 false表示不为空

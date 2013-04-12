@@ -1,20 +1,41 @@
 <html>
+	<head>
+		<script src="{{STATIC_URL}}xizhi/js/jquery-1.8.2.min.js"></script>
+		<script src="{{STATIC_URL}}xizhi/js/secure.js"></script>
+	</head>
 	<body>
 		{{profile.name}}，欢迎进入您的购物车！<br /><br />
 		{% if cart.getBooks %}
-		{% for book in cart.getBooks %}
-			<img src="{{ MEDIA_URL }}img/{{book.spic}}" />&nbsp;&nbsp;
-			《{{book.name}}》&nbsp;&nbsp;
-			{{book.price}}元 &nbsp;&nbsp;
-			
-			<br /><br />
-		{% endfor %}
-		<br /><br />
-		共计：{{cart.getTotalFee}}元
+		<div id="booklist">
+			{% include "books/includes/booklist.html" %}
+		</div>
 		<br /><br />
 		<a href="{% url book_order %}"><input type="button" value="下订单" /></a>
 		{% else %}
 		您的购物车空空如也，快去看看书籍吧！
 		{% endif %}
+		
+		<script type="text/javascript">
+			function delFromCart(bookId){
+				$.ajax({
+					url: "/books/del_from_cart/" + bookId, 
+					data: {},
+					type: "post", 
+					async: "true", 
+					success: function(data){
+						if(data.status=="success"){
+							$("#booklist").html(data.html);
+						}
+						else{
+							alert(data.status);
+						}
+					}, 
+					error: function(){
+						alert("error");
+					}, 
+					dataType: "json"
+				});
+			}
+		</script>
 	</body>
 </html>
