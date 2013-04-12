@@ -160,11 +160,6 @@ class Cart(models.Model):
     owner = models.ForeignKey("profiles.Profile") # 购物车所属用户
     update_time = models.DateTimeField(auto_now=True) # 最后更新时间
     
-    books = models.ManyToManyField(
-        "books.Book", related_name="book_books", 
-        verbose_name=u"购物车中的书目"
-    )
-    
     class Meta:
         db_table = 't_cart'
         verbose_name = 'Cart'
@@ -173,44 +168,77 @@ class Cart(models.Model):
     def __unicode__(self):
         return u"id:%s owner:%s" % (self.id, self.owner)
     
-    def getBooks(self):
-        '''获取购物车中书籍列表'''
-        return self.books.all()
-    
     def getTotalFee(self):
         '''获取购物车中书籍总价'''
         totalFee = 0.0
-        for book in self.getBooks():
-            totalFee += book.price
+        for item in self.getItems():
+            totalFee += self.getItemFee(item.book)
         return totalFee
     
-    def addBook(self, book):
+    def getItems(self):
+        '''获取该购物车中所有项目'''
+        return BookItem.objects.filter(cart=self)
+    
+    def getBooks(self):
+        '''获取该购物车中的所有书籍'''
+        books = []
+        for item in self.getItems():
+            books.append(item.book)
+        return books
+    
+    def getItemByBook(self, book):
+        '''根据Book获取该购物车中对应的一项'''
+        try:
+            bookItem = BookItem.objects.get(book=book)
+        except BookItem.DoesNotExist:
+            return None
+        return bookItem
+    
+    def getItemFee(self, book):
+        '''获得某一项的费用'''
+        return self.getItemByBook(book).fee
+    
+    def addBookItem(self, book):
         '''向购物车中添加书籍'''
-        self.books.add(book)
+        bookItem = BookItem(cart=self, book=book, amount=1, fee=book.price)
+        bookItem.save()
         book.stock -= 1
         book.save()
         return True
         
-    def addBooks(self, books):
-        '''批量加入书籍'''
-        for book in books:
-            self.addBook(book)
-        return True
-    
-    def removeBook(self, book):
+    def removeBookItem(self, book):
         '''从购物车中移除书籍'''
-        self.books.remove(book)
+        bookItem = self.getItemByBook(book)
+        bookItem.amount = 0
+        bookItem.fee = 0.0
+        bookItem.save()
         book.stock += 1
         book.save()
         return True
+        
+
+class BookItem(models.Model):
+    '''购物车中的某一项书籍'''
+    cart = models.ForeignKey(Cart) # 项目所属购物车
+    book = models.ForeignKey(Book) # 书籍
+    amount = models.IntegerField(default=0) # 数量
+    fee = models.FloatField(default=0.0) # 该项的小计
     
-    def removeBooks(self, books):
-        '''从购物车中批量移除书籍'''
-        for book in books:
-            self.removeBook(book)
-        return True
-
-
+    class Meta:
+        db_table = 't_book_item'
+        verbose_name = 'BookItem'
+        app_label = 'books'
+    
+    def __unicode__(self):
+        return u"id:%s book:%s amount:%s fee:%s" % (self.id, self.book, 
+            self.amount, self.fee)
+    
+    def setFee(self):
+        '''计算小计'''
+        self.fee = round(self.book.price * self.amount, 1)
+        self.save()
+        
+    
 class OrderManager(models.Manager):
     def totalOrders(self):
         '''订单总量'''
@@ -232,11 +260,6 @@ class Order(models.Model):
     created_date = models.DateTimeField(default=datetime.datetime.now) # 订单生成时间
     updated_date = models.DateTimeField(default=datetime.datetime.now) # 订单更新时间
     
-    books = models.ManyToManyField(
-        "books.Book", related_name="order_books", 
-        verbose_name=u"订单中的书目"
-    )
-    
     objects = OrderManager()
     
     class Meta:
@@ -251,13 +274,4 @@ class Order(models.Model):
         self.is_charged = True
         self.save()
         return True
-    
-    def addBooks(self, books):
-        for book in books:
-            self.books.add(book)
-        return True
-        
-    def getBooks(self):
-        '''获取购物车中书籍列表'''
-        return self.books.all()
     

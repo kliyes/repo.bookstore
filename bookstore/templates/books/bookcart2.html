@@ -4,27 +4,23 @@
 		<script src="{{STATIC_URL}}xizhi/js/secure.js"></script>
 	</head>
 	<body>
-		{{profile.name}}，欢迎进入您的购物车！<br /><br />
-		{% if cart.getBooks %}
-		<div id="booklist">
-			{% include "books/includes/booklist.html" %}
-		</div>
+		<h4>{{profile.name}}，欢迎进入您的购物车</h4><br />
+		{% include "books/includes/booklist.html" %}
 		<br /><br />
-		<input type="button" value="下订单" />
-		{% else %}
-		您的购物车空空如也，快去看看书籍吧！
-		{% endif %}
+		<input type="button" value="下订单" onclick="makeOrder()" />
 		
 		<script type="text/javascript">
-			function delFromCart(bookId){
+			function makeOrder(){
+				
+				var temp = $('#form_cart').serialize();
 				$.ajax({
-					url: "/books/del_from_cart/" + bookId, 
-					data: {},
+					url: "/books/make_order/", 
+					data: temp,
 					type: "post", 
 					async: "true", 
 					success: function(data){
 						if(data.status=="success"){
-							$("#booklist").html(data.html);
+							window.location.href='/books/make_order/';
 						}
 						else{
 							alert(data.status);
@@ -37,5 +33,6 @@
 				});
 			}
 		</script>
+				
 	</body>
 </html>

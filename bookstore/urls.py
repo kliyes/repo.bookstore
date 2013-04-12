@@ -14,6 +14,8 @@ from pinax.apps.account.openid_consumer import PinaxConsumer
 handler500 = "pinax.views.server_error"
 ####
 urlpatterns = patterns("",
+                       
+    #url(r"", direct_to_template, {"template": "index.html",}, name="index"), #工程下所有链接都将被重置到index.html页面
     url(r"^$", direct_to_template, {"template": "index.html",}, name="welcome"),
 
     url(r"^admin/invite_user/$", "pinax.apps.signup_codes.views.admin_invite_user", 

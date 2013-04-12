@@ -31,7 +31,7 @@ INTERNAL_IPS = [
 ]
 
 ADMINS = [
-    ("Admin", "admin@bookstore.com"),
+    ("Admin", "jingyang.tom@qq.com"),
 ]
 
 CONTACT_EMAIL = 'support@bookstore.com'
@@ -43,25 +43,14 @@ DATABASE_ENGINE = {}
 
 DATABASES = {
     "default": {
-        "ENGINE": 'django.db.backends.mysql', # Add "postgresql_psycopg2", "postgresql", "mysql", "sqlite3" or "oracle".
-        "NAME": 'bookstore',              # Or path to database file if using sqlite3.
-        "USER": 'root',                       # Not used with sqlite3.
-        "PASSWORD": 'root',              # Not used with sqlite3.
-        "HOST": '127.0.0.1',                  # Set to empty string for localhost. Not used with sqlite3.
-        "PORT": '3306',                       # Set to empty string for default. Not used with sqlite3.
+        "ENGINE": 'django.db.backends.sqlite3', # Add "postgresql_psycopg2", "postgresql", "mysql", "sqlite3" or "oracle".
+        "NAME": '/home/kliyes/data/bookstore.db',              # Or path to database file if using sqlite3.
+        "USER": '',                       # Not used with sqlite3.
+        "PASSWORD": '',              # Not used with sqlite3.
+        "HOST": '',                  # Set to empty string for localhost. Not used with sqlite3.
+        "PORT": '',                       # Set to empty string for default. Not used with sqlite3.
     }
 }
-
-# Memcached
-DEFAULT_CACHE_TIME_OUT = 600
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': '127.0.0.1:11211',
-        'TIMEOUT': DEFAULT_CACHE_TIME_OUT, 
-    }
-}
-
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -95,7 +84,7 @@ IS_SITE_MAINTAINED = False
 USE_I18N = True
 
 # Absolute path to the directory that holds media.
-MEDIA_ROOT = "E:/OnlineBookStore/"
+MEDIA_ROOT = "/home/kliyes/media/"
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).

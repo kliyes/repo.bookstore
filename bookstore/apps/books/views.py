@@ -67,7 +67,7 @@ def addToCart(request, bookId):
     
     profile = request.user.get_profile()
     cart = Cart.objects.get(owner=profile)
-    if not cart.addBook(book):
+    if not cart.addBookItem(book):
         return HttpResponse(json.dumps({'status': 'failed'}))
     
     return HttpResponse(json.dumps({'status': 'success'}))
@@ -83,7 +83,7 @@ def delFromCart(request, bookId):
     
     profile = request.user.get_profile()
     cart = Cart.objects.get(owner=profile)
-    if not cart.removeBook(book):
+    if not cart.removeBookItem(book):
         return HttpResponse(json.dumps({'status': 'failed'}))
     
     t = get_template('books/includes/booklist.html')
@@ -95,19 +95,36 @@ def checkCart(request):
     '''查看购物车'''
     profile = request.user.get_profile()
     cart = Cart.objects.get(owner=profile)
+    bookItems = cart.getItems()
     
-    return render_to_response('books/bookcart.html', RequestContext(request, 
-        {'cart': cart}))
+    return render_to_response('books/bookcart2.html', RequestContext(request, 
+        {'cart': cart, 'itemCount': len(bookItems)}))
+
     
 def makeOrder(request):
     '''填写订单'''
     profile = request.user.get_profile()
     cart = Cart.objects.get(owner=profile)
     
-    if request.method != 'POST' or not cart.getBooks(): # 'POST'必须大写！ 
+    if not request.is_ajax() or not cart.getBooks(): # 'POST'必须大写！ 
         return render_to_response('books/bookorder.html', RequestContext(request, 
             {'cart': cart}))
+    
+    for book in cart.getBooks():
+        amount = request.REQUEST.get('amount_'+book.id, '1')
+        bookItem = cart.getItemByBook(book)
+        bookItem.amount = int(amount)
+        bookItem.save()
+        bookItem.fee = bookItem.setFee()
         
+def submitOrder(request):
+    '''提交订单, post request only'''
+    if request.method != "POST":
+        raise Http404
+    
+    profile = request.user.get_profile()
+    cart = Cart.objects.get(owner=profile)
+    
     addr = request.REQUEST.get('addr', None)
     contact = request.REQUEST.get('contact', None)
     makeDefault = request.REQUEST.get('default', None)
@@ -121,13 +138,13 @@ def makeOrder(request):
     order.addr = addr
     order.contact = contact
     order.save()
-    order.addBooks(cart.getBooks())
     # 提交订单后清空购物车中书籍
     profile.buyBooks(cart.getBooks())
     cart.removeBooks(cart.getBooks())
     
     return HttpResponse('Thanks!')
-      
+    
+
 def addComment(request, bookId):
     '''添加书籍评论,ajax request only'''
     if not request.is_ajax():

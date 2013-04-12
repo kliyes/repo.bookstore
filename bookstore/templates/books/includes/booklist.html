@@ -1,33 +1,36 @@
 <html>
 	<body>
-		{% for book in cart.getBooks %}
-			<a href="{% url book_detail book.id %}"><img src="{{ MEDIA_URL }}img/{{book.spic}}" /></a>&nbsp;&nbsp;
-			<a href="{% url book_detail book.id %}">《{{book.name}}》</a>&nbsp;&nbsp;
-			{{book.price}}元&nbsp;&nbsp;
-			<input type="hidden" id="price_{{book.id}}" value="{{book.price}}"/>
-			<a href="##" onclick="minus({{book.id}})">-1</a>
-			<input type="text" id="amount_{{book.id}}" name="amount" value="1" style="width:30;" onchange="countPartFee({{book.id}})" onkeyup="countPartFee({{book.id}})"/>
-			<a href="##" onclick="plus({{book.id}})">+1</a>&nbsp;&nbsp;
-			小计：<label class="PartFee" id="part_fee_{{book.id}}">{{book.price}}</label>&nbsp;&nbsp;
-			<a href="##" onclick="delFromCart({{book.id}})">删除</a>
-			<br /><br />
-		{% endfor %}
+		<label id="count">共有{{itemCount}}种书籍</label>
+		<form id='form_cart'>
+			{% for item in cart.getItems %}
+				<a href="{% url book_detail item.book_id %}"><img src="{{ MEDIA_URL }}img/{{item.book.spic}}" /></a>&nbsp;&nbsp;
+				<a href="{% url book_detail item.book_id %}">《{{item.book.name}}》</a>&nbsp;&nbsp;
+				{{item.book.price}}元&nbsp;&nbsp;
+				<input type="hidden" id="price_{{item.book_id}}" value="{{item.book.price}}"/>
+				<a href="##" onclick="minus({{item.book_id}})">-1</a>
+				<input type="text" class="amount" id="amount_{{item.book_id}}" name="amount_{{item.book_id}}" value="{{item.amount}}" style="width:30;" onchange="countPartFee({{item.book_id}})" onkeyup="countPartFee({{item.book_id}})"/>
+				<a href="##" onclick="plus({{item.book_id}})">+1</a>&nbsp;&nbsp;
+				小计：<label class="PartFee" id="part_fee_{{item.book_id}}">{{item.book.price}}</label>&nbsp;&nbsp;
+				<a href="##" onclick="delFromCart({{item.book_id}})">删除</a>
+				<br /><br />
+			{% endfor %}
+		</form>
 		<br /><br /><br />
 		共计：<label id="total_fee">{{cart.getTotalFee}}</label>元
 		<script type="text/javascript">
 			function countPartFee(bookId){
-				var amount = parseInt($("#amount_"+bookId).val());
+				var amount = parseFloat($("#amount_"+bookId).val());
 				var partFee = parseFloat($("#price_"+bookId).val())*amount;
-				$("#part_fee_"+bookId).html(partFee+"");
+				$("#part_fee_"+bookId).text(partFee.toFixed(1)+"");
 				countTotalFee();
 			}
 			function countTotalFee(){
 				var partFees = $(".PartFee");
-				var totalFee = parseFloat($("#total_fee").text());
+				var totalFee = 0.0;
 				for(i=0; i<partFees.length; i++){
 					totalFee += parseFloat($(partFees[i]).text());
 				}
-				$("#total_fee").html(totalFee+"");
+				$("#total_fee").html(totalFee.toFixed(1)+"");
 			}
 			//本数-1
 			function minus(bookId){
@@ -41,7 +44,8 @@
 					return false;
 				}
 				else{
-					$("#amount_"+bookId).val((amount-1)+"")
+					$("#amount_"+bookId).val((amount-1)+"");
+					countPartFee(bookId);
 				}
 			}
 			//本数+1
@@ -56,7 +60,8 @@
 					return false;
 				}
 				else{
-					$("#amount_"+bookId).val((amount+1)+"")
+					$("#amount_"+bookId).val((amount+1)+"");
+					countPartFee(bookId);
 				}
 			}
 		</script>
