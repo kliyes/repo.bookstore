@@ -8,8 +8,9 @@
 			{% for item in cart.getItems %}
 				<img src="{{ MEDIA_URL }}img/{{item.book.spic}}" />&nbsp;&nbsp;
 				《{{item.book.name}}》&nbsp;&nbsp;
+				 {{item.book.price}}元&nbsp;&nbsp;
 				 {{item.amount}}本&nbsp;&nbsp;
-				 {{item.book.price}}元<br /><br />
+				 {{item.fee}}元<br /><br />
 			{% endfor %}
 			送货地址：<input type="text" name="addr" id="addr" value="{{profile.addr}}"/><br />
 			联系方式：<input type="text" name="contact" id="contact" value="{{profile.contact}}"/>

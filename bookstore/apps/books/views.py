@@ -38,7 +38,7 @@ def _getBookById(bookId):
     
     return book
    
-   
+@login_required
 def bookDetail(request, bookId):
     book = _getBookById(bookId)
     if not book:
@@ -97,7 +97,7 @@ def checkCart(request):
     cart = Cart.objects.get(owner=profile)
     bookItems = cart.getItems()
     
-    return render_to_response('books/bookcart2.html', RequestContext(request, 
+    return render_to_response('books/bookcart.html', RequestContext(request, 
         {'cart': cart, 'itemCount': len(bookItems)}))
 
     
@@ -111,11 +111,17 @@ def makeOrder(request):
             {'cart': cart}))
     
     for book in cart.getBooks():
-        amount = request.REQUEST.get('amount_'+book.id, '1')
-        bookItem = cart.getItemByBook(book)
-        bookItem.amount = int(amount)
-        bookItem.save()
-        bookItem.fee = bookItem.setFee()
+        try:
+            amount = request.REQUEST.get('amount_'+str(book.id), '1')
+            bookItem = cart.getItemByBook(book)
+            bookItem.amount = int(amount)
+            bookItem.save()
+            bookItem.fee = bookItem.setFee()
+        except Exception, e:
+            print e
+            return HttpResponse(json.dumps({'status': 'failed'}))
+        
+    return HttpResponse(json.dumps({'status': 'success'}))
         
 def submitOrder(request):
     '''提交订单, post request only'''
@@ -140,7 +146,8 @@ def submitOrder(request):
     order.save()
     # 提交订单后清空购物车中书籍
     profile.buyBooks(cart.getBooks())
-    cart.removeBooks(cart.getBooks())
+    if cart.moveToOrder(order):
+        cart.clearCart()
     
     return HttpResponse('Thanks!')
     

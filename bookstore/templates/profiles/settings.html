@@ -75,9 +75,10 @@
 				{% for order in orders %}
 					总价：{{order.total_fee}}<br />
 					书目：
-					{% for book in order.getBooks %}
-						{{book.name}}
-					{% endfor %}<br />
+					{% for item in order.getItems %}
+						{{item.book.name}}&nbsp;&nbsp;
+						{{item.amount}}本<br />
+					{% endfor %}
 					状态：
 					{% ifequal order.status 1 %}
 					交易完成

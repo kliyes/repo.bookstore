@@ -215,6 +215,20 @@ class Cart(models.Model):
         book.stock += 1
         book.save()
         return True
+    
+    def moveToOrder(self, order):
+        '''将购物车中项目转移到订单中'''
+        for item in self.getItems():
+            orderBookItem = OrderBookItem(order=order, book=item.book, 
+                amount=item.amount, fee=item.fee)
+            orderBookItem.save()
+        return True
+            
+    def clearCart(self):
+        '''清空购物车'''
+        for item in self.getItems():
+            item.delete()
+        return True
         
 
 class BookItem(models.Model):
@@ -274,4 +288,28 @@ class Order(models.Model):
         self.is_charged = True
         self.save()
         return True
+    
+    def getItems(self):
+        '''获得订单中所有的书籍项目'''
+        return OrderBookItem.objects.filter(order=self)
+    
+    
+class OrderBookItem(models.Model):
+    '''订单中书籍项目模型'''
+    order = models.ForeignKey(Order) # 订单
+    book = models.ForeignKey(Book) # 书籍
+    amount = models.IntegerField(default=0) # 数量
+    fee = models.FloatField(default=0.0) # 该项的小计
+    
+    class Meta:
+        db_table = 't_order_book'
+        verbose_name = 'OrderBookItem'
+        app_label = 'books'
+    
+    def __unicode__(self):
+        return u"id:%s book:%s amount:%s fee:%s" % (self.id, self.book, 
+            self.amount, self.fee)
+    
+    
+    
     
