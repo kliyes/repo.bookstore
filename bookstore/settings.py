@@ -236,11 +236,11 @@ AUTHENTICATION_BACKENDS = [
     "account.auth_backends.AuthenticationBackend",
 ]
 
-HOME_URL = "/books/book_search/"
+HOME_URL = "/"
 LOGIN_URL = "/account/login/"
 SIGNUP_URL = "/account/signup/"
-LOGIN_REDIRECT_URLNAME = "book_search"
-SIGNUP_REDIRECT_URLNAME = "book_search"
+LOGIN_REDIRECT_URLNAME = "welcome"
+SIGNUP_REDIRECT_URLNAME = "welcome"
 LOGOUT_REDIRECT_URLNAME = "welcome"
 
 EMAIL_DEBUG = DEBUG

@@ -1,0 +1,30 @@
+<div class="header">
+<div class="logo"><img src="" /></div>
+
+<div class="search">
+  <div class="search-btn">
+  	<form action="{% url book_search %}" method="post">
+  		{% csrf_token %}
+	    <input id="name" name="name" type="text" class="search-inp" placeholder="Search" value="" />
+	    <input type="submit" value="搜 索" class="mbtn mbtn-info" />
+  	</form>
+  </div>
+
+  <div class="search-hot">
+    <label class="f-red">热门搜索:</label> <label class="f-black">三国演义</label> <label class="f-black">水浒传</label> <label class="f-black">离离原上草</label> <label class="f-black">只是嫌水少</label>
+  </div>
+</div>
+
+<div class="userinfo">
+	{% if user.is_authenticated %}
+		您好，{{profile.name}}<br />
+		<a href="{% url profiles_setting %}"><input type="button" class="mbtn mbtn-info" value="设 置" /></a>
+		<a href="{% url acct_logout %}"><input type="button" class="mbtn" value="退 出" /></a>
+	{% else %}
+		<a href="{% url acct_login %}"><input type="button" class="mbtn mbtn-info" value="登 录" /></a>
+		<a href="{% url acct_signup %}"><input type="button" class="mbtn" value="注 册" /></a>
+	{% endif %}
+</div>
+</div>
+
+<div class="separate"></div>
