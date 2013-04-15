@@ -10,4 +10,6 @@ urlpatterns = patterns("",
     url(r"^submit_order/$", "books.views.submitOrder", name="book_order_submit"), 
     url(r"^add_comment/(\d+)$", "books.views.addComment", name="book_add_cmt"), 
     url(r"^mark_book/(\d+)$", "books.views.markBook", name="book_mark"), 
+    url(r"^page_books/$", "books.views.pagingBooks"), 
+    url(r"^page_cmts/(\d+)$", "books.views.pagingCmts"), 
 )

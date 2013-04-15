@@ -1,21 +1,56 @@
 <html>
+	<head>
+		<script src="{{STATIC_URL}}xizhi/js/jquery-1.8.2.min.js"></script>
+		<script src="{{STATIC_URL}}xizhi/js/secure.js"></script>
+	</head>
 	<body>
 		<form action="." method="post">
 			{% csrf_token %}
 			<input type="text" id="name" name="name" />
 			<input type="submit" value="搜书" />
 		</form>
-		{% if not books %}
+		{% if not pageItems %}
 		查无此书
 		{% endif %}
-		{% for book in books %}
-		<a href="{% url book_detail book.id %}"><img src="{{ MEDIA_URL }}img/{{book.mpic}}" /></a><br />
-		书名：<a href="{% url book_detail book.id %}">{{book.name}}</a><br />
-		作者：{{book.author.name}}<br />
-		出版社：{{book.press}}<br />
-		ISBN：{{book.isbn}}<br />
-		定价：{{book.price}}元<br />
-		分类：{{book.category.label}}<br /><br />
-		{% endfor %}
+		<div id="booklist">
+			{% include "books/includes/resultlist.html" %}
+		</div>
 	</body>
+	
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("#booklist").delegate("#pre, #next, #num", "click", function(){
+				bookPageTurn(this);
+			});
+			$("#booklist").delegate("#goto_page", "click", function(){
+				bookPageTurn(this);
+			});
+		});
+		
+		function bookPageTurn(obj){
+			var pageIndex = "";
+			if($(obj).attr("rel")==="userinput"){
+				pageIndex = $("#userinput_page").val();
+			}else{
+				pageIndex = $(obj).attr("rel");
+			}
+			$.ajax({
+				url: "/books/page_books/", 
+				data: {"page": pageIndex}, 
+				type: "get", 
+				async: "true", 
+				success: function(data){
+					if(data.status=="success"){
+						$("#booklist").html(data.html);
+					}else{
+						alert(data.status);
+					}
+				}, 
+				error: function(){
+					alert("error");
+				},
+				dataType: "json"
+			});
+		}
+	</script>
 </html>

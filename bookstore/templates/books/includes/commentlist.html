@@ -1,6 +1,6 @@
 <html>
 	<body>
-		{% for cmt in comments %}
+		{% for cmt in pageItems.object_list %}
 			{{cmt.owner.name}}于{{cmt.created_date|date:"Y-m-d H:i"}}评论到：{{cmt.content}}<br /><br />
 		{% endfor %}
 	</body>

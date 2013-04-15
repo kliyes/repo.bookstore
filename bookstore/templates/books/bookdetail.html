@@ -37,7 +37,7 @@
 		<br />
 		<h1>评论列表</h1>
 		<div id="commentsArea">
-			{% include "books/includes/commentlist.html" %}
+			{% include "books/includes/comments.html" %}
 		</div>
 		<br /><br /><br />
 		{% if book in cart.getBooks %}
@@ -48,6 +48,41 @@
 		{% endif %}
 		
 		<script type="text/javascript">
+			$(document).ready(function(){
+				$("#commentsArea").delegate("#pre, #next, #num", "click", function(){
+					cmtPageTurn(this, '{{book.id}}');
+				});
+				$("#commentsArea").delegate("#goto_page", "click", function(){
+					cmtPageTurn(this, '{{book.id}}');
+				});
+			});
+			
+			function cmtPageTurn(obj, bookId){
+				var pageIndex = "";
+				if($(obj).attr("rel")==="userinput"){
+					pageIndex = $("#userinput_page").val();
+				}else{
+					pageIndex = $(obj).attr("rel");
+				}
+				$.ajax({
+					url: "/books/page_cmts/" + bookId, 
+					data: {"page": pageIndex}, 
+					type: "get", 
+					async: "true", 
+					success: function(data){
+						if(data.status=="success"){
+							$("#commentsArea").html(data.html);
+						}else{
+							alert(data.status);
+						}
+					}, 
+					error: function(){
+						alert("error");
+					}, 
+					dataType: "json"
+				});
+			}
+			
 			//检查字符串是否为空 true表示为空 false表示不为空
 			function isNull(value){
 				if(trim(value)==""){
