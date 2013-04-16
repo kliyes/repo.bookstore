@@ -3,15 +3,18 @@
 
 <div class="search">
   <div class="search-btn">
-  	<form action="{% url book_search %}" method="post">
-  		{% csrf_token %}
+  	<form action="{% url book_search %}" method="get">
 	    <input id="name" name="name" type="text" class="search-inp" placeholder="Search" value="" />
 	    <input type="submit" value="搜 索" class="mbtn mbtn-info" />
   	</form>
   </div>
 
   <div class="search-hot">
-    <label class="f-red">热门搜索:</label> <label class="f-black">三国演义</label> <label class="f-black">水浒传</label> <label class="f-black">离离原上草</label> <label class="f-black">只是嫌水少</label>
+    <label class="f-red">热门搜索:</label> 
+    <a class="f-black" href="/books/getbyname/?name=小王子">小王子</a>
+    <a class="f-black" href="/books/getbyname/?name=烟花">烟花</a> 
+    <a class="f-black" href="/books/getbyname/?name=数学">数学</a> 
+    <a class="f-black" href="/books/getbyname/?name=django">Django</a>
   </div>
 </div>
 

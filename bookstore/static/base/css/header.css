@@ -36,6 +36,10 @@
 	top:35px;
 	left:25px;
 }
+.search-hot a{
+	text-decoration: none;
+	cursor:pointer;
+}
 .header > .userinfo{
 	float:right;
 	width:190px;

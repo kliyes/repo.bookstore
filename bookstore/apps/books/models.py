@@ -32,10 +32,26 @@ class Author(models.Model):
         return Book.objects.filter(author=self)
 
 
+class CateManager(models.Manager):
+    def get3Cates(self):
+        '''获取先显示的3个分类, 文学, 小说, 艺术'''
+        return [Category.objects.get(name='letter'), 
+            Category.objects.get(name='novel'), Category.objects.get(name='art')]
+    
+    def getRestCates(self):
+        '''获取除前3个之外的分类'''
+        result = []
+        for cate in Category.objects.all():
+            if cate not in self.get3Cates():
+                result.append(cate)
+        return result
+
 class Category(models.Model):
     '''定义书籍分类模型'''
     name = models.CharField(max_length=20)  # 名称
     label = models.CharField(max_length=20) # 显示的名称
+    
+    objects = CateManager()
     
     class Meta:
         db_table = 't_category'

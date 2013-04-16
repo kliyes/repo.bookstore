@@ -4,8 +4,7 @@
 		<script src="{{STATIC_URL}}xizhi/js/secure.js"></script>
 	</head>
 	<body>
-		<form action="." method="post">
-			{% csrf_token %}
+		<form action="." method="get">
 			<input type="text" id="name" name="name" />
 			<input type="submit" value="搜书" />
 		</form>

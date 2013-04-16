@@ -34,11 +34,7 @@ def initSessionCmtlistPaging(request, dataKey, cmtlist, pageSize):
     return pages.setSessionPaging(request, dataKey, cmtlist, pageSize)
 
 def getBooksByName(request):
-    '''按书名模糊查询书籍, post request only'''
-    if request.method != "POST":
-        raise Http404
-#        return render_to_response('books/bookset.html', RequestContext(request))
-    
+    '''按书名模糊查询书籍'''
     name = request.REQUEST.get('name', '')
     books = Book.objects.filter(name__icontains=name)
     ctx = {}
