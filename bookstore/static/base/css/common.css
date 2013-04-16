@@ -59,6 +59,7 @@
 .mbtn-page-active{
 	background-color:#CCC;
 	color:#333;
+	cursor:default;
 }
 
 /* 搜索按钮 */

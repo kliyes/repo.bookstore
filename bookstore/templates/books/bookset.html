@@ -1,22 +1,9 @@
-<html>
-	<head>
-		<script src="{{STATIC_URL}}xizhi/js/jquery-1.8.2.min.js"></script>
-		<script src="{{STATIC_URL}}xizhi/js/secure.js"></script>
-	</head>
-	<body>
-		<form action="." method="get">
-			<input type="text" id="name" name="name" />
-			<input type="submit" value="搜书" />
-		</form>
-		{% if not pageItems %}
-		查无此书
-		{% endif %}
-		<div id="booklist">
-			{% include "books/includes/resultlist.html" %}
-		</div>
-	</body>
-	
-	<script type="text/javascript">
+{% extends "base/theme_base.html" %}
+{% block page_title %}查询结果{% endblock %}
+{% block single_js %}
+    <script type="text/javascript" src="{{STATIC_URL}}xizhi/js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}xizhi/js/secure.js"></script>
+    <script type="text/javascript">
 		$(document).ready(function(){
 			$("#booklist").delegate("#pre, #next, #num", "click", function(){
 				bookPageTurn(this);
@@ -52,4 +39,14 @@
 			});
 		}
 	</script>
-</html>
+{% endblock %}
+		
+{% block body_base %}
+		{% if not pageItems %}
+		查无此书
+		{% endif %}
+		<div id="booklist">
+			{% include "books/includes/resultlist.html" %}
+		</div>
+{% endblock %}	
+	

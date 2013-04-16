@@ -1,203 +1,61 @@
 <div class="booktype-top">
-	<div class="box box-large">
-		<div class="box box-medium booktype-img">
-			<a href="#" >
-				<img src="#" />
-			</a>
-		</div>
-		<div class="booktype-info">
-			<a href="#" class="booktype-title">
-				科普
-			</a>
-			<label class="booktype-desc">
-				我是科普类的书籍，你自己看着办！！！
-			</label>
-		</div>
-		<div class="booktype-books">
-			<div class="box box-small">
-				<a href="#" >
-					<img src="#" />
-				</a>
-			</div>
-			<div class="box box-small">
-				<a href="#" >
-					<img src="#" />
-				</a>
-			</div>
-			<div class="box box-small">
-				<a href="#" >
-					<img src="#" />
-				</a>
-			</div>
-			<div class="box box-small">
-				<a href="#" >
-					<img src="#" />
-				</a>
-			</div>
-			<div class="box box-small">
-				<a href="#" >
-					<img src="#" />
-				</a>
-			</div>
-			<div class="box box-like rfloat">
-				1
-			</div>
-			<div class="box box-small rfloat">
-				<img src="{{STATIC_URL}}base/img/like.png" />
-			</div>
-		</div>
-	</div>
-	
-	<div class="box box-large">
-		<div class="box box-medium booktype-img">
-			<a href="#" >
-				<img src="#" />
-			</a>
-		</div>
-		<div class="booktype-info">
-			<a href="#" class="booktype-title">
-				科普
-			</a>
-			<label class="booktype-desc">
-				我是科普类的书籍，你自己看着办！！！
-			</label>
-		</div>
-		<div class="booktype-books">
-			<div class="box box-small">
-				<a href="#" >
-					<img src="#" />
-				</a>
-			</div>
-			<div class="box box-small">
-				<a href="#" >
-					<img src="#" />
-				</a>
-			</div>
-			<div class="box box-small">
-				<a href="#" >
-					<img src="#" />
-				</a>
-			</div>
-			<div class="box box-small">
-				<a href="#" >
-					<img src="#" />
-				</a>
-			</div>
-			<div class="box box-small">
-				<a href="#" >
-					<img src="#" />
-				</a>
-			</div>
-			<div class="box box-like rfloat">
-				2
-			</div>
-			<div class="box box-small rfloat">
-				<img src="{{STATIC_URL}}base/img/like.png" />
-			</div>
-		</div>
-	</div>
-	
-	<div class="box box-large">
-		<div class="box box-medium booktype-img">
-			<a href="#" >
-				<img src="#" />
-			</a>
-		</div>
-		<div class="booktype-info">
-			<a href="#" class="booktype-title">
-				科普
-			</a>
-			<label class="booktype-desc">
-				我是科普类的书籍，你自己看着办！！！
-			</label>
-		</div>
-		<div class="booktype-books">
-			<div class="box box-small">
-				<a href="#" >
-					<img src="#" />
-				</a>
-			</div>
-			<div class="box box-small">
-				<a href="#" >
-					<img src="#" />
-				</a>
-			</div>
-			<div class="box box-small">
-				<a href="#" >
-					<img src="#" />
-				</a>
-			</div>
-			<div class="box box-small">
-				<a href="#" >
-					<img src="#" />
-				</a>
-			</div>
-			<div class="box box-small">
-				<a href="#" >
-					<img src="#" />
-				</a>
-			</div>
-			<div class="box box-like rfloat">
-				3
-			</div>
-			<div class="box box-small rfloat">
-				<img src="{{STATIC_URL}}base/img/like.png" />
-			</div>
-		</div>
-	</div>
+    {% for cate in showCates %}
+    	<div class="box box-large">
+    		<div class="box box-medium booktype-img">
+    			<a href="{% url book_get_by_cate cate.name %}" ><img src="{{STATIC_URL}}base/img/like.png" /></a>
+    		</div>
+    		<div class="booktype-info">
+    			<a href="{% url book_get_by_cate cate.name %}" class="booktype-title">{{cate.label}}</a>
+    			<label class="booktype-desc">
+    				{{cate.desc}}
+    			</label>
+    		</div>
+    		<div class="booktype-books">
+    		    {% for book in cate.getHotBooks %}
+        			<div class="box box-small">
+        				<a href="{% url book_detail book.id %}" ><img src="{{ MEDIA_URL }}img/{{book.spic}}" width="30px" height="30px"/></a>
+        			</div>
+    			{% endfor %}
+    			<div class="box box-like rfloat">
+    				{{cate.getCount}}
+    			</div>
+    			<div class="box box-small rfloat">
+    				<img src="{{STATIC_URL}}base/img/like.png" />
+    			</div>
+    		</div>
+    	</div>
+	{% endfor %}
 	
 	<!-- 展开按钮 -->
 	<div id="extend_type" class="box box-next"></div>
 </div>
 <!-- 被隐藏的分类 -->
 <div class="booktype-other">
-	<div class="box box-large">
-		<div class="box box-medium booktype-img">
-			<a href="#" >
-				<img src="#" />
-			</a>
-		</div>
-		<div class="booktype-info">
-			<a href="#" class="booktype-title">
-				科普
-			</a>
-			<label class="booktype-desc">
-				我是科普类的书籍，你自己看着办！！！
-			</label>
-		</div>
-		<div class="booktype-books">
-			<div class="box box-small">
-				<a href="#" >
-					<img src="#" />
-				</a>
-			</div>
-			<div class="box box-small">
-				<a href="#" >
-					<img src="#" />
-				</a>
-			</div>
-			<div class="box box-small">
-				<a href="#" >
-					<img src="#" />
-				</a>
-			</div>
-			<div class="box box-small">
-				<a href="#" >
-					<img src="#" />
-				</a>
-			</div>
-			<div class="box box-small">
-				<a href="#" >
-					<img src="#" />
-				</a>
-			</div>
-			<div class="box box-like rfloat">
-				4
-			</div>
-			<div class="box box-small rfloat">
-				<img src="{{STATIC_URL}}base/img/like.png" />
-			</div>
-		</div>
-	</div>
+    {% for cate in restCates %}
+    	<div class="box box-large">
+    		<div class="box box-medium booktype-img">
+    			<a href="{% url book_get_by_cate cate.name %}" ><img src="{{STATIC_URL}}base/img/like.png" /></a>
+    		</div>
+    		<div class="booktype-info">
+    			<a href="{% url book_get_by_cate cate.name %}" class="booktype-title">{{cate.label}}</a>
+    			<label class="booktype-desc">
+    				{{cate.desc}}
+    			</label>
+    		</div>
+    		<div class="booktype-books">
+    		    {% for book in cate.getHotBooks %}
+        			<div class="box box-small">
+        				<a href="{% url book_detail book.id %}" ><img src="{{ MEDIA_URL }}img/{{book.spic}}" width="30px" height="30px" /></a>
+        			</div>
+    			{% endfor %}
+    			<div class="box box-like rfloat">
+    				{{cate.getCount}}
+    			</div>
+    			<div class="box box-small rfloat">
+    				<img src="{{STATIC_URL}}base/img/like.png" />
+    			</div>
+    		</div>
+    	</div>
+	{% endfor %}
 </div>
 <div class="separate"></div>

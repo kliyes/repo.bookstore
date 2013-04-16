@@ -6,7 +6,7 @@
 #
 # This file is part of lershare.com.
 #
-from books.models import Book, Cart, Order, BookComment, Grade
+from books.models import Book, Cart, Order, BookComment, Grade, Category
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect, Http404
@@ -25,6 +25,20 @@ BOOK_PAGE_SIZE = 3
 CMT_DATA_KEY = "cmtPaging"
 CMT_PAGE_SIZE = 5
 
+def goHome(request):
+    '''首页, index.html'''
+    showCates = Category.objects.get3Cates()
+    restCates = Category.objects.getRestCates()
+    recommend = Book.objects.getRecommend()
+    books = Book.objects.getAll()
+    
+    ctx = {'showCates': showCates, 'restCates': restCates, 'recommend': recommend}
+    bookPaging = initSessionBooklistPaging(request, BOOK_DATA_KEY, books, 10)
+    if bookPaging:
+        ctx.update(bookPaging.result(1))
+    
+    return render_to_response('index.html', RequestContext(request, ctx))
+
 def initSessionBooklistPaging(request, dataKey, booklist, pageSize):
     ''''''
     return pages.setSessionPaging(request, dataKey, booklist, pageSize)
@@ -32,6 +46,21 @@ def initSessionBooklistPaging(request, dataKey, booklist, pageSize):
 def initSessionCmtlistPaging(request, dataKey, cmtlist, pageSize):
     ''''''
     return pages.setSessionPaging(request, dataKey, cmtlist, pageSize)
+
+def getBooksByCate(request, cateName):
+    '''按书籍分类查询书籍'''
+    if not cateName:
+        return
+    
+    category = Category.objects.get(name=cateName)
+    books = Book.objects.filter(category=category)
+    ctx = {}
+    
+    bookPaging = initSessionBooklistPaging(request, BOOK_DATA_KEY, books, BOOK_PAGE_SIZE)
+    if bookPaging:
+        ctx.update(bookPaging.result(1))
+    
+    return render_to_response('books/bookset.html', RequestContext(request, ctx))
 
 def getBooksByName(request):
     '''按书名模糊查询书籍'''
@@ -61,7 +90,24 @@ def pagingBooks(request):
     html = t.render(RequestContext(request, paging.result(pageNo)))
     
     return HttpResponse(json.dumps({'status': 'success', 'html': html}))
+
+def pagingAll(request):
+    '''处理首页所有书籍分页, ajax request only'''
+    if not request.is_ajax():
+        raise Http404
     
+    pageNo = pages.getRequestPageNo(request)
+    request.session['currentPageNo'] = pageNo
+    paging = pages.getSessionPaging(request, BOOK_DATA_KEY)
+    if not paging:
+        books = Book.objects.all()
+        paging = initSessionBooklistPaging(request, BOOK_DATA_KEY, books, 5)
+    
+    t = get_template('base/books_list.html')
+    html = t.render(RequestContext(request, paging.result(pageNo)))
+    
+    return HttpResponse(json.dumps({'status': 'success', 'html': html}))
+
 def _getBookById(bookId):
     '''按书籍的id号查找书籍'''
     try:

@@ -63,11 +63,22 @@ class Category(models.Model):
     
     def getCount(self):
         return Book.objects.filter(category=self).count()
+    
+    def getHotBooks(self):
+        '''获得当前分类下被购买次数最多的5本书籍'''
+        return Book.objects.filter(category=self).order_by('-bought_count')[:5]
 
 
 class BookManager(models.Manager):
+    def getAll(self):
+        return Book.objects.all()
+    
     def totalBooks(self):
-        return Book.objects.all().count()
+        return self.getAll().count()
+    
+    def getRecommend(self):
+        '''获得最近登记的4本书籍作为推荐书籍'''
+        return self.getAll().order_by('-reg_date')[:4]
     
 class Book(models.Model):
     '''定义Book模型'''

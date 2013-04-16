@@ -2,6 +2,7 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns("",
     url(r"^getbyname/$", "books.views.getBooksByName", name="book_search"),
+    url(r"^getbycate/(\w+)$", "books.views.getBooksByCate", name="book_get_by_cate"),
     url(r"^(\d+)$", "books.views.bookDetail", name="book_detail"), 
     url(r"^add_to_cart/(\d+)$", "books.views.addToCart", name="book_cart_add"), 
     url(r"^del_from_cart/(\d+)$", "books.views.delFromCart", name="book_cart_del"), 
@@ -12,4 +13,5 @@ urlpatterns = patterns("",
     url(r"^mark_book/(\d+)$", "books.views.markBook", name="book_mark"), 
     url(r"^page_books/$", "books.views.pagingBooks"), 
     url(r"^page_cmts/(\d+)$", "books.views.pagingCmts"), 
+    url(r"^page_all_books/$", "books.views.pagingAll"), 
 )
