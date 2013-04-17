@@ -1,6 +1,9 @@
-<html>
-	<body>
-		{% if cart.getBooks %}
+{% extends "base/theme_base.html" %}
+
+{% block page_title %}填写订单{% endblock %}
+
+{% block body_base %}
+	{% if cart.getBooks %}
 		<form action="/books/submit_order/" method="post">
 			{% csrf_token %}
 			书籍清单：<br />
@@ -12,14 +15,13 @@
 				 {{item.amount}}本&nbsp;&nbsp;
 				 {{item.fee}}元<br /><br />
 			{% endfor %}
+			总计：{{cart.getTotalFee}}元<br /><br />
 			送货地址：<input type="text" name="addr" id="addr" value="{{profile.addr}}"/><br />
 			联系方式：<input type="text" name="contact" id="contact" value="{{profile.contact}}"/>
-			<input type="checkbox" id="default" name="default"/>保存为默认收货方式<br />
-			总计：{{cart.getTotalFee}}元
-			<input type="submit" value="提交" />
+			<input type="checkbox" id="default" name="default"/>保存为默认收货方式<br /><br />
+			<input type="submit" class="mbtn" value="确认提交" />
 		</form>
-		{% else %}
-			您还没有选择书籍呢！
-		{% endif %}
-	</body>
-</html>
+	{% else %}
+		您还没有选择书籍呢！
+	{% endif %}
+{% endblock %}

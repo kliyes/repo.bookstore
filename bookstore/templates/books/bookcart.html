@@ -1,41 +1,44 @@
-<html>
-	<head>
-		<script src="{{STATIC_URL}}xizhi/js/jquery-1.8.2.min.js"></script>
-		<script src="{{STATIC_URL}}xizhi/js/secure.js"></script>
-	</head>
-	<body>
-		<h4>{{profile.name}}，欢迎进入您的购物车</h4><br />
-		{% if not cart.getBooks %}
+{% extends "base/theme_base.html" %}
+
+{% block page_title %}购物车{% endblock %}
+
+{% block single_js %}
+	<script src="{{STATIC_URL}}xizhi/js/jquery-1.8.2.min.js"></script>
+	<script src="{{STATIC_URL}}xizhi/js/secure.js"></script>
+	<script type="text/javascript">
+		function makeOrder(){
+			var temp = $('#form_cart').serialize();
+			$.ajax({
+				url: "/books/make_order/", 
+				data: temp,
+				type: "post", 
+				async: "true", 
+				success: function(data){
+					if(data.status=="success"){
+						window.location.href='/books/make_order/';
+					}
+					else{
+						alert(data.status);
+					}
+				}, 
+				error: function(){
+					alert("error");
+				}, 
+				dataType: "json"
+			});
+		}
+	</script>
+{% endblock %}
+
+{% block body_base %}
+	<h4>{{profile.name}}，欢迎进入您的购物车</h4><br />
+	{% if not cart.getBooks %}
 		您的购物车空空如也，快去选书吧！
-		{% else %}
+	{% else %}
 		{% include "books/includes/booklist.html" %}
 		<br /><br />
-		<input type="button" value="下订单" onclick="makeOrder()" />
-		{% endif %}
-		<script type="text/javascript">
-			function makeOrder(){
+		<input type="button" class="mbtn" value="下订单" onclick="makeOrder()" />
+	{% endif %}
+{% endblock %}
+		
 				
-				var temp = $('#form_cart').serialize();
-				$.ajax({
-					url: "/books/make_order/", 
-					data: temp,
-					type: "post", 
-					async: "true", 
-					success: function(data){
-						if(data.status=="success"){
-							window.location.href='/books/make_order/';
-						}
-						else{
-							alert(data.status);
-						}
-					}, 
-					error: function(){
-						alert("error");
-					}, 
-					dataType: "json"
-				});
-			}
-		</script>
-				
-	</body>
-</html>

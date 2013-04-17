@@ -16,6 +16,9 @@
 	height:170px;
 	display:none;
 }
+.booktype-other .box{
+	margin-bottom: 20px;
+}
 .booktype-img{
 	margin:10px 10px 0px 10px;
 }

@@ -5,7 +5,7 @@
 			{% if pageItems.has_previous %}
 			    <input type="button" class="mbtn" value="上一页" id="pre" rel="{{pageItems.previous_page_number}}"/>
 			{% else %}
-				<input type="button" class="mbtn" value="上一页" />
+				<input type="button" class="dbtn" value="上一页" />
 			{% endif %}
 			
 			{% for i in pageRange %}
@@ -19,7 +19,7 @@
 			{% if pageItems.has_next %}
 				<input type="button" class="mbtn" value="下一页" id="next" rel="{{pageItems.next_page_number}}"/>
 			{% else %}
-				<input type="button" class="mbtn" value="下一页" />
+				<input type="button" class="dbtn" value="下一页" />
 			{% endif %}
 			
 		{% endifnotequal %}

@@ -56,25 +56,17 @@ var extend_type = function(o){
 // 推荐列表聚焦
 var recommend_focus = function(o){
 	//获取当前书籍信息
-	//var bookuid = $(o).attr("data-bookuid");
-	//response_book_info(bookuid);
+	var bookuid = $(o).attr("data-bookuid");
+	response_book_info(bookuid);
 	//改变当前选中项的状态
 	$(o).addClass("active").siblings().removeClass('active');
 }
 //获取当前书籍信息
 var response_book_info = function(o){
-	$.ajax({
-		url:				"",
-		type:			"",
-		data:			"",
-		dataType:	"",
-		success:		function(responseData){
-			
-		},
-		error:			function(){
-			
-		},
-	});
+	$("#book_name").html($("#name_"+o).html());
+	$("#book_author").html($("#author_"+o).html());
+	$("#book_desc").html($("#desc_"+o).html());
+	$("#book_pic").attr("src", ($("#pic_"+o).attr("src")));
 }
 //推荐聚焦自动轮询
 var recommend_auto_loop = function(){
@@ -107,10 +99,14 @@ var auto_loop_base = function(o){
 		correct_loop = null;
 	}else if(o=='s'){
 		auto_i = parseInt(auto_i);
+		var uid = $($(".books-recommend-ul")[auto_i]).attr("data-bookuid");
+		response_book_info(uid);
 		auto_i += 1;
 	}
 	auto_loop = setInterval(function(){
 		$($(".books-recommend-ul")[auto_i]).addClass('active').siblings().removeClass('active');
+		var uid = $($(".books-recommend-ul")[auto_i]).attr("data-bookuid");
+		response_book_info(uid);
 		auto_i = parseInt(auto_i);
 		auto_i += 1;
 		if(auto_i>=count){

@@ -21,9 +21,19 @@ File feature description here
 '''
 ######
 BOOK_DATA_KEY = "bookPaging"
-BOOK_PAGE_SIZE = 3
+BOOK_PAGE_SIZE = 4
 CMT_DATA_KEY = "cmtPaging"
 CMT_PAGE_SIZE = 5
+
+def _getDataKey(type):
+    ''''''
+    if type == 'cate':
+        return 'cateBookData'
+    elif type == 'name': 
+        return 'nameBookData'
+    elif type == 'all':
+        return 'allBookData'
+        
 
 def goHome(request):
     '''首页, index.html'''
@@ -33,7 +43,7 @@ def goHome(request):
     books = Book.objects.getAll()
     
     ctx = {'showCates': showCates, 'restCates': restCates, 'recommend': recommend}
-    bookPaging = initSessionBooklistPaging(request, BOOK_DATA_KEY, books, 10)
+    bookPaging = initSessionBooklistPaging(request, _getDataKey('all'), books, 10)
     if bookPaging:
         ctx.update(bookPaging.result(1))
     
@@ -54,9 +64,9 @@ def getBooksByCate(request, cateName):
     
     category = Category.objects.get(name=cateName)
     books = Book.objects.filter(category=category)
-    ctx = {}
+    ctx = {'type': 'cate'}
     
-    bookPaging = initSessionBooklistPaging(request, BOOK_DATA_KEY, books, BOOK_PAGE_SIZE)
+    bookPaging = initSessionBooklistPaging(request, _getDataKey('cate'), books, BOOK_PAGE_SIZE)
     if bookPaging:
         ctx.update(bookPaging.result(1))
     
@@ -66,25 +76,25 @@ def getBooksByName(request):
     '''按书名模糊查询书籍'''
     name = request.REQUEST.get('name', '')
     books = Book.objects.filter(name__icontains=name)
-    ctx = {}
+    ctx = {'type': 'name'}
     
-    bookPaging = initSessionBooklistPaging(request, BOOK_DATA_KEY, books, BOOK_PAGE_SIZE)
+    bookPaging = initSessionBooklistPaging(request, _getDataKey('name'), books, BOOK_PAGE_SIZE)
     if bookPaging:
         ctx.update(bookPaging.result(1))
     
     return render_to_response('books/bookset.html', RequestContext(request, ctx))
 
-def pagingBooks(request):
+def pagingBooks(request, type):
     '''处理书籍查询结果分页, ajax request only'''
     if not request.is_ajax():
         raise Http404
     
     pageNo = pages.getRequestPageNo(request)
     request.session['currentPageNo'] = pageNo
-    paging = pages.getSessionPaging(request, BOOK_DATA_KEY)
+    paging = pages.getSessionPaging(request, _getDataKey(type))
     if not paging:
         booklist = Book.objects.all()
-        paging = initSessionBooklistPaging(request, BOOK_DATA_KEY, booklist, BOOK_PAGE_SIZE)
+        paging = initSessionBooklistPaging(request, _getDataKey(type), booklist, BOOK_PAGE_SIZE)
     
     t = get_template('books/includes/resultlist.html')
     html = t.render(RequestContext(request, paging.result(pageNo)))
@@ -98,10 +108,10 @@ def pagingAll(request):
     
     pageNo = pages.getRequestPageNo(request)
     request.session['currentPageNo'] = pageNo
-    paging = pages.getSessionPaging(request, BOOK_DATA_KEY)
+    paging = pages.getSessionPaging(request, _getDataKey('all'))
     if not paging:
         books = Book.objects.all()
-        paging = initSessionBooklistPaging(request, BOOK_DATA_KEY, books, 5)
+        paging = initSessionBooklistPaging(request, _getDataKey('all'), books, 10)
     
     t = get_template('base/books_list.html')
     html = t.render(RequestContext(request, paging.result(pageNo)))
@@ -256,10 +266,6 @@ def addComment(request, bookId):
     
     return HttpResponse(json.dumps({'status': 'failed'}))
     
-#    t = get_template('books/includes/commentlist.html')
-#    return HttpResponse(json.dumps({'status': 'success', 
-#        'html': t.render(RequestContext(request, {'comments': cmts}))}))
-
 def markBook(request, bookId):
     '''为书籍打分,ajax request only'''
     if not request.is_ajax():

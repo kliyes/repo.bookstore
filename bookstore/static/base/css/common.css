@@ -36,6 +36,40 @@
 	cursor:pointer;
 }
 
+.mbtn:hover{
+	background-color:#008287;
+	border:0px;
+	margin:1px;
+	cursor:pointer;
+}
+
+.dbtn{
+	width:90px;
+	height:30px;
+	background-color:#cccccc;
+	border:0px;
+	margin:1px;
+	cursor:default;
+}
+
+.lbtn{
+	width:200px;
+	height:30px;
+	background-color:#cccccc;
+	border:0px;
+	margin:1px;
+	cursor:pointer;
+}
+
+.lbtn:hover{
+	width:200px;
+	height:30px;
+	background-color:#008287;
+	border:0px;
+	margin:1px;
+	cursor:pointer;
+}
+
 /* 提示 */
 .mbtn-info{
 	background-color:#008287;	
@@ -57,6 +91,12 @@
 	height:30px;
 }
 .mbtn-page-active{
+	background-color:#CCC;
+	color:#333;
+	cursor:default;
+}
+
+.mbtn-page-active:hover{
 	background-color:#CCC;
 	color:#333;
 	cursor:default;

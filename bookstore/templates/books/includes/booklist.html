@@ -10,7 +10,7 @@
 				<a href="##" onclick="minus({{item.book_id}})">-1</a>
 				<input type="text" class="amount" id="amount_{{item.book_id}}" name="amount_{{item.book_id}}" value="{{item.amount}}" style="width:30;" onchange="countPartFee({{item.book_id}})" onkeyup="countPartFee({{item.book_id}})"/>
 				<a href="##" onclick="plus({{item.book_id}})">+1</a>&nbsp;&nbsp;
-				小计：<label class="PartFee" id="part_fee_{{item.book_id}}">{{item.book.price}}</label>&nbsp;&nbsp;
+				<label class="PartFee" id="part_fee_{{item.book_id}}" style="display: none;">{{item.book.price}}</label>&nbsp;&nbsp;
 				<a href="##" onclick="delFromCart({{item.book_id}})">删除</a>
 				<br /><br />
 			{% endfor %}

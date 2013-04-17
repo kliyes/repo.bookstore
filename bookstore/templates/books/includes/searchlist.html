@@ -1,9 +1,28 @@
-{% for book in pageItems.object_list %}
-	<a href="{% url book_detail book.id %}"><img src="{{ MEDIA_URL }}img/{{book.mpic}}" /></a><br />
-	书名：<a href="{% url book_detail book.id %}">{{book.name}}</a><br />
-	作者：{{book.author.name}}<br />
-	出版社：{{book.press}}<br />
-	ISBN：{{book.isbn}}<br />
-	定价：{{book.price}}元<br />
-	分类：{{book.category.label}}<br /><br />
-{% endfor %}
+<div class="books-all">
+	{% for book in pageItems.object_list %}
+		<div class="info">
+				<div class="poster">
+	                <div class="box box-medium">
+	                     <a href="{% url book_detail book.id %}"><img src="{{ MEDIA_URL }}img/{{book.mpic}}" width="80px" height="80px" /></a>
+	                </div>
+            	</div>
+            	<div class="books-info">
+	                <ul>
+	                    <li>
+	                        <a href="{% url book_detail book.id %}" class="title">{{book.name}}</a>
+	                    </li>
+	                    <li>
+	                        <label class="author">
+	                            {{book.author.name}}
+	                        </label>
+	                    </li>
+	                    <li>
+	                        <div class="desc">
+	                            {{book.desc}}
+	                        </div>
+	                    </li>
+	                </ul>
+            	</div>
+		</div>
+	{% endfor %}
+</div>
