@@ -16,7 +16,8 @@
     {"pk": 9, "model": "books.category", "fields": {"name": "fun","label": "娱乐"}},
     {"pk": 10, "model": "books.category", "fields": {"name": "tech","label": "科技"}},
     {"pk": 11, "model": "books.category", "fields": {"name": "history","label": "历史"}},
-    
+    {"pk": 12, "model": "profiles.province", "fields": {"name": "other", "desc": "其他"}},
+	    
     {"pk":1, "model": "profiles.province", "fields": {"name": "四川", "desc": "天府之国"}},
     {"pk":2, "model": "profiles.province", "fields": {"name": "云南", "desc": "彩云之南"}},
     {"pk":3, "model": "profiles.province", "fields": {"name": "北京", "desc": "首都"}},

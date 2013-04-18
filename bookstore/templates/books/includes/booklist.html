@@ -15,8 +15,14 @@
 				<br /><br />
 			{% endfor %}
 		</form>
-		<br /><br /><br />
-		共计：<label id="total_fee">{{cart.getTotalFee}}</label>元
+		{% if not cart.getBooks %}
+			您的购物车空空如也，快去选书吧！
+		{% else %}
+			<br /><br /><br />
+			共计：<label id="total_fee">{{cart.getTotalFee}}</label>元
+			<br /><br />
+			<input type="button" class="mbtn" value="下订单" onclick="makeOrder()" />
+		{% endif %}
 		<script type="text/javascript">
 			function countPartFee(bookId){
 				var amount = parseFloat($("#amount_"+bookId).val());

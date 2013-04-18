@@ -42,6 +42,7 @@ manageCate = Category.objects.get(name='manage')   #管理
 funCate = Category.objects.get(name='fun')         #娱乐
 techCate = Category.objects.get(name='tech')       #科技
 historyCate = Category.objects.get(name='history') #历史
+otherCate = Category.objects.get(name='other')     #其他
 
 def _downloadImg(url, size="medium"):
     '''下载书籍图片 size: 图片尺寸'''
@@ -248,7 +249,8 @@ def bookStat(request):
     funCateCount = funCate.getCount()
     techCateCount = techCate.getCount()
     historyCateCount = historyCate.getCount()
-    totalCount = letterCateCount+novelCateCount+artCateCount+bioCateCount+motiCateCount+examCateCount+txtbookCateCount+manageCateCount+funCateCount+techCateCount+historyCateCount
+    otherCateCount = otherCate.getCount()
+    totalCount = letterCateCount+novelCateCount+artCateCount+bioCateCount+motiCateCount+examCateCount+txtbookCateCount+manageCateCount+funCateCount+techCateCount+historyCateCount+otherCateCount
     return render_to_response('sites/stat.html', RequestContext(request, 
         {'letterCateCount': letterCateCount, 'letterPercent': str((letterCateCount/float(totalCount))*100)+'%', 
          'novelCateCount': novelCateCount, 'novelPercent': str((novelCateCount/float(totalCount))*100)+'%', 
@@ -260,7 +262,8 @@ def bookStat(request):
          'manageCateCount': manageCateCount, 'managePercent': str((manageCateCount/float(totalCount))*100)+'%', 
          'funCateCount': funCateCount, 'funPercent': str((funCateCount/float(totalCount))*100)+'%', 
          'techCateCount': techCateCount, 'techPercent': str((techCateCount/float(totalCount))*100)+'%', 
-         'historyCateCount': historyCateCount, 'historyPercent': str((historyCateCount/float(totalCount))*100)+'%', }))
+         'historyCateCount': historyCateCount, 'historyPercent': str((historyCateCount/float(totalCount))*100)+'%', 
+         'otherCateCount': otherCateCount, 'otherPercent': str((otherCateCount/float(totalCount))*100)+'%'}))
 
 
 def _getOrderById(orderId):
@@ -275,10 +278,10 @@ def updateOrders(request):
     '''更新订单'''
     if request.method != "POST":
         return render_to_response('sites/update_orders.html', RequestContext(request, 
-            {'orders1': Order.objects.filter(status=1), 
-             'orders2': Order.objects.filter(status=2), 
-             'orders3': Order.objects.filter(status=3), 
-             'orders0': Order.objects.filter(status=0)}))
+            {'orders1': Order.objects.getDealOrders(Order.objects.getAll()), 
+             'orders2': Order.objects.getToSendOrders(Order.objects.getAll()), 
+             'orders3': Order.objects.getToRecvOrders(Order.objects.getAll()), 
+             'orders0': Order.objects.getCancelOrders(Order.objects.getAll())}))
     
     status = request.REQUEST.get('status', '')
     orderIds = request.REQUEST.get('orderIds', '').split() # 多个id用空格分开

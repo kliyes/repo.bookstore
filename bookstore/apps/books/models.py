@@ -236,9 +236,7 @@ class Cart(models.Model):
     def removeBookItem(self, book):
         '''从购物车中移除书籍'''
         bookItem = self.getItemByBook(book)
-        bookItem.amount = 0
-        bookItem.fee = 0.0
-        bookItem.save()
+        bookItem.delete()
         book.stock += 1
         book.save()
         return True
@@ -281,13 +279,50 @@ class BookItem(models.Model):
         
     
 class OrderManager(models.Manager):
+    def getAll(self):
+        '''获取所有订单'''
+        return Order.objects.all()
+    
     def totalOrders(self):
         '''订单总量'''
-        return Order.objects.all().count()  
+        return len(self.getAll())  
     
     def getOrdersByDate(self, fDate, tDate):
         '''按日期范围获取订单'''
         return Order.objects.filter(created_date__range=(fDate, tDate))
+    
+    def getDealOrders(self, orders):
+        '''获得指定订单中交易完成的订单'''
+        result = []
+        for order in orders:
+            if order.status == 1:
+                result.append(order)
+        return result
+    
+    def getCancelOrders(self, orders):
+        '''获得指定订单中交易取消的订单'''
+        result = []
+        for order in orders:
+            if order.status == 0:
+                result.append(order)
+        return result
+    
+    def getToSendOrders(self, orders):
+        '''获得指定订单中等待发货的订单'''
+        result = []
+        for order in orders:
+            if order.status == 2:
+                result.append(order)
+        return result
+    
+    def getToRecvOrders(self, orders):
+        '''获得指定订单中等待收货的订单'''
+        result = []
+        for order in orders:
+            if order.status == 3:
+                result.append(order)
+        return result
+    
 
 class Order(models.Model):
     '''定义订单模型'''

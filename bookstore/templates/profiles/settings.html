@@ -91,7 +91,8 @@
 					{% endifequal %}
 					{% ifequal order.status 0 %}
 					交易取消
-					{% endifequal %}
+					{% endifequal %}<br />
+					时间：{{order.created_date|date:"Y-m-d H:i"}}
 					<br /><br />
 				{% endfor %}
 				{% include "base/citylist.html" %}

@@ -181,7 +181,7 @@ def delFromCart(request, bookId):
         return HttpResponse(json.dumps({'status': 'failed'}))
     
     t = get_template('books/includes/booklist.html')
-    html = t.render(RequestContext(request, {'cart': cart}))
+    html = t.render(RequestContext(request, {'cart': cart, 'itemCount': len(cart.getItems())}))
     
     return HttpResponse(json.dumps({'status': 'success', 'html': html}))
 
@@ -189,10 +189,9 @@ def checkCart(request):
     '''查看购物车'''
     profile = request.user.get_profile()
     cart = Cart.objects.get(owner=profile)
-    bookItems = cart.getItems()
     
     return render_to_response('books/bookcart.html', RequestContext(request, 
-        {'cart': cart, 'itemCount': len(bookItems)}))
+        {'cart': cart, 'itemCount': len(cart.getItems())}))
 
     
 def makeOrder(request):

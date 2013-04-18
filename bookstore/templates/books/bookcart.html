@@ -27,18 +27,35 @@
 				dataType: "json"
 			});
 		}
+		
+		function delFromCart(bookId){
+			$.ajax({
+				url: "/books/del_from_cart/" + bookId, 
+				data: {}, 
+				type: "post", 
+				async: "true", 
+				success: function(data){
+					if(data.status=="success"){
+						$("#cart_book_list").html(data.html);
+					}
+					else{
+						alert(data.status);
+					}
+				}, 
+				error: function(){
+					alert("error");
+				}, 
+				dataType: "json"
+			});
+		}
 	</script>
 {% endblock %}
 
 {% block body_base %}
 	<h4>{{profile.name}}，欢迎进入您的购物车</h4><br />
-	{% if not cart.getBooks %}
-		您的购物车空空如也，快去选书吧！
-	{% else %}
+	<div id="cart_book_list">
 		{% include "books/includes/booklist.html" %}
-		<br /><br />
-		<input type="button" class="mbtn" value="下订单" onclick="makeOrder()" />
-	{% endif %}
+	</div>
 {% endblock %}
 		
 				
