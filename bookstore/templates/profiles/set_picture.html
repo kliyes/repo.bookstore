@@ -1,11 +1,12 @@
-{% extends "base/theme_base_lyu.html" %}
+{% extends "base/theme_base.html" %}
 
-{% block title %}设置头像{% endblock %}
+{% block page_title %}设置头像{% endblock %}
 
 {% block message %} {% include "base/messages.html" %} {% endblock %}
 
-{% block extra_js %}
+{% block single_js %}
 <link type="text/css" href="{{ STATIC_URL }}jcrop/css/jcrop.css" rel="stylesheet" />
+<script type="text/javascript" src="{{STATIC_URL}}base/js/jquery-1.8.2.min.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}jcrop/jcrop/jquery.Jcrop.js"></script>
 
 <script type="text/javascript">
@@ -61,7 +62,7 @@
 </style>
 
 {% endblock %}
-{% block body %}
+{% block body_base %}
 	<div class="container">
 		<form name="submit_form" action="{% url profiles_initpic %}" method="post" enctype="multipart/form-data">
 		{% csrf_token %}

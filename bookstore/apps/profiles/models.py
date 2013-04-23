@@ -133,9 +133,9 @@ class ProfileManager(models.Manager):
 class Profile(ProfileBase):
     name = models.CharField(_("name"), max_length=50, default='', null=True, blank=True)        #昵称
     desc = models.TextField(_("about"), max_length=200, default='', null=True, blank=True)      #个人介绍
-    city = models.ForeignKey(City, null=True, blank=True)                                       #城市
+    #city = models.ForeignKey(City, null=True, blank=True)                                       #城市
     sex = models.CharField(_("sex"), default="unknown", max_length=20, null=True, blank=True)   #性别
-    website = models.CharField(max_length=40, null=True, blank=True)                            #个性域名
+    #website = models.CharField(max_length=40, null=True, blank=True)                            #个性域名
     
     # user's pic
     big_pic = models.CharField(max_length=80, default=settings.DEFAULT_PIC)                                  
@@ -150,7 +150,7 @@ class Profile(ProfileBase):
     login_count = models.IntegerField(default=0)                    #登录次数
     
     # user's spacename
-    spacename = models.CharField(max_length=50, null=True, blank=True)
+    #pacename = models.CharField(max_length=50, null=True, blank=True)
     
     #===============================================
     #code in bookstore

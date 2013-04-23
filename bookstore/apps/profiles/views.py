@@ -135,10 +135,10 @@ DRAFT_PROFILE_KEY = "draftProfile"
 def save_profile(request):
     profile = Profile()
     profile.name = request.POST["tmp_name"]
-    profile.website = request.POST["tmp_website"]
-    profile.spacename = request.POST["tmp_spacename"]
+    #profile.website = request.POST["tmp_website"]
+    #profile.spacename = request.POST["tmp_spacename"]
     profile.desc = request.POST["tmp_desc"]
-    profile.city_id = request.POST["tmp_city"]
+    #profile.city_id = request.POST["tmp_city"]
     profile.sex = request.POST["tmp_sex"]
     request.session[DRAFT_PROFILE_KEY] = profile 
     

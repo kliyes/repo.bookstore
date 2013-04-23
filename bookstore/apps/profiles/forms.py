@@ -33,22 +33,22 @@ class ProfileForm(forms.Form):
         widget=forms.Textarea(), 
     )
     
-    website = forms.CharField(
-        required = False,                          
-        max_length = 50,
-        widget=forms.TextInput()
-    )
+#    website = forms.CharField(
+#        required = False,                          
+#        max_length = 50,
+#        widget=forms.TextInput()
+#    )
     
-    spacename = forms.CharField(
-        required = False,
-        max_length = 50,
-        widget=forms.TextInput()
-    )
+#    spacename = forms.CharField(
+#        required = False,
+#        max_length = 50,
+#        widget=forms.TextInput()
+#    )
     
     # location choices
-    city = forms.CharField()
+    #city = forms.CharField()
     
-    cityName = None
+    #cityName = None
     #cityName = forms.CharField()
     
     sex = forms.ChoiceField(
@@ -79,9 +79,9 @@ class ProfileForm(forms.Form):
             
             self.fields["name"].initial = p.name
             
-            if p.city:
-                self.fields["city"].initial = p.city.id
-                self.cityName = City.objects.getById(id=p.city.id).name
+#            if p.city:
+#                self.fields["city"].initial = p.city.id
+#                self.cityName = City.objects.getById(id=p.city.id).name
             
             #if p.city is not None:
             #    self.fields["location"].initial = p.city.id
@@ -89,8 +89,8 @@ class ProfileForm(forms.Form):
             self.fields["sex"].initial = p.sex
             self.fields["desc"].initial = p.desc
             self.fields["email"].initial = p.user.email
-            self.fields["website"].initial = p.website
-            self.fields["spacename"].initial = p.spacename
+            #self.fields["website"].initial = p.website
+            #self.fields["spacename"].initial = p.spacename
             
         # 如果之前进入过setup页面，且用户已输入数据，则从session中取得输入数据草稿
         # 该session中的值由之前请求中的save_profile函数设定
@@ -98,10 +98,10 @@ class ProfileForm(forms.Form):
             self.fields["name"].initial = draftProfile.name
             self.fields["desc"].initial = draftProfile.desc
             self.fields["sex"].initial = draftProfile.sex
-            self.fields["website"].initial = draftProfile.website
-            self.fields["spacename"].initial = draftProfile.spacename
-            self.fields["city"].initial = draftProfile.city_id
-            self.cityName = City.objects.getById(id=draftProfile.city.id).name
+            #self.fields["website"].initial = draftProfile.website
+            #self.fields["spacename"].initial = draftProfile.spacename
+            #self.fields["city"].initial = draftProfile.city_id
+            #self.cityName = City.objects.getById(id=draftProfile.city.id).name
             
     def clean_name(self):
         #other code later
@@ -110,47 +110,46 @@ class ProfileForm(forms.Form):
             raise forms.ValidationError(u"不能为空或者多于8个汉字(或16个英文字符)")
         return value
     
-    def clean_city(self):
-        return self.cleaned_data.get("city")
+#    def clean_city(self):
+#        return self.cleaned_data.get("city")
     
     def clean_sex(self):
         return self.cleaned_data.get("sex")
     
-    def clean_website(self):
-        website = self.cleaned_data.get("website", None)
-        nowWebsite = Profile.objects.get(id=self.user.get_profile().id).website
-        if nowWebsite and nowWebsite != website:
-            raise forms.ValidationError(u"个性域名已设置，不可修改")
-        if not website:
-            return website.strip().lower()
-        if website.isdigit():
-            raise forms.ValidationError(u"个性域名不能全为数字")
-        if website and len(website.strip()) < 3:
-            raise forms.ValidationError(u"个性域名不应少于3个英文字符")
-        if len(website.strip()) > 20:
-            raise forms.ValidationError(u"字数应限制在20个英文字符以内")
-        
-        try:
-            pro = Profile.objects.get(website__iexact=website)
-            
-            # 当前用户自身原有的web site
-            if pro.id == self.user.get_profile().id:
-                return pro.website
-            
-            raise forms.ValidationError(u"个性域名已被使用,请重新设定")
-        except Profile.DoesNotExist:
-            return website.strip().lower()
-        
-    def clean_spacename(self):
-        spacename = self.cleaned_data.get("spacename", None)
-        if not spacename or len(spacename.strip()) <= 0:
-            return self.user.get_profile().name
-        if len(ecode(spacename.strip())) > 16:
-            raise forms.ValidationError(u"主页名称不能多于8个汉字(或16个英文字符)")
-        
-        return spacename.strip()
+#    def clean_website(self):
+#        website = self.cleaned_data.get("website", None)
+#        nowWebsite = Profile.objects.get(id=self.user.get_profile().id).website
+#        if nowWebsite and nowWebsite != website:
+#            raise forms.ValidationError(u"个性域名已设置，不可修改")
+#        if not website:
+#            return website.strip().lower()
+#        if website.isdigit():
+#            raise forms.ValidationError(u"个性域名不能全为数字")
+#        if website and len(website.strip()) < 3:
+#            raise forms.ValidationError(u"个性域名不应少于3个英文字符")
+#        if len(website.strip()) > 20:
+#            raise forms.ValidationError(u"字数应限制在20个英文字符以内")
+#        
+#        try:
+#            pro = Profile.objects.get(website__iexact=website)
+#            
+#            # 当前用户自身原有的web site
+#            if pro.id == self.user.get_profile().id:
+#                return pro.website
+#            
+#            raise forms.ValidationError(u"个性域名已被使用,请重新设定")
+#        except Profile.DoesNotExist:
+#            return website.strip().lower()
+#        
+#    def clean_spacename(self):
+#        spacename = self.cleaned_data.get("spacename", None)
+#        if not spacename or len(spacename.strip()) <= 0:
+#            return self.user.get_profile().name
+#        if len(ecode(spacename.strip())) > 16:
+#            raise forms.ValidationError(u"主页名称不能多于8个汉字(或16个英文字符)")
+#        
+#        return spacename.strip()
              
-    
     def clean_desc(self):
         value = self.cleaned_data.get("desc")
         if len(ecode(value)) > 400:
@@ -167,9 +166,9 @@ class ProfileForm(forms.Form):
             
         profile.name = self.cleaned_data.get("name")
         profile.sex = self.cleaned_data.get("sex")
-        profile.city = self.getCity()
-        profile.website = self.cleaned_data.get("website")
-        profile.spacename = self.cleaned_data.get("spacename")
+        #profile.city = self.getCity()
+        #profile.website = self.cleaned_data.get("website")
+        #profile.spacename = self.cleaned_data.get("spacename")
         profile.desc = self.cleaned_data.get("desc")
         profile.save()
         
@@ -177,11 +176,11 @@ class ProfileForm(forms.Form):
         
         return profile
                 
-    def getCity(self):
-        cid = self.cleaned_data.get("city")
-        if cid is None:
-            raise forms.ValidationError("city id is null")
-        return City.objects.getById(id=int(cid)) 
+#    def getCity(self):
+#        cid = self.cleaned_data.get("city")
+#        if cid is None:
+#            raise forms.ValidationError("city id is null")
+#        return City.objects.getById(id=int(cid)) 
         
 class PictureForm(forms.Form):
     pic = forms.ImageField(
