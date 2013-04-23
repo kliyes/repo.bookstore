@@ -1,10 +1,10 @@
-{% extends "base/theme_base_lyu.html" %}
+{% extends "base/theme_base.html" %}
 
-{% block head_title %}个性标签设置{% endblock %}
+{% block page_title %}个性标签设置{% endblock %}
 
 {% block message %} {% include "base/messages.html" %} {% endblock %}
 
-{% block body %}
+{% block body_base %}
 <br /><br /><br />
 	<div class="container">
 		<div>
@@ -34,7 +34,8 @@
 	</div>
 {% endblock %}
 
-{% block extra_js %}
+{% block single_js %}
+<script src="{{STATIC_URL}}xizhi/js/jquery-1.8.2.min.js"></script>
 	<script type="text/javascript">
 		
 		$(document).ready(function(){			

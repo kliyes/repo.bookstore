@@ -1,9 +1,10 @@
-{% extends "base/theme_base_lyu.html" %}
+{% extends "base/theme_base.html" %}
+
 {% load widget_tweaks %}
 
-{% block title %}重置密码{% endblock %}
+{% block page_title %}重置密码{% endblock %}
 
-{% block body %}
+{% block body_base %}
 <div class="container">
 	<form action="{% url acct_reset_passwd %}" method="POST">
 		{% csrf_token %}
@@ -23,7 +24,7 @@
 </div>
 {% endblock %}
 
-{% block extra_js %}
+{% block single_js %}
 <script type="text/javascript" src="{{STATIC_URL}}lyu/plug-in.js"></script>
 <script type="text/javascript">
     $(document).ready(function(e) {

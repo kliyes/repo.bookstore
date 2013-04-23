@@ -2,7 +2,7 @@
     {% for cate in showCates %}
     	<div class="box box-large">
     		<div class="box box-medium booktype-img">
-    			<a href="{% url book_get_by_cate cate.name %}" ><img src="{{STATIC_URL}}base/img/like.png" /></a>
+    			<a href="{% url book_get_by_cate cate.name %}" ><img src="{{STATIC_URL}}base/img/{{cate.name}}.png" /></a>
     		</div>
     		<div class="booktype-info">
     			<a href="{% url book_get_by_cate cate.name %}" class="booktype-title">{{cate.label}}</a>
@@ -34,7 +34,7 @@
 {% for cate in restCates %}
     	<div class="box box-large">
     		<div class="box box-medium booktype-img">
-    			<a href="{% url book_get_by_cate cate.name %}" ><img src="{{STATIC_URL}}base/img/like.png" /></a>
+    			<a href="{% url book_get_by_cate cate.name %}" ><img src="{{STATIC_URL}}base/img/{{cate.name}}.png" /></a>
     		</div>
     		<div class="booktype-info">
     			<a href="{% url book_get_by_cate cate.name %}" class="booktype-title">{{cate.label}}</a>

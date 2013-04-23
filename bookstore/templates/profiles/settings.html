@@ -1,9 +1,9 @@
-{% extends "base/theme_base_lyu.html" %}
+{% extends "base/theme_base.html" %}
 
 {% load widget_tweaks %}
 
-{% block title %} 个人设置 {% endblock %}
-{% block body %}
+{% block page_title %} 个人设置 {% endblock %}
+{% block body_base %}
 	<div class="container">
 		<div class="row">
 			<div class="span5" style="border:0px solid red;">
@@ -114,12 +114,15 @@
 	</div>
 {% endblock %}
 	
-{% block extra_css %}
+{% block style_css %}
 <link type="text/css" rel="stylesheet" href="{{STATIC_URL}}facebox/css/facebox.css" />
 {% endblock %}
-{% block extra_js %}
+
+{% block single_js %}
 <script type="text/javascript" src="{{STATIC_URL}}facebox/js/facebox.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}lyu/plug-in.js"></script>
+<script src="{{STATIC_URL}}xizhi/js/jquery-1.8.2.min.js"></script>
+<script src="{{STATIC_URL}}xizhi/js/secure.js"></script>
 <script>
 	$(document).ready(function(){
 		lyu_load();

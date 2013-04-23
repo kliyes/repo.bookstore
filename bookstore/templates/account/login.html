@@ -1,16 +1,16 @@
-{% extends "base/theme_base_lyu.html" %}
+{% extends "base/theme_base.html" %}
 
 {% load widget_tweaks %}
 
-{% block head_title %}登录{% endblock %}
+{% block page_title %}登录{% endblock %}
 
 {% block message %} {% include "base/messages.html" %} {% endblock %}
 
-{% block body %}
+{% block body_base %}
 <div class="container">
     <div class="row">
         <div class="span5" style="border:0px solid red;">
-            <h2>欢迎登陆习之</h2>
+            <h2>欢迎登陆BookStore</h2>
             <br /><br />
             <form action="{% url acct_login %}" method="post" name="login_from" >
             	{% csrf_token %}
@@ -26,11 +26,10 @@
 			    </div>
 			    <div class="input-prepend">
 			    	{% if request.session.failedLoginCount >= 1 %}
-					<p><label>验证码</label><input lvy="secure_code" type="text" style="width: 80px" id="code-input" maxlength="8" placeholder="习之教育" />
+					<p><label>验证码</label><input lvy="secure_code" type="text" style="width: 80px" id="code-input" maxlength="8" placeholder="BookStore" />
 						<img id="code-img" style="vertical-align:top;display:inline;" src="{% url new_secure_code %}" /> 
 						<span class="text-prompt">
-							<a id="change-code" 
-							onclick="changeSecureCode('code-img','{% url new_secure_code %}');" href="#">换一个</a>&nbsp;&nbsp;</span>
+							<a id="change-code" onclick="changeSecureCode('code-img','{% url new_secure_code %}');" href="#">换一个</a>&nbsp;&nbsp;</span>
 						<div><label lvy="err_msg_code" class="err_msg"></label></div>
 					</p>
 					{% endif %}
@@ -41,17 +40,16 @@
 			    </div>
 		    </form>
         </div>
-        <div class="span4">
-            <img src="http://wrongwaycn.github.com/bootstrap/docs/assets/img/bootstrap-mdo-sfmoma-03.jpg" />
-        </div>
     </div>
 </div>
 <!-- /container -->
 {% endblock %}
 
-{% block extra_js %}
+{% block single_js %}
 
 <script type="text/javascript" src="{{STATIC_URL}}lyu/plug-in.js"></script>
+<script src="{{STATIC_URL}}xizhi/js/jquery-1.8.2.min.js"></script>
+<script src="{{STATIC_URL}}xizhi/js/secure.js"></script>
 <script>
 	$(document).ready(function(){
 		lyu_load();

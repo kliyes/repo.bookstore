@@ -274,11 +274,11 @@ RESERVED_WORDS = [
 
 # Email server setup
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'mail.dannywork.org' 
+EMAIL_HOST = 'mail.dannysite.net' 
 EMAIL_PORT = 25   
 DEFAULT_FROM_EMAIL = 'service@kliyes.com'
 EMAIL_HOST_USER='postman'
-EMAIL_HOST_PASSWORD='gpqsPjHdDBIy4tML'
+EMAIL_HOST_PASSWORD='Zdnhvk6BLgU2QyP8'
 EMAIL_USE_TLS = True
 
 # Default Picture setup

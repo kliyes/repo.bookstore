@@ -10,7 +10,7 @@ if not os.path.exists(LOG_DIR):
     os.mkdir(LOG_DIR)
 
 # 日志文件路径
-LOG_FILE_PATH = os.path.join(LOG_DIR, "xizhi-server.log")
+LOG_FILE_PATH = os.path.join(LOG_DIR, "bookstore.log")
 
 # 日志显示级别
 LOG_LEVEL = 'INFO'  #ERROR, INFO, DEBUG

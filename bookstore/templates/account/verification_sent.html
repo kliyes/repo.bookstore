@@ -2,7 +2,7 @@
 
 <!-- more detail later -->
 
-{% block head_title %}查收验证邮件{% endblock %}
+{% block page_title %}查收验证邮件{% endblock %}
 
 
 {% block message %} {% include "base/messages.html" %} {% endblock %}
@@ -11,7 +11,7 @@
 <h4>查收验证邮件</h4>
 {% endblock %}
 
-{% block body %}
+{% block body_base %}
 <div class="summary">
     <p class="textarea-style">注册成功!<br/>已发送激活邮件到&nbsp;{{ email }} &nbsp;，请登录邮箱激活账号.</p>
     <p><a href="{{ success_url }}"></a></p>
