@@ -26,5 +26,26 @@ class Feedback(models.Model):
     class Meta:
         db_table = 't_feedback'
         verbose_name = 'Feedback'
+        app_label = 'sites'
+
+
+class MottoManager(models.Manager):
+    def getCount(self):
+        return self.all().count()
+
+class Motto(models.Model):
+    '''定义注册登录页格言模型'''
+    author = models.CharField(max_length=100, default='佚名') #格言作者
+    content = models.CharField(max_length=500) #格言内容
+    
+    objects = MottoManager()
+    
+    class Meta:
+        db_table = 't_motto'
+        verbose_name = 'Motto'
+        app_label = 'sites'
+    
+    
+    
     
     

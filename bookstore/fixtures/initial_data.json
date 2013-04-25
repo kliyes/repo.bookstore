@@ -63,5 +63,16 @@
     {"pk":38, "model": "profiles.area", "fields": {"name": "九龙坡区", "city": 11}},
     {"pk":39, "model": "profiles.area", "fields": {"name": "巴南区", "city": 11}},
     {"pk":40, "model": "profiles.area", "fields": {"name": "江津区", "city": 11}},
-    {"pk":59, "model": "profiles.area", "fields": {"name": "其他", "city": 11}}
+    {"pk":59, "model": "profiles.area", "fields": {"name": "其他", "city": 11}},
+    
+    {"pk":1, "model": "sites.motto", "fields": {"author": "高尔基 ", "content": "书是人类进步的阶梯"}},
+    {"pk":2, "model": "sites.motto", "fields": {"author": "莎士比亚 ", "content": "书籍是人类知识的总统"}},
+    {"pk":3, "model": "sites.motto", "fields": {"author": "普希金 ", "content": "人的影响短暂而微弱，书的影响则广泛而深远"}},          
+    {"pk":4, "model": "sites.motto", "fields": {"author": "列夫·托尔斯泰 ", "content": "理想的书籍是智慧的钥匙"}},
+    {"pk":5, "model": "sites.motto", "fields": {"author": "巴罗", "content": "一个爱书的人，他必定不致于缺少一个忠实的朋友，一个良好的老师，一个可爱的伴侣，一个温情的安慰者"}},
+    {"pk":6, "model": "sites.motto", "fields": {"author": "雨果", "content": "书籍是朋友，虽然没有热情，但是非常忠实"}},
+    {"pk":7, "model": "sites.motto", "fields": {"author": "莎士比亚 ", "content": "书籍是全世界的营养品。生活里没有书籍，就好像没有阳光；智慧里没有书籍，就好像鸟儿没有翅膀"}},
+    {"pk":8, "model": "sites.motto", "fields": {"author": "夸美绍斯 ", "content": "书籍是培植智慧的工具"}},
+    {"pk":9, "model": "sites.motto", "fields": {"author": "凯勒 ", "content": "一本书像一艘船，带领我们从狭獈的地方，驶向生活的无限广阔的海洋"}},
+    {"pk":10, "model": "sites.motto", "fields": {"author": "歌德", "content": "读一本好书，就是和许多高尚的人谈话"}}
 ]

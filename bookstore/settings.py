@@ -210,6 +210,7 @@ INSTALLED_APPS = [
     "profiles",
     #"activity",
     "books", 
+    "sites", 
 ]
 
 FIXTURE_DIRS = [

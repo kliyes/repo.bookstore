@@ -22,6 +22,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from account.models import EmailAddress, EmailConfirmation
 from common import utils
+from sites.models import Motto
  
 association_model = models.get_model("django_openid", "Association")
 if association_model is not None:
@@ -120,12 +121,16 @@ def login(request, **kwargs):
         form = form_class(group=group)
     
     ctx = group_context(group, bridge)
+    
+    motto = Motto.objects.get(id=random.randint(1, Motto.objects.getCount()))
+    
     ctx.update({
         "form": form,
         "url_required": url_required,
         "redirect_field_name": redirect_field_name,
-        "whatNext": request.GET.get("whatNext"), #写日记页面传入
+        "whatNext": request.GET.get("whatNext"), 
         "redirect_field_value": request.REQUEST.get(redirect_field_name),
+        "motto": motto
     })
     ctx.update(extra_context)
     
