@@ -1,0 +1,58 @@
+<div id="deal">
+	<h1>交易完成</h1><br />
+	{% for order1 in orders1 %}
+		<input type="checkbox" />
+		订单ID：{{order1.id}}<br />
+		书籍项目：<br />
+		{% for item in order1.getItems %}
+			&nbsp;&nbsp;&nbsp;&nbsp;{{forloop.counter}}.{{item.book.name}}&nbsp;&nbsp;{{item.amount}}本<br />
+		{% endfor %}
+		订单总价：{{order1.total_fee}}元<br />
+		订单状态：{{order1.status}}<br /><br />
+	{% endfor %}
+</div><br /><br />
+
+<div id="preSend">
+	<h1>等待发货</h1><br />
+	{% for order2 in orders2 %}
+		<input data-id="{{order2.id}}" type="checkbox" />
+		订单ID：{{order2.id}}<br />
+		书籍项目：<br />
+		{% for item in order2.getItems %}
+			&nbsp;&nbsp;&nbsp;&nbsp;{{forloop.counter}}.{{item.book.name}}&nbsp;&nbsp;{{item.amount}}本<br />
+		{% endfor %}
+		订单总价：{{order2.total_fee}}元<br />
+		订单状态：{{order2.status}}<br /><br />
+	{% endfor %}<br />
+</div>
+<input type="button" class="mbtn" value="发货" onclick="onSend()"/>
+<input type="button" class="mbtn" value="取消" onclick="onCancel('#preSend')"/><br /><br />
+
+<div id="recv">
+	<h1>已发待收</h1><br />
+	{% for order3 in orders3 %}
+		<input data-id="{{order3.id}}" type="checkbox" />
+		订单ID：{{order3.id}}<br />
+		书籍项目：<br />
+		{% for item in order3.getItems %}
+			&nbsp;&nbsp;&nbsp;&nbsp;{{forloop.counter}}.{{item.book.name}}&nbsp;&nbsp;{{item.amount}}本<br />
+		{% endfor %}
+		订单总价：{{order3.total_fee}}元<br />
+		订单状态：{{order3.status}}<br /><br />
+	{% endfor %}<br />
+</div>
+<input type="button" class="mbtn" value="取消" onclick="onCancel('#recv')"/><br /><br />
+
+<div id="cancel">
+	<h1>取消</h1><br />
+	{% for order0 in orders0 %}
+		<input type="checkbox" />
+		订单ID：{{order0.id}}<br />
+		书籍项目：<br />
+		{% for item in order0.getItems %}
+			&nbsp;&nbsp;&nbsp;&nbsp;{{forloop.counter}}.{{item.book.name}}&nbsp;&nbsp;{{item.amount}}本<br />
+		{% endfor %}
+		订单总价：{{order0.total_fee}}元<br />
+		订单状态：{{order0.status}}<br /><br />
+	{% endfor %}
+</div>

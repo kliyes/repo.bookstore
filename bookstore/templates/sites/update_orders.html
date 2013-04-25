@@ -1,31 +1,49 @@
-<html>
-	<body>
-		<h1>交易完成</h1><br />
-		{% for order1 in orders1 %}
-			订单ID：{{order1.id}}&nbsp;
-			订单状态：{{order1.status}}<br />
-		{% endfor %}<br /><br />
-		<h1>等待发货</h1><br />
-		{% for order2 in orders2 %}
-			订单ID：{{order2.id}}&nbsp;
-			订单状态：{{order2.status}}<br />
-		{% endfor %}
-		<h1>等待收货</h1><br />
-		{% for order3 in orders3 %}
-			订单ID：{{order3.id}}&nbsp;
-			订单状态：{{order3.status}}<br />
-		{% endfor %}
-		<h1>取消</h1><br />
-		{% for order0 in orders0 %}
-			订单ID：{{order0.id}}&nbsp;
-			订单状态：{{order0.status}}<br />
-		{% endfor %}
-		<br />
-		<form action="." method="post">
-			{% csrf_token %}
-			订单IDs（多个ID用空格隔开）：<br /><input type="text" name="orderIds" id="orderIds" /><br />
-			现状态：<br /><input type="text" name="status" id="status" /><br />
-			<input type="submit" value="更新" />			
-		</form>
-	</body>
-</html>
+{% extends "base/theme_base.html" %}
+	
+{% block page_title %}更新订单{% endblock %}
+	
+{% block single_js %}
+	<script type="text/javascript" src="{{STATIC_URL}}base/js/jquery-1.8.2.min.js"></script>
+	<script type="text/javascript" src="{{STATIC_URL}}base/js/secure.js"></script>
+	<script type="text/javascript">
+		function onSend(){
+			var temp = "";
+			$.each($("#preSend :checked"),function(j,k){
+				temp += $(k).attr("data-id") + " ";
+			});
+			
+			$.ajax({
+				url: "/manage/update_orders/", 
+				data: {'orderIds': temp, 'status': 3}, 
+				type: "post", 
+				async: "true", 
+				success: function(data){
+					if(data.status=="success"){
+						$("#all_orders").html(data.html);
+					}
+					else{
+						alert(data.status);
+					}
+				}, 
+				error: function(){
+					alert("error");
+				}, 
+				dataType: "json"				
+			});
+		}
+		
+		function onCancel(o){
+			var temp = "";
+			$.each($(o+" :checked"),function(j,k){
+				temp += $(k).attr("data-id") + " ";
+			});
+			console.log(temp)
+		}
+	</script>
+{% endblock %}
+	
+{% block body_base %}
+<div id="all_orders">
+	{% include "sites/includes/all_orders.html" %}
+</div>
+{% endblock %}

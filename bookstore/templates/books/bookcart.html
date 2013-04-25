@@ -3,8 +3,8 @@
 {% block page_title %}购物车{% endblock %}
 
 {% block single_js %}
-	<script src="{{STATIC_URL}}xizhi/js/jquery-1.8.2.min.js"></script>
-	<script src="{{STATIC_URL}}xizhi/js/secure.js"></script>
+	<script type="text/javascript" src="{{STATIC_URL}}base/js/jquery-1.8.2.min.js"></script>
+	<script type="text/javascript" src="{{STATIC_URL}}base/js/secure.js"></script>
 	<script type="text/javascript">
 		function makeOrder(){
 			var temp = $('#form_cart').serialize();

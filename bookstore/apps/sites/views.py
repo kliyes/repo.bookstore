@@ -29,6 +29,8 @@ import sys
 from books.models import Book, Author, Category, Order
 import os
 import datetime
+from django.template.loader import get_template
+import json
 log = logging.getLogger("mysite")
 
 letterCate = Category.objects.get(name='letter')   #文学
@@ -285,14 +287,20 @@ def updateOrders(request):
     
     status = request.REQUEST.get('status', '')
     orderIds = request.REQUEST.get('orderIds', '').split() # 多个id用空格分开
-    
     for orderId in orderIds:
         order = _getOrderById(int(orderId))
         order.status = int(status)
         order.updated_date = datetime.datetime.now()
         order.save()
     
-    return HttpResponseRedirect('/manage/update_orders/')
+    t = get_template('sites/includes/all_orders.html')
+    html = t.render(RequestContext(request, {
+        'orders1': Order.objects.getDealOrders(Order.objects.getAll()), 
+        'orders2': Order.objects.getToSendOrders(Order.objects.getAll()), 
+        'orders3': Order.objects.getToRecvOrders(Order.objects.getAll()), 
+        'orders0': Order.objects.getCancelOrders(Order.objects.getAll())}))
+    
+    return HttpResponse(json.dumps({'status': 'success', 'html': html}))
 
 @admin_required
 def getOnlines(request):
