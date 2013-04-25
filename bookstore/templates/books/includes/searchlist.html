@@ -1,3 +1,4 @@
+{% load filters %}
 <div class="books-all">
 	{% for book in pageItems.object_list %}
 		<div class="info">
@@ -18,7 +19,7 @@
 	                    </li>
 	                    <li>
 	                        <div class="desc">
-	                            {{book.desc}}
+	                            <a class="f-black" href="{% url book_detail book.id %}" >{{book.desc|truncatehanzi:70}}……</a>
 	                        </div>
 	                    </li>
 	                </ul>

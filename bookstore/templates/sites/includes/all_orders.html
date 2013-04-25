@@ -1,7 +1,7 @@
 <div id="deal">
 	<h1>交易完成</h1><br />
 	{% for order1 in orders1 %}
-		<input type="checkbox" />
+		<input data-id="{{order1.id}}" type="checkbox" />
 		订单ID：{{order1.id}}<br />
 		书籍项目：<br />
 		{% for item in order1.getItems %}
@@ -10,7 +10,14 @@
 		订单总价：{{order1.total_fee}}元<br />
 		订单状态：{{order1.status}}<br /><br />
 	{% endfor %}
-</div><br /><br />
+</div>
+{% if orders1 %}
+	<input type="button" class="mbtn" value="等待发货" onclick="onSend('#deal', 2)"/>
+	<input type="button" class="mbtn" value="已发待收" onclick="onSend('#deal', 3)"/>
+	<input type="button" class="mbtn" value="取消订单" onclick="onSend('#deal', 0)"/>
+	<input type="button" class="mbtn mbtn-danger" value="删除订单" onclick="onSend('#deal', -1)"/><br /><br />
+{% endif %}
+
 
 <div id="preSend">
 	<h1>等待发货</h1><br />
@@ -25,8 +32,12 @@
 		订单状态：{{order2.status}}<br /><br />
 	{% endfor %}<br />
 </div>
-<input type="button" class="mbtn" value="发货" onclick="onSend()"/>
-<input type="button" class="mbtn" value="取消" onclick="onCancel('#preSend')"/><br /><br />
+{% if orders2 %}
+	<input type="button" class="mbtn" value="完成交易" onclick="onSend('#preSend', 1)"/>
+	<input type="button" class="mbtn" value="已发待收" onclick="onSend('#preSend', 3)"/>
+	<input type="button" class="mbtn" value="取消订单" onclick="onSend('#preSend', 0)"/>
+	<input type="button" class="mbtn mbtn-danger" value="删除订单" onclick="onSend('#preSend', -1)"/><br /><br />
+{% endif %}
 
 <div id="recv">
 	<h1>已发待收</h1><br />
@@ -41,12 +52,17 @@
 		订单状态：{{order3.status}}<br /><br />
 	{% endfor %}<br />
 </div>
-<input type="button" class="mbtn" value="取消" onclick="onCancel('#recv')"/><br /><br />
+{% if orders3 %}
+	<input type="button" class="mbtn" value="完成交易" onclick="onSend('#recv', 1)"/>
+	<input type="button" class="mbtn" value="等待发货" onclick="onSend('#recv', 2)"/>
+	<input type="button" class="mbtn" value="取消订单" onclick="onSend('#recv', 0)"/>
+	<input type="button" class="mbtn mbtn-danger" value="删除订单" onclick="onSend('#recv', -1)"/><br /><br />
+{% endif %}
 
 <div id="cancel">
 	<h1>取消</h1><br />
 	{% for order0 in orders0 %}
-		<input type="checkbox" />
+		<input data-id="{{order0.id}}" type="checkbox" />
 		订单ID：{{order0.id}}<br />
 		书籍项目：<br />
 		{% for item in order0.getItems %}
@@ -56,3 +72,13 @@
 		订单状态：{{order0.status}}<br /><br />
 	{% endfor %}
 </div>
+{% if orders0 %}
+	<input type="button" class="mbtn" value="完成交易" onclick="onSend('#cancel', 1)"/>
+	<input type="button" class="mbtn" value="等待发货" onclick="onSend('#cancel', 2)"/>
+	<input type="button" class="mbtn" value="已发待收" onclick="onSend('#cancel', 3)"/>
+	<input type="button" class="mbtn mbtn-danger" value="删除订单" onclick="onSend('#cancel', -1)"/><br /><br />
+{% endif %}
+
+
+
+

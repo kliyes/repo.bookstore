@@ -330,7 +330,7 @@ class Order(models.Model):
     total_fee = models.FloatField() # 总金额
     is_charged = models.BooleanField(default=False) # 是否付款
     charge_type = models.SmallIntegerField(default=1) # 付款方式, 1-货到付款 2-在线支付
-    status = models.SmallIntegerField(default=2) # 订单状态, 1-完成交易 0-取消 2-等待发货 3-等待收货
+    status = models.SmallIntegerField(default=2) # 订单状态, -1-删除订单 1-完成交易 0-取消 2-等待发货 3-等待收货
     addr = models.CharField(max_length=200) # 送货地址
     contact = models.CharField(max_length=20) # 联系方式
     created_date = models.DateTimeField(default=datetime.datetime.now) # 订单生成时间

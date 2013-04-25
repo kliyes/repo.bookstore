@@ -97,10 +97,9 @@
 }
 .books-recommend-simple .desc{
 	width:98%;
-	height:30px;
+	height:42px;
 	overflow:hidden;
 }
-
 .books-recommend-info .box{
 	float:left;
 }
@@ -143,6 +142,10 @@
 .books-all{
 	width:100%;
 }
+.books-all a {
+	text-decoration: none;
+	width:100%;
+}
 .books-all .bt{
 	font-size:50px;
 	font-weight:800;
@@ -164,6 +167,7 @@
 	list-style:none;
 }
 .books-all .info .books-info ul li .title{
+	font-weight:bold;
 	font-size:14px;
 	text-decoration:none;
 	color:#000;
@@ -176,6 +180,6 @@
 	position:relative;
 	top:5px;
 	width:350px;
-	height:30px;
+	height:43px;
 	overflow:hidden;
 }

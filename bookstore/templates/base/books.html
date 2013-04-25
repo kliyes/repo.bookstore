@@ -1,3 +1,4 @@
+{% load filters %}
 <div class="books-all">
     <div>
         <p class="bt">
@@ -23,7 +24,7 @@
                     </li>
                     <li>
                         <div class="desc">
-                            {{book.desc}}
+                            <a class="f-black" href="{% url book_detail book.id %}" >{{book.desc|truncatehanzi:70}}……</a>
                         </div>
                     </li>
                 </ul>

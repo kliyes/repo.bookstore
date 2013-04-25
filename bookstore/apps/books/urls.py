@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import *
+from django.views.generic.simple import direct_to_template
 
 urlpatterns = patterns("",
     url(r"^getbyname/$", "books.views.getBooksByName", name="book_search"),
@@ -14,4 +15,6 @@ urlpatterns = patterns("",
     url(r"^page_books/(\w+)/$", "books.views.pagingBooks"), 
     url(r"^page_all_books/$", "books.views.pagingAll"), 
     url(r"^page_cmts/(\d+)$", "books.views.pagingCmts"), 
+
+    url(r"^thanks/$", direct_to_template, {"template": "books/success_bought.html"}, name="thanks"), 
 )

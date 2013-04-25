@@ -15,6 +15,7 @@ from django.template.loader import get_template
 import json
 import datetime
 from common import pages
+from django.core.urlresolvers import reverse
 
 '''
 File feature description here
@@ -242,7 +243,7 @@ def submitOrder(request):
     if cart.moveToOrder(order):
         cart.clearCart()
     
-    return HttpResponse('Thanks!')
+    return HttpResponseRedirect(reverse("thanks"))
     
 def addComment(request, bookId):
     '''添加书籍评论,ajax request only'''
