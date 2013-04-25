@@ -35,13 +35,13 @@ class Author(models.Model):
 class CateManager(models.Manager):
     def get3Cates(self):
         '''获取先显示的3个分类, 文学, 小说, 艺术'''
-        return [Category.objects.get(name='letter'), 
-            Category.objects.get(name='novel'), Category.objects.get(name='art')]
+        return [self.get(name='letter'), 
+            self.get(name='novel'), Category.objects.get(name='art')]
     
     def getRestCates(self):
         '''获取除前3个之外的分类'''
         result = []
-        for cate in Category.objects.all():
+        for cate in self.all():
             if cate not in self.get3Cates():
                 result.append(cate)
         return result
@@ -64,6 +64,10 @@ class Category(models.Model):
     def getCount(self):
         return Book.objects.filter(category=self).count()
     
+    def getPercent(self):
+        '''获得该分类在书籍总数中所占比例'''
+        return str((self.getCount()/float(Book.objects.totalBooks()))*100)+'%'
+    
     def getHotBooks(self):
         '''获得当前分类下被购买次数最多的5本书籍'''
         return Book.objects.filter(category=self).order_by('-bought_count')[:5]
@@ -71,14 +75,14 @@ class Category(models.Model):
 
 class BookManager(models.Manager):
     def getAll(self):
-        return Book.objects.all()
+        return self.all()
     
     def totalBooks(self):
-        return self.getAll().count()
+        return self.all().count()
     
     def getRecommend(self):
         '''获得最近登记的4本书籍作为推荐书籍'''
-        return self.getAll().order_by('-reg_date')[:4]
+        return self.all().order_by('-reg_date')[:4]
     
 class Book(models.Model):
     '''定义Book模型'''

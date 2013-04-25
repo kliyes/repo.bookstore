@@ -31,20 +31,12 @@ import os
 import datetime
 from django.template.loader import get_template
 import json
+from django.db.models.query_utils import Q
 log = logging.getLogger("mysite")
 
-letterCate = Category.objects.get(name='letter')   #文学
-novelCate = Category.objects.get(name='novel')     #小说
-artCate = Category.objects.get(name='art')         #艺术
-bioCate = Category.objects.get(name='bio')         #传记
-motiCate = Category.objects.get(name='moti')       #励志
-examCate = Category.objects.get(name='exam')       #应试
-txtbookCate = Category.objects.get(name='txtbook') #教材
-manageCate = Category.objects.get(name='manage')   #管理
-funCate = Category.objects.get(name='fun')         #娱乐
-techCate = Category.objects.get(name='tech')       #科技
-historyCate = Category.objects.get(name='history') #历史
-otherCate = Category.objects.get(name='other')     #其他
+def _getBookCate(cateName):
+    '''根据传入的cateName获取书籍分类'''
+    return Category.objects.get(name=cateName)
 
 def _downloadImg(url, size="medium"):
     '''下载书籍图片 size: 图片尺寸'''
@@ -101,7 +93,7 @@ def regFromDouban(request):
             book.lpic = _downloadImg(books[i]['images']['large'], 'large')   
             book.stock = 140
             book.publish_date = books[i]['pubdate']
-            book.category = letterCate
+            book.category = _getBookCate('letter')
             book.save()
             
     return HttpResponse('success')
@@ -154,7 +146,7 @@ def regBooks(request):
             book_lpic = _downloadImg(result['images']['large'], 'large')   
             book_publish_date = result['pubdate']
             book_stock = 0
-            book_cate = letterCate.label
+            book_cate = _getBookCate('letter').label
         
     ctx = {'authorName': author_name, 
            'authorDesc': author_desc, 
@@ -174,6 +166,7 @@ def regBooks(request):
     return render_to_response('sites/regbook.html', RequestContext(request, ctx))
     
 def addBook(request):
+    '''新加书籍, post request only'''
     if request.method != "POST":
         raise Http404
     
@@ -220,6 +213,7 @@ def addBook(request):
     book.stock=stock
     book.category=cate
     book.save()
+    utils.addMsg(request, messages.SUCCESS, '添加成功！')
     return HttpResponseRedirect('/manage/reg_book/')
 
 def bookShow(request):
@@ -227,46 +221,15 @@ def bookShow(request):
     if request.method != "POST":
         return render_to_response('sites/showbook.html', RequestContext(request))
     
-    isbn = request.REQUEST.get('isbn', None)
+    arg = request.REQUEST.get('arg', None)
     try:
-        book = Book.objects.get(isbn=isbn)
+        books = Book.objects.filter(Q(isbn=arg)|Q(name__icontains=arg))
     except Book.DoesNotExist:
         return HttpResponseRedirect('/manage/reg_book/')
     except Exception:
         return HttpResponse('error')
     return render_to_response('sites/showbook.html', 
-        RequestContext(request, {'book': book}))
-    
-
-def bookStat(request):
-    '''按分类统计书籍信息'''
-    letterCateCount = letterCate.getCount()
-    novelCateCount = novelCate.getCount()
-    artCateCount = artCate.getCount()
-    bioCateCount = bioCate.getCount()
-    motiCateCount = motiCate.getCount()
-    examCateCount = examCate.getCount()
-    txtbookCateCount = txtbookCate.getCount()
-    manageCateCount = manageCate.getCount()
-    funCateCount = funCate.getCount()
-    techCateCount = techCate.getCount()
-    historyCateCount = historyCate.getCount()
-    otherCateCount = otherCate.getCount()
-    totalCount = letterCateCount+novelCateCount+artCateCount+bioCateCount+motiCateCount+examCateCount+txtbookCateCount+manageCateCount+funCateCount+techCateCount+historyCateCount+otherCateCount
-    return render_to_response('sites/stat.html', RequestContext(request, 
-        {'letterCateCount': letterCateCount, 'letterPercent': str((letterCateCount/float(totalCount))*100)+'%', 
-         'novelCateCount': novelCateCount, 'novelPercent': str((novelCateCount/float(totalCount))*100)+'%', 
-         'artCateCount': artCateCount, 'artPercent': str((artCateCount/float(totalCount))*100)+'%', 
-         'bioCateCount': bioCateCount, 'bioPercent': str((bioCateCount/float(totalCount))*100)+'%', 
-         'motiCateCount': motiCateCount, 'motiPercent': str((motiCateCount/float(totalCount))*100)+'%', 
-         'examCateCount': examCateCount, 'examPercent': str((examCateCount/float(totalCount))*100)+'%', 
-         'txtbookCateCount': txtbookCateCount, 'txtbookPercent': str((txtbookCateCount/float(totalCount))*100)+'%', 
-         'manageCateCount': manageCateCount, 'managePercent': str((manageCateCount/float(totalCount))*100)+'%', 
-         'funCateCount': funCateCount, 'funPercent': str((funCateCount/float(totalCount))*100)+'%', 
-         'techCateCount': techCateCount, 'techPercent': str((techCateCount/float(totalCount))*100)+'%', 
-         'historyCateCount': historyCateCount, 'historyPercent': str((historyCateCount/float(totalCount))*100)+'%', 
-         'otherCateCount': otherCateCount, 'otherPercent': str((otherCateCount/float(totalCount))*100)+'%'}))
-
+        RequestContext(request, {'books': books}))
 
 def _getOrderById(orderId):
     '''按订单Id获取订单'''

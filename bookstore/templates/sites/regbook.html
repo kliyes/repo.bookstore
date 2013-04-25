@@ -1,28 +1,30 @@
-<html>
-	<body>
-		<form action='.' method="post">
-			{% csrf_token %}
-			<input type="text" name="isbn" id="isbn" />
-			<input type="submit" value="确定"/>
-		</form>
-		<form action='/manage/add_book/' method="post">
-			{% csrf_token %}
-			作者<input type="text" value="{{authorName}}" id="authorName" name="authorName" /><br />
-			简介<textarea id="authorDesc" name="authorDesc" style="height: 150px;">{{authorDesc}}</textarea><br />
-			书名<input type="text" value="{{bookName}}" id="bookName" name="bookName"/><br />
-			价格<input type="text" value="{{bookPrice}}" id="bookPrice" name="bookPrice"/><br />
-			ISBN<input type="text" value="{{bookIsbn}}" id="bookIsbn" name="bookIsbn"/><br />
-			出版社<input type="text" value="{{bookPress}}" id="bookPress" name="bookPress"/><br />
-			摘要<textarea id="bookDesc" name="bookDesc" style="height: 150px;">{{bookDesc}}</textarea><br />
-			装潢<input type="text" value="{{bookBinding}}" id="bookBinding" name="bookBinding"/><br />
-			页数<input type="text" value="{{bookPages}}" id="bookPages" name="bookPages"/><br />
-			小图<input type="text" value="{{bookSpic}}" id="bookSpic" name="bookSpic"/>
-			中图<input type="text" value="{{bookMpic}}" id="bookMpic" name="bookMpic"/>
-			大图<input type="text" value="{{bookLpic}}" id="bookLpic" name="bookLpic"/><br />
-			出版日期<input type="text" value="{{bookPublishDate}}" id="bookPublishDate" name="bookPublishDate"/><br />
-			库存<input type="text" value="{{bookstock}}" id="stock" name="stock"/><br />
-			分类<input type="text" value="{{bookcate}}" id="category" name="category"/><br />
-			<input type="submit" value="确定" />
-		</form>
-	</body>
-</html>
+{% extends "base/theme_base.html" %}
+
+{% block page_title %}书籍登记{% endblock %}
+
+{% block body_base %}
+	<form action='.' method="post">
+		{% csrf_token %}
+		<input type="text" name="isbn" id="isbn" />
+		<input type="submit" value="确定"/>
+	</form>
+	<form action='/manage/add_book/' method="post">
+		{% csrf_token %}
+		作者<input type="text" value="{{authorName}}" id="authorName" name="authorName" /><br />
+		简介<textarea id="authorDesc" name="authorDesc" style="height: 150px;">{{authorDesc}}</textarea><br />
+		书名<input type="text" value="{{bookName}}" id="bookName" name="bookName"/><br />
+		价格<input type="text" value="{{bookPrice}}" id="bookPrice" name="bookPrice"/><br />
+		ISBN<input type="text" value="{{bookIsbn}}" id="bookIsbn" name="bookIsbn"/><br />
+		出版社<input type="text" value="{{bookPress}}" id="bookPress" name="bookPress"/><br />
+		摘要<textarea id="bookDesc" name="bookDesc" style="height: 150px;">{{bookDesc}}</textarea><br />
+		装潢<input type="text" value="{{bookBinding}}" id="bookBinding" name="bookBinding"/><br />
+		页数<input type="text" value="{{bookPages}}" id="bookPages" name="bookPages"/><br />
+		小图<input type="text" value="{{bookSpic}}" id="bookSpic" name="bookSpic"/>
+		中图<input type="text" value="{{bookMpic}}" id="bookMpic" name="bookMpic"/>
+		大图<input type="text" value="{{bookLpic}}" id="bookLpic" name="bookLpic"/><br />
+		出版日期<input type="text" value="{{bookPublishDate}}" id="bookPublishDate" name="bookPublishDate"/><br />
+		库存<input type="text" value="{{bookstock}}" id="stock" name="stock"/><br />
+		分类<input type="text" value="{{bookcate}}" id="category" name="category"/><br />
+		<input type="submit" value="确定" />
+	</form>
+{% endblock %}

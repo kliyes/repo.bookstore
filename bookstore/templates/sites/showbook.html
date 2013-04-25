@@ -1,17 +1,22 @@
-<html>
-	<body>
-		<form action="." method="post">
-			{% csrf_token %}
-			ISBN:<input type="text" id="isbn" name="isbn" />
-			<input type="submit" value="查询" />
-		</form>
-		<br />
-		<img src="{{ MEDIA_URL }}img/{{book.lpic}}" /><br />
+{% extends "base/theme_base.html" %}
+
+{% block page_title %}书籍信息查询{% endblock %}
+
+{% block body_base %}
+	<form action="." method="post">
+		{% csrf_token %}
+		<input type="text" id="arg" name="arg" placeholder="输入ISBN或书名关键字"/>
+		<input type="submit" value="查询" />
+	</form>
+	<br />
+	{% for book in books %}
+		<img src="{{ MEDIA_URL }}img/{{book.lpic}}" width="200px" height="200px"/><br />
 		书名：{{book.name}}<br />
+		ISBN：{{book.isbn}}<br />
 		作者：{{book.author.name}}<br />
 		定价：{{book.price}}<br />
 		出版：{{book.press}}<br />
 		分类：{{book.category.label}}<br />
-		库存：{{book.stock}}
-	</body>
-</html>
+		库存：{{book.stock}}<br /><br />
+	{% endfor %}
+{% endblock %}
