@@ -14,30 +14,35 @@
             <br /><br />
             <form action="{% url acct_login %}" method="post" name="login_from" >
             	{% csrf_token %}
-	            <div class="input-prepend">
-			    	<span class="add-on"><i class="icon-envelope"></i></span>{{form.email|attr:"lyu:Email"|attr:"bl:Email_msg"|attr:"placeholder:邮箱 | Email"|attr:"class:span2"|attr:"type:text"|attr:"style:margin:0px;"}}
-			    	<label id="Email_msg" class="help-inline error_msg"></label>
-	  				<p class="help-block">邮箱格式：ex@admin.com</p>
-			    </div>
-			    <div class="input-prepend">
-			    	<span class="add-on"><i class="icon-lock"></i></span>{{form.password|attr:"lyu:Password"|attr:"bl:Password_msg"|attr:"class:span2"|attr:"placeholder:密码 | Password"|attr:"type:password"|attr:"style:margin:0px;"|attr:"maxLength:20"}}
-			    	<label id="Password_msg" class="help-inline error_msg"></label>
-	  				<p class="help-block">输入预设的用户密码</p>
-			    </div>
-			    <div class="input-prepend">
-			    	{% if request.session.failedLoginCount >= 1 %}
-					<p><label>验证码</label><input lvy="secure_code" type="text" style="width: 80px" id="code-input" maxlength="8" placeholder="BookStore" />
-						<img id="code-img" style="vertical-align:top;display:inline;" src="{% url new_secure_code %}" /> 
-						<span class="text-prompt">
-							<a id="change-code" onclick="changeSecureCode('code-img','{% url new_secure_code %}');" href="#">换一个</a>&nbsp;&nbsp;</span>
-						<div><label lvy="err_msg_code" class="err_msg"></label></div>
-					</p>
-					{% endif %}
-			    </div>
-			    <div class="input-prepend">
-			    	<button class="btn btn-small" type="submit" id="btn_login" onclick="return check_login()"><i class="icon-ok"></i> 登入</button>
-			    	&nbsp;&nbsp;<a href="{% url acct_reset_passwd %}">忘记密码?</a>
-			    </div>
+            	<div class="action_div">
+            		<br /><br />
+            		<table class="action_table" >
+            			<tr>
+            				<td>{{form.email|attr:"lyu:Email"|attr:"bl:Email_msg"|attr:"class:action_input"|attr:"placeholder:Email"}}</td>
+            				<td align="left"><label id="Email_msg" class="error_msg"></label></td>
+            			</tr>
+            			<tr>
+            				<td>{{form.password|attr:"lyu:Password"|attr:"bl:Password_msg"|attr:"class:action_input"|attr:"placeholder:Password"|attr:"type:password"}}</td>
+            				<td><label id="Password_msg" class="error_msg"></label></td>
+            			</tr>
+            			{% if request.session.failedLoginCount >= 1 %}
+            			<tr>
+            				<td><input class="action_input" lvy="secure_code" type="text" id="code-input" maxlength="8" placeholder="BookStore" /></td>
+            				<td>
+            					<img id="code-img" style="vertical-align:top;display:inline;" src="{% url new_secure_code %}" />
+            					<a id="change-code" onclick="changeSecureCode('code-img','{% url new_secure_code %}');" href="#">换一个</a>
+            					<label lvy="err_msg_code" class="error_msg"></label>
+            				</td>
+            			</tr>
+            			{% endif %}
+            			<tr>
+            				<td align="center">
+            					<button class="mbtn" type="submit" id="btn_login" onclick="return check_login()">登入</button>
+            				</td>
+            				<td><a href="{% url acct_reset_passwd %}">? 忘记密码</a></td>
+            			</tr>
+            		</table>
+            	</div>
 		    </form>
         </div>
     </div>
