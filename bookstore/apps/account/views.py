@@ -219,10 +219,12 @@ def signup(request, **kwargs):
     else:
         form = form_class(group=group)
     
+    motto = Motto.objects.get(id=random.randint(1, Motto.objects.getCount()))
     ctx.update({
         "form": form,
         "redirect_field_name": redirect_field_name,
         "redirect_field_value": request.REQUEST.get(redirect_field_name),
+        "motto": motto
     })
     
     return render_to_response(template_name, RequestContext(request, ctx))

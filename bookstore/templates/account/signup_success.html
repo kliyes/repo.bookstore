@@ -1,11 +1,13 @@
 {% extends "base/theme_base.html" %}
 {% load widget_tweaks %}
+{% block page_title %}注册成功{% endblock %}
 
-<h5>
-注册成功!<p/>
-账号: <p/>
-    Email: {{email}}<p/>
-    Nickname:{{nickname}}<p/>
-
-</h5>
-点击 <a href="{% url acct_login %}">登录</a>
+{% block body_base %}
+	<h5>
+	<p>注册成功!</p>
+	<p>账号: </p>
+	    <p>Email: {{email}}</p>
+	    <p>Nickname:{{nickname}}</p>
+	</h5>
+	点击 <a href="{% url acct_login %}">登录</a>
+{% endblock %}
