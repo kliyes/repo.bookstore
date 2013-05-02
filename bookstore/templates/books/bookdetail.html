@@ -144,6 +144,13 @@
 	共有{{book.bought_count}}人购买过这本书<br /><br /><br />
 	书籍简介：{{book.desc}}<br /><br />
 	作者简介：{{book.author.desc}}<br /><br /><br />
+	{% if book in cart.getBooks %}
+		<a href="/books/check_the_cart/"><input type="button" class="lbtn" value="已加入购物车，去购物车中看看"/></a>
+	{% else %}
+		<input id="add" type="button" class="mbtn" value="加入购物车" onclick="addToCart({{book.id}})"/>
+		<a href="/books/check_the_cart/"><input id="added" type="button" class="lbtn" value="已加入购物车，去购物车中看看" style="display:none;"/></a>
+	{% endif %}
+	<br /><br /><br />
 	{% if user.is_authenticated %}
 		关于这本书，您想说点什么：<textarea id="comment" name="comment" style="height: 150px;"> </textarea>
 		<input id="go_comment" type="button" class="mbtn" onclick="addComment({{book.id}})" value="发表" /><br />
@@ -168,11 +175,4 @@
 	<div id="commentsArea">
 		{% include "books/includes/comments.html" %}
 	</div>
-	<br /><br /><br />
-	{% if book in cart.getBooks %}
-		<a href="/books/check_the_cart/"><input type="button" class="lbtn" value="已加入购物车，去购物车中看看"/></a>
-	{% else %}
-		<input id="add" type="button" class="mbtn" value="加入购物车" onclick="addToCart({{book.id}})"/>
-		<a href="/books/check_the_cart/"><input id="added" type="button" class="lbtn" value="已加入购物车，去购物车中看看" style="display:none;"/></a>
-	{% endif %}
 {% endblock %}

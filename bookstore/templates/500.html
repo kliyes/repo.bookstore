@@ -1,11 +1,19 @@
 {% extends "base/theme_base.html" %}
 
-{% block title %} 访问异常 {% endblock %}
+{% block page_title %} 访问异常 {% endblock %}
 
-{% block body %}
+{% block style_css %} 
+<style type="text/css">
+.server-error {
+    align:center;
+}
+</style>    
+{% endblock %}
+
+{% block body_base %}
 <div class="content">
-    <br /><p class="msg-font">服务器异常了哦， 亲!(500)<br />
-    <p class="msg-font">您可以向我们&nbsp;<a href="{% url us_feedback %}">反馈意见</a>&nbsp;. 谢谢您继续关注习之!</p>
+	<span><img class="server-error" src="{{STATIC_URL}}base/img/500.png" /></span><br/><br />
+    <p class="msg-font">您可以向我们&nbsp;<a href="{% url us_feedback %}">反馈意见</a></p>
 </div>
 
 {% endblock %}

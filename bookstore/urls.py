@@ -9,7 +9,7 @@ from django.conf.urls.static import static
 admin.autodiscover()
 
 from pinax.apps.account.openid_consumer import PinaxConsumer
-
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 handler500 = "pinax.views.server_error"
 ####
@@ -57,5 +57,12 @@ urlpatterns = patterns("",
     
 )
 
+
 # Used in debug mode for handling user-uploaded files, by jun
 urlpatterns += static(settings.MEDIA_URL , document_root = settings.MEDIA_ROOT )
+#
+#urlpatterns += patterns("",
+#    url(r'^static/(?P<path>.*)$', 'django.views.static.serve',
+#        {'document_root': '/path/to/static/root'}
+#    ),
+#)

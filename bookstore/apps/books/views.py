@@ -22,7 +22,7 @@ File feature description here
 '''
 ######
 BOOK_DATA_KEY = "bookPaging"
-BOOK_PAGE_SIZE = 4
+BOOK_PAGE_SIZE = 10
 CMT_DATA_KEY = "cmtPaging"
 CMT_PAGE_SIZE = 5
 
@@ -44,7 +44,7 @@ def goHome(request):
     books = Book.objects.getAll()
     
     ctx = {'showCates': showCates, 'restCates': restCates, 'recommend': recommend}
-    bookPaging = initSessionBooklistPaging(request, _getDataKey('all'), books, 10)
+    bookPaging = initSessionBooklistPaging(request, _getDataKey('all'), books, BOOK_PAGE_SIZE)
     if bookPaging:
         ctx.update(bookPaging.result(1))
     
@@ -112,7 +112,7 @@ def pagingAll(request):
     paging = pages.getSessionPaging(request, _getDataKey('all'))
     if not paging:
         books = Book.objects.all()
-        paging = initSessionBooklistPaging(request, _getDataKey('all'), books, 10)
+        paging = initSessionBooklistPaging(request, _getDataKey('all'), books, BOOK_PAGE_SIZE)
     
     t = get_template('base/books_list.html')
     html = t.render(RequestContext(request, paging.result(pageNo)))

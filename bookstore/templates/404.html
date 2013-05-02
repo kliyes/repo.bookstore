@@ -1,20 +1,17 @@
 {% extends "base/theme_base.html" %}
 
-{% block title %} 页面未找到 {% endblock %}
+{% block page_title %} 页面未找到 {% endblock %}
 
-{% block extra_css %} 
+{% block style_css %} 
 <style type="text/css">
 .not-found {
-    width:400px;
-    height: 200px;
     align:center;
 }
 </style>    
 {% endblock %}    
     
-{% block body %}
+{% block body_base %}
 <div class="content">
-    <span><img class="not-found" src="{{STATIC_URL}}img/404.png" /></span><br/>
-    <br /><p class="msg-font">抱歉，没有找到您要的东西。请检查输入网址是否正确，或者该内容已被删除!!!!</p>
+    <span><img class="not-found" src="{{STATIC_URL}}base/img/404.png" /></span><br/>
 </div>
 {% endblock %}
