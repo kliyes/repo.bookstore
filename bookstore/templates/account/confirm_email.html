@@ -1,8 +1,8 @@
 {% extends "base/theme_base.html" %}
 
-{% block head_title %}邮件确认{% endblock %}
+{% block page_title %}邮件确认{% endblock %}
 
-{% block body %}
+{% block body_base %}
     {% if verified %}
         <h4>{{msg}}</h4><br/>
         <a href="{% url acct_login %}"> 立即登录</a>
