@@ -121,14 +121,13 @@ def login(request, **kwargs):
         form = form_class(group=group)
     
     ctx = group_context(group, bridge)
-    
     motto = Motto.objects.get(id=random.randint(1, Motto.objects.getCount()))
     
     ctx.update({
         "form": form,
         "url_required": url_required,
         "redirect_field_name": redirect_field_name,
-        "whatNext": request.GET.get("whatNext"), 
+        "next": request.REQUEST.get("next"), 
         "redirect_field_value": request.REQUEST.get(redirect_field_name),
         "motto": motto
     })
@@ -140,7 +139,7 @@ def after_login(request, success_url):
     '''登录后处理'''
     __saveTextDraft(request)
     
-    whatNext = request.GET.get("whatNext", success_url)
+    whatNext = request.REQUEST.get("next", success_url)
     
     profile = request.user.get_profile()
     profile.updateLoginCount()
