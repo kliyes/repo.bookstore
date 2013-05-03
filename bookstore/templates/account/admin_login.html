@@ -1,14 +1,12 @@
-{% extends "base/theme_base.html" %}
+{% extends "base/manage_base.html" %}
 
 {% load widget_tweaks %}
 
-{% block head_title %}管理员登录{% endblock %}
-
-{% block topbar %}{% endblock %}
+{% block page_title %}管理员登录{% endblock %}
 
 {% block message %} {% include "base/messages.html" %} {% endblock %}
 
-{% block body %}
+{% block body_base %}
 <div class="container">
 	<p class="title"></p>
 	<form action="{% url admin_login %}" method="post" >
@@ -38,7 +36,7 @@
 </div>
 {% endblock %}
 
-{% block extra_js %}
+{% block single_js %}
 <script>
 //change secure code，验证码
 function changeSecureCode(img_obj, url) {

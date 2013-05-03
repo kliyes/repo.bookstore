@@ -5,3 +5,23 @@
  *
  * This file is part of BookStore.
  *-->
+
+<!DOCTYPE>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>{% block page_title %}{% endblock %} - 管理中心</title>
+		{% block single_js %}{% endblock %}
+		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}base/css/base.css" />
+		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}base/css/header.css" />
+		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}base/css/footer.css" />
+		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}base/css/common.css" />
+		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}base/css/login.css" />
+		{% block style_css %}{% endblock %}
+	</head>
+	
+	<body class="container">
+		<h2>BookStore - 管理中心</h2>
+		{% block body_base %}{% endblock %}
+	</body>
+</html>

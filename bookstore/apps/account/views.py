@@ -52,7 +52,7 @@ def adminLogin(request, **kwargs):
         if form.is_valid():
             form.login(request)
             if request.user.is_superuser:
-                return HttpResponseRedirect(success_url)
+                return HttpResponseRedirect(reverse("management"))
             else:
                 utils.addMsg(request, messages.ERROR, "not admin account")
         else:
@@ -214,7 +214,6 @@ def signup(request, **kwargs):
                 return render_to_response("account/signup_success.html", 
                     RequestContext(request, {'email': user.email, 'nickname': user.get_profile().name}))
                 
-                #return HttpResponseRedirect(success_url)  #later using this
         else:
             utils.addMsg(request, messages.ERROR, form.errors)    
             

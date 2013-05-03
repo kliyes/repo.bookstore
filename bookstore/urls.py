@@ -26,13 +26,12 @@ urlpatterns = patterns("",
 
     url(r"^admin/invite_user/$", "pinax.apps.signup_codes.views.admin_invite_user", 
         name="admin_invite_user"),
-    url(r"^admin/", include(admin.site.urls)),    
+    #url(r"^admin/", include(admin.site.urls)),    
 
     #url(r"^home/$", {"template": "index.html",}, name="home"),
     url(r"^account/", include("account.urls")),
     url(r"^admin/login/$", "account.views.adminLogin", name="admin_login"),
     url(r"^profiles/", include("profiles.urls")),
-    #url(r"^activity/", include("activity.urls")),
     url(r"^books/", include("books.urls")),
     
     # user home page

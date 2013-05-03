@@ -59,6 +59,7 @@ def _downloadImg(url, size="medium"):
     imgSave.close()
     return "books/%s/%s" % (size, os.path.basename(url))
 
+@admin_required
 def regFromDouban(request):
     '''利用豆瓣API获取书籍信息加入数据库'''
     DOUBAN = "https://api.douban.com/v2/book/search?q="
@@ -101,7 +102,7 @@ def regFromDouban(request):
             
     return HttpResponse('success')
 
-
+@admin_required
 def regBooks(request):
     '''调用豆瓣API,根据图书isbn号获取图书信息'''
     URL = 'https://api.douban.com/v2/book/isbn/'
@@ -167,7 +168,8 @@ def regBooks(request):
            'bookstock': book_stock, 
            'bookcate': book_cate}
     return render_to_response('sites/regbook.html', RequestContext(request, ctx))
-    
+
+@admin_required    
 def addBook(request):
     '''新加书籍, post request only'''
     if request.method != "POST":
@@ -219,6 +221,7 @@ def addBook(request):
     utils.addMsg(request, messages.SUCCESS, '添加成功！')
     return HttpResponseRedirect('/manage/reg_book/')
 
+@admin_required
 def bookShow(request):
     '''按ISBN书籍信息查询'''
     if request.method != "POST":
@@ -241,7 +244,8 @@ def _getOrderById(orderId):
     except Order.DoesNotExist:
         return False
     return order
-   
+
+@admin_required  
 def updateOrders(request):
     '''更新订单'''
     if request.method != "POST":

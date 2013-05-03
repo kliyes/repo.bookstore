@@ -12,6 +12,7 @@ from django.views.generic.simple import direct_to_template
 from books.models import Category
 
 urlpatterns = patterns("",
+    url(r"^$", direct_to_template, {"template": "sites/management.html"}, name='management'), 
     url(r"^reg_book/$", 'sites.views.regBooks'),
     url(r"^add_book/$", 'sites.views.addBook'),
     url(r"^show_book/$", 'sites.views.bookShow'),

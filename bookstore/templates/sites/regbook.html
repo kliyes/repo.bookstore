@@ -5,7 +5,7 @@
 {% block body_base %}
 	<form action='.' method="post">
 		{% csrf_token %}
-		<input type="text" name="isbn" id="isbn" />
+		ISBN:<input type="text" name="isbn" id="isbn" />
 		<input type="submit" value="确定"/>
 	</form>
 	<form action='/manage/add_book/' method="post">

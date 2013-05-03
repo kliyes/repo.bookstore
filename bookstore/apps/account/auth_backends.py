@@ -14,12 +14,17 @@ class AuthenticationBackend(ModelBackend):
     
     def authenticate(self, **credentials):
         lookup_params = {}
-        if settings.ACCOUNT_EMAIL_AUTHENTICATION:
-            field, identity = "email__iexact", credentials.get("email")
-        else:
-            field, identity = "username__iexact", credentials.get("username")
-        if identity is None:
-            return None
+#        if settings.ACCOUNT_EMAIL_AUTHENTICATION:
+#            field, identity = "email__iexact", credentials.get("email")
+#        else:
+#            field, identity = "username__iexact", credentials.get("username")
+#        if identity is None:
+#            return None
+
+        field, identity = "email__iexact", credentials.get("email", None)
+        if not identity:
+            field, identity = "username__iexact", credentials.get("username", None) #this if branch just for admin login
+        
         lookup_params[field] = identity
         try:
             user = User.objects.get(**lookup_params)

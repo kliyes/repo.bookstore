@@ -164,6 +164,7 @@ def addToCart(request, bookId):
     
     return HttpResponse(json.dumps({'status': 'success'}))
 
+@login_required
 def delFromCart(request, bookId):
     '''从购物车中移除书籍, ajax request only'''
     if not request.is_ajax:
@@ -183,6 +184,7 @@ def delFromCart(request, bookId):
     
     return HttpResponse(json.dumps({'status': 'success', 'html': html}))
 
+@login_required
 def checkCart(request):
     '''查看购物车'''
     profile = request.user.get_profile()
@@ -191,7 +193,7 @@ def checkCart(request):
     return render_to_response('books/bookcart.html', RequestContext(request, 
         {'cart': cart, 'itemCount': len(cart.getItems())}))
 
-    
+@login_required
 def makeOrder(request):
     '''填写订单'''
     profile = request.user.get_profile()
@@ -213,7 +215,8 @@ def makeOrder(request):
             return HttpResponse(json.dumps({'status': 'failed'}))
         
     return HttpResponse(json.dumps({'status': 'success'}))
-        
+
+@login_required
 def submitOrder(request):
     '''提交订单, post request only'''
     if request.method != "POST":
@@ -241,7 +244,8 @@ def submitOrder(request):
         cart.clearCart()
     
     return HttpResponseRedirect(reverse("thanks"))
-    
+
+@login_required    
 def addComment(request, bookId):
     '''添加书籍评论,ajax request only'''
     if not request.is_ajax():
@@ -262,7 +266,8 @@ def addComment(request, bookId):
         return HttpResponse(json.dumps({'status': 'success', 'html':html}))
     
     return HttpResponse(json.dumps({'status': 'failed'}))
-    
+
+@login_required    
 def markBook(request, bookId):
     '''为书籍打分,ajax request only'''
     if not request.is_ajax():
