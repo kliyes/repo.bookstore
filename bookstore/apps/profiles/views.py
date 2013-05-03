@@ -1,7 +1,15 @@
 #coding=utf-8
+#
+# Copyright (C) 2013  Kliyes.com  All rights reserved.
+#
+# author: JingYang.
+#
+# This file is part of BookStore.
 
-from PIL import Image, ImageFile
-from common import img_utils, file_utils, utils
+import logging
+import os
+import uuid
+
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -10,11 +18,12 @@ from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.utils.translation import ugettext
+
+from PIL import Image, ImageFile
+
+from common import img_utils, file_utils, utils
 from profiles.forms import ProfileForm
 from profiles.models import Profile, Following, City, Tag
-import logging
-import os
-import uuid
 
 
 

@@ -1,5 +1,12 @@
-#coding=utf8
+#coding=utf-8
+#
+# Copyright (C) 2013  Kliyes.com  All rights reserved.
+#
+# author: JingYang.
+#
+# This file is part of BookStore.
 
+import logging
 from hashlib import sha1
 
 try:
@@ -10,8 +17,6 @@ except:
 from django.core.cache import cache
 from django.conf import settings
 
-
-import logging
 logger = logging.getLogger("mysite")
 
 def make_key(fn, args, kwargs):

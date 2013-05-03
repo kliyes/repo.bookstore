@@ -1,6 +1,13 @@
-import datetime
-import sys
+#coding=utf-8
+#
+# Copyright (C) 2013  Kliyes.com  All rights reserved.
+#
+# author: JingYang.
+#
+# This file is part of BookStore.
 
+import sys
+import datetime
 from random import random
 
 from django.db.models.signals import post_save
@@ -17,9 +24,7 @@ from django.contrib.sites.models import Site
 from timezones.fields import TimeZoneField
 
 from account.signals import email_confirmed, email_confirmation_sent
-
 from common import utils
-
  
 ## Following code about email added by jun 
 class EmailAddressManager(models.Manager):

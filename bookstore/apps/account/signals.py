@@ -1,5 +1,12 @@
-from django.dispatch import Signal
+#coding=utf-8
+#
+# Copyright (C) 2013  Kliyes.com  All rights reserved.
+#
+# author: JingYang.
+#
+# This file is part of BookStore.
 
+from django.dispatch import Signal
 
 user_logged_in = Signal(providing_args=["request", "user"])
 signedup = Signal(providing_args=["request", "user"])

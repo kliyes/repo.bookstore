@@ -1,9 +1,18 @@
-# -*-coding:utf-8 -*-
-'''
-Created on Jul 30, 2012
+#coding=utf-8
+#
+# Copyright (C) 2013  Kliyes.com  All rights reserved.
+#
+# author: JingYang.
+#
+# This file is part of BookStore.
 
-@author: junn
-'''
+import logging
+import urllib
+import sys
+import os
+import datetime
+import json
+
 from django.conf import settings
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.shortcuts import render_to_response
@@ -13,6 +22,8 @@ from django.views.generic.simple import direct_to_template
 from django.contrib import messages
 from django.core.urlresolvers import reverse 
 from django.utils import simplejson
+from django.template.loader import get_template
+from django.db.models.query_utils import Q
 
 from onlineuser.models import getOnlineInfos
 from onlineuser.models import Online
@@ -22,16 +33,8 @@ from account.forms import LoginForm
 from account.decorators import admin_required
 from sites.forms import FeedbackForm
 from sites.models import Feedback 
-
-import logging
-import urllib
-import sys
 from books.models import Book, Author, Category, Order
-import os
-import datetime
-from django.template.loader import get_template
-import json
-from django.db.models.query_utils import Q
+
 log = logging.getLogger("mysite")
 
 def _getBookCate(cateName):

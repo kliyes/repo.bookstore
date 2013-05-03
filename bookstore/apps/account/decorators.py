@@ -1,7 +1,15 @@
-#coding=utf8
+#coding=utf-8
+#
+# Copyright (C) 2013  Kliyes.com  All rights reserved.
+#
+# author: JingYang.
+#
+# This file is part of BookStore.
 
 # ensure_csrf_cookie only in django1.4.2
 #from django.views.decorators.csrf import ensure_csrf_cookie
+import logging
+
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.shortcuts import render_to_response
@@ -12,7 +20,6 @@ from django.template import RequestContext
 
 from account.models import EmailSentCount 
 
-import logging
 log = logging.getLogger("mysite")
 
 def admin_required(func):

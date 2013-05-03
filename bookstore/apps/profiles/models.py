@@ -1,16 +1,20 @@
-# -*-coding:utf-8 -*-
+#coding=utf-8
+#
+# Copyright (C) 2013  Kliyes.com  All rights reserved.
+#
+# author: JingYang.
+#
+# This file is part of BookStore.
+
+import logging
 
 from django.db import models
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
-#from django.contrib.auth.models import User
 from django.conf import settings
 
 from idios.models import ProfileBase
 
-#from common import utils
-
-import logging
 from books.models import BookComment, Cart, Order
 
 logger = logging.getLogger("mysite")

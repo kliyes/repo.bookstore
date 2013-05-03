@@ -1,10 +1,10 @@
 #coding=utf-8
-
-'''
-Created on Nov 13, 2012
-
-@author: junn
-'''
+#
+# Copyright (C) 2013  Kliyes.com  All rights reserved.
+#
+# author: JingYang.
+#
+# This file is part of BookStore.
 
 from django.utils import unittest
 from django.test.client import Client

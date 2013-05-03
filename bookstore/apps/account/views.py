@@ -1,6 +1,13 @@
-# -*-coding:utf-8 -*-
+#coding=utf-8
+#
+# Copyright (C) 2013  Kliyes.com  All rights reserved.
+#
+# author: JingYang.
+#
+# This file is part of BookStore.
 
 import random, StringIO
+import logging
 
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
@@ -12,7 +19,6 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.utils.http import base36_to_int
 from django.utils.translation import ugettext
-
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -34,9 +40,7 @@ from account.forms import AddEmailForm, ChangeLanguageForm, ChangePasswordForm
 from account.forms import ChangeTimezoneForm, LoginForm, ResetPasswordKeyForm
 from account.forms import ResetPasswordForm, SetPasswordForm, SignupForm
 
-import logging
 log = logging.getLogger("mysite")
-
 
 #@ensure_csrf_cookie
 def adminLogin(request, **kwargs):
@@ -113,7 +117,6 @@ def login(request, **kwargs):
             form.login(request)
             request.session["failedLoginCount"] = 0
             return after_login(request, success_url) 
-            #return HttpResponseRedirect(request.GET.get("whatNext", "/home/"))
         else:
             utils.addMsg(request, messages.ERROR, form.errors)
             request.session["failedLoginCount"] = request.session.get("failedLoginCount", 0) + 1
@@ -127,7 +130,7 @@ def login(request, **kwargs):
         "form": form,
         "url_required": url_required,
         "redirect_field_name": redirect_field_name,
-        "next": request.REQUEST.get("next"), 
+        "next": request.REQUEST.get("next", success_url), 
         "redirect_field_value": request.REQUEST.get(redirect_field_name),
         "motto": motto
     })

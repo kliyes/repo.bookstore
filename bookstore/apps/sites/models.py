@@ -1,15 +1,14 @@
-# -*-coding:utf-8 -*-
-'''
-Created on Jul 30, 2012
+#coding=utf-8
+#
+# Copyright (C) 2013  Kliyes.com  All rights reserved.
+#
+# author: JingYang.
+#
+# This file is part of BookStore.
 
-@author: junn
-'''
 from django.db import models
 
 from profiles.models import Profile
-
-
-#log = logging.getLogger("mysite")
 
 class FeedbackManager(models.Manager):
     def getAllFeedbacks(self):

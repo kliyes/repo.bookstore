@@ -1,10 +1,10 @@
-# -*-coding:utf-8 -*-
-
-'''
-Created on Feb 12, 2012
-
-@author: junn
-'''
+#coding=utf-8
+#
+# Copyright (C) 2013  Kliyes.com  All rights reserved.
+#
+# author: JingYang.
+#
+# This file is part of BookStore.
 
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
@@ -20,8 +20,6 @@ from django.contrib.auth.models import AnonymousUser
 from django.core.cache import cache  
 
 from common.utils import jsonResponse 
-
-#from diary.models import Diary
 
 def test(request):
     return render_to_response("tests/login1.html", RequestContext(request, {"hehe":"hello"}))

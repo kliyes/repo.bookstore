@@ -1,17 +1,21 @@
 #coding=utf-8
+#
+# Copyright (C) 2013  Kliyes.com  All rights reserved.
+#
+# author: JingYang.
+#
+# This file is part of BookStore.
+
 import traceback, uuid, datetime, threading
 from Queue import Queue
 
 from django.contrib import messages
 from django.http import HttpResponse
-
 from django.utils import simplejson as json 
 from django.conf import settings
 
-
 # 用于求字符串长度，中文汉字计为两个英文字母长度
 ecode = lambda s: s.encode('gb18030')
-
 
 ##################################################
 #  date and time processing utils

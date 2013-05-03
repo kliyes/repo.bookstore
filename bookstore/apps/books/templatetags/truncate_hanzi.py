@@ -1,4 +1,10 @@
-# -*- coding: UTF-8 -*-
+#coding=utf-8
+#
+# Copyright (C) 2013  Kliyes.com  All rights reserved.
+#
+# author: JingYang.
+#
+# This file is part of BookStore.
 
 import re
 from django.utils.encoding import force_unicode

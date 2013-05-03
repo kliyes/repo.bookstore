@@ -1,12 +1,7 @@
 #coding=utf-8
 #
-# Copyright (C) 2012-  XIZHI TECH Co., Ltd. All rights reserved.
+# Copyright (C) 2013  Kliyes.com  All rights reserved.
 #
-# Created on 2012-12-6, by Administrator
+# author: JingYang.
 #
-# This file is part of xizhi-server.
-#
-
-'''
-File feature description here
-'''
+# This file is part of BookStore.

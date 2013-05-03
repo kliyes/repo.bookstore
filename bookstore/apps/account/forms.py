@@ -1,35 +1,36 @@
-# -*-coding:utf-8 -*
+#coding=utf-8
+#
+# Copyright (C) 2013  Kliyes.com  All rights reserved.
+#
+# author: JingYang.
+#
+# This file is part of BookStore.
 
 import re
+from timezones.forms import TimeZoneField
 
 from django import forms
 from django.conf import settings
 from django.core.mail import send_mail
-from django.template.loader import render_to_string
-from django.utils.translation import ugettext_lazy as _, ugettext
-from django.utils.http import int_to_base36
-
 from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.models import Site
+from django.template.loader import render_to_string
+from django.utils.translation import ugettext_lazy as _, ugettext
+from django.utils.http import int_to_base36
 
-from timezones.forms import TimeZoneField
-
-from common.utils import ecode
 from account.signals import signedup
 from account.models import Account, PasswordReset, EmailAddress, EmailConfirmation
 from account.utils import perform_login, change_password
-from profiles.models import Profile, City
-from books.models import Cart
-
-from common import utils 
 from account.decorators import check_reset_email_sent_count
-
+from books.models import Cart
+from common.utils import ecode
+from common import utils 
+from profiles.models import Profile, City
 
 alnum_re = re.compile(r"^\w+$")
-
 
 # @@@ might want to find way to prevent settings access globally here.
 REQUIRED_EMAIL = getattr(settings, "ACCOUNT_REQUIRED_EMAIL", False)

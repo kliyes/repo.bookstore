@@ -1,19 +1,16 @@
 #coding=utf-8
 #
-# Copyright (C) 2012-2013  XIZHI TECH Co., Ltd. All rights reserved.
+# Copyright (C) 2013  Kliyes.com  All rights reserved.
 #
-# Created on 2013-3-18, by Administrator
+# author: JingYang.
 #
-# This file is part of lershare.com.
-#
+# This file is part of BookStore.
+
 import datetime
 
 from django.db import models
 from django.conf import settings
 
-'''
-File feature description here
-'''
 class Author(models.Model):
     '''定义Author模型'''
     name = models.CharField(max_length=200) # 姓名

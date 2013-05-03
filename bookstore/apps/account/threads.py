@@ -1,16 +1,18 @@
-'''
-Created on Nov 2, 2012
-
-@author: junn
-'''
+#coding=utf-8
+#
+# Copyright (C) 2013  Kliyes.com  All rights reserved.
+#
+# author: JingYang.
+#
+# This file is part of BookStore.
 
 import threading, logging
-logger = logging.getLogger("mysite")
 
 from django.core.mail import send_mail
 
 from common import utils
 
+logger = logging.getLogger("mysite")
 class EmailSendThread(threading.Thread):
     """Use many-threads to send email """
     

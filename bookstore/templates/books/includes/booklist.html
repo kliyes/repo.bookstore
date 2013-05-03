@@ -1,75 +1,71 @@
-<html>
-	<body>
-		<label id="count">共有{{itemCount}}种书籍</label>
-		<form id='form_cart'>
-			{% for item in cart.getItems %}
-				<a href="{% url book_detail item.book_id %}"><img src="{{ MEDIA_URL }}img/{{item.book.spic}}" /></a>&nbsp;&nbsp;
-				<a href="{% url book_detail item.book_id %}">《{{item.book.name}}》</a>&nbsp;&nbsp;
-				{{item.book.price}}元&nbsp;&nbsp;
-				<input type="hidden" id="price_{{item.book_id}}" value="{{item.book.price}}"/>
-				<a href="##" onclick="minus({{item.book_id}})">-1</a>
-				<input type="text" class="amount" id="amount_{{item.book_id}}" name="amount_{{item.book_id}}" value="{{item.amount}}" style="width:30;" onchange="countPartFee({{item.book_id}})" onkeyup="countPartFee({{item.book_id}})"/>
-				<a href="##" onclick="plus({{item.book_id}})">+1</a>&nbsp;&nbsp;
-				<label class="PartFee" id="part_fee_{{item.book_id}}" style="display: none;">{{item.book.price}}</label>&nbsp;&nbsp;
-				<a href="##" onclick="delFromCart({{item.book_id}})">删除</a>
-				<br /><br />
-			{% endfor %}
-		</form>
-		{% if not cart.getBooks %}
-			您的购物车空空如也，快去选书吧！
-		{% else %}
-			<br /><br /><br />
-			共计：<label id="total_fee">{{cart.getTotalFee}}</label>元
-			<br /><br />
-			<input type="button" class="mbtn" value="下订单" onclick="makeOrder()" />
-		{% endif %}
-		<script type="text/javascript">
-			function countPartFee(bookId){
-				var amount = parseFloat($("#amount_"+bookId).val());
-				var partFee = parseFloat($("#price_"+bookId).val())*amount;
-				$("#part_fee_"+bookId).text(partFee.toFixed(1)+"");
-				countTotalFee();
-			}
-			function countTotalFee(){
-				var partFees = $(".PartFee");
-				var totalFee = 0.0;
-				for(i=0; i<partFees.length; i++){
-					totalFee += parseFloat($(partFees[i]).text());
-				}
-				$("#total_fee").html(totalFee.toFixed(1)+"");
-			}
-			//本数-1
-			function minus(bookId){
-				var amount = parseInt($("#amount_"+bookId).val());
-				if(amount < 1){
-					alert("请输入正确的数量");
-					return false
-				}
-				else if(amount == 1){
-					alert("不想买的话请点删除");
-					return false;
-				}
-				else{
-					$("#amount_"+bookId).val((amount-1)+"");
-					countPartFee(bookId);
-				}
-			}
-			//本数+1
-			function plus(bookId){
-				var amount = parseInt($("#amount_"+bookId).val());
-				if(amount < 1){
-					alert("请输入正确的数量");
-					return false
-				}
-				else if(amount == 100){
-					alert("单笔订单不能大于100本");
-					return false;
-				}
-				else{
-					$("#amount_"+bookId).val((amount+1)+"");
-					countPartFee(bookId);
-				}
-			}
-		</script>
-	</body>
-</html>
+<label id="count">共有{{itemCount}}种书籍</label>
+<form id='form_cart'>
+	{% for item in cart.getItems %}
+		<a href="{% url book_detail item.book_id %}"><img src="{{ MEDIA_URL }}img/{{item.book.spic}}" /></a>&nbsp;&nbsp;
+		<a href="{% url book_detail item.book_id %}">《{{item.book.name}}》</a>&nbsp;&nbsp;
+		{{item.book.price}}元&nbsp;&nbsp;
+		<input type="hidden" id="price_{{item.book_id}}" value="{{item.book.price}}"/>
+		<a href="##" onclick="minus({{item.book_id}})">-1</a>
+		<input type="text" class="amount" id="amount_{{item.book_id}}" name="amount_{{item.book_id}}" value="{{item.amount}}" style="width:30;" onchange="countPartFee({{item.book_id}})" onkeyup="countPartFee({{item.book_id}})"/>
+		<a href="##" onclick="plus({{item.book_id}})">+1</a>&nbsp;&nbsp;
+		<label class="PartFee" id="part_fee_{{item.book_id}}" style="display: none;">{{item.book.price}}</label>&nbsp;&nbsp;
+		<a href="##" onclick="delFromCart({{item.book_id}})">删除</a>
+		<br /><br />
+	{% endfor %}
+</form>
+{% if not cart.getBooks %}
+	您的购物车空空如也，快去选书吧！
+{% else %}
+	<br /><br /><br />
+	共计：<label id="total_fee">{{cart.getTotalFee}}</label>元
+	<br /><br />
+	<input type="button" class="mbtn" value="下订单" onclick="makeOrder()" />
+{% endif %}
+<script type="text/javascript">
+	function countPartFee(bookId){
+		var amount = parseFloat($("#amount_"+bookId).val());
+		var partFee = parseFloat($("#price_"+bookId).val())*amount;
+		$("#part_fee_"+bookId).text(partFee.toFixed(1)+"");
+		countTotalFee();
+	}
+	function countTotalFee(){
+		var partFees = $(".PartFee");
+		var totalFee = 0.0;
+		for(i=0; i<partFees.length; i++){
+			totalFee += parseFloat($(partFees[i]).text());
+		}
+		$("#total_fee").html(totalFee.toFixed(1)+"");
+	}
+	//本数-1
+	function minus(bookId){
+		var amount = parseInt($("#amount_"+bookId).val());
+		if(amount < 1){
+			alert("请输入正确的数量");
+			return false
+		}
+		else if(amount == 1){
+			alert("不想买的话请点删除");
+			return false;
+		}
+		else{
+			$("#amount_"+bookId).val((amount-1)+"");
+			countPartFee(bookId);
+		}
+	}
+	//本数+1
+	function plus(bookId){
+		var amount = parseInt($("#amount_"+bookId).val());
+		if(amount < 1){
+			alert("请输入正确的数量");
+			return false
+		}
+		else if(amount == 100){
+			alert("单笔订单不能大于100本");
+			return false;
+		}
+		else{
+			$("#amount_"+bookId).val((amount+1)+"");
+			countPartFee(bookId);
+		}
+	}
+</script>

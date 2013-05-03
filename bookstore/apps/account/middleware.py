@@ -1,15 +1,21 @@
+#coding=utf-8
+#
+# Copyright (C) 2013  Kliyes.com  All rights reserved.
+#
+# author: JingYang.
+#
+# This file is part of BookStore.
+
 import re
 
 from django.conf import settings
+from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.http import HttpResponseRedirect
 from django.utils import translation
 from django.utils.cache import patch_vary_headers
 from django.utils.http import urlquote
 
-from django.contrib.auth import REDIRECT_FIELD_NAME
-
 from pinax.apps.account.models import Account
-
 
 class LocaleMiddleware(object):
     """

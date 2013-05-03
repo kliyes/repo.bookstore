@@ -1,27 +1,31 @@
-#coding=utf8
+#coding=utf-8
+#
+# Copyright (C) 2013  Kliyes.com  All rights reserved.
+#
+# author: JingYang.
+#
+# This file is part of BookStore.
 
 import random, StringIO, os, uuid
+import logging
+
+from django.conf import settings
 
 from PIL import Image, ImageDraw, ImageFont, ImageFile
-from django.conf import settings
-import logging
-logger = logging.getLogger("mysite")
 
 from common import utils, file_utils
 
+logger = logging.getLogger("mysite")
 
 '''
 In this module, we mainly define the functions about image processing 
 '''
 
-
 IMG_QUALITY = 100
-
 # exception code for image processing
 EXCEPT_NULL_FILE = -1
 EXCEPT_OVER_CAPACITY = 0
 EXCEPT_UNSUPPORTED_FORMAT = 1
-
 
 def open(path, fileName):
     """Opens and identifies the given image file. This is a lazy operation

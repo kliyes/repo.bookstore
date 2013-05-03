@@ -1,6 +1,12 @@
-import urlparse
+#coding=utf-8
+#
+# Copyright (C) 2013  Kliyes.com  All rights reserved.
+#
+# author: JingYang.
+#
+# This file is part of BookStore.
 
-from openid import oidutil
+import urlparse
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -8,15 +14,13 @@ from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.utils.translation import ugettext
-
 from django.contrib import messages
 
+from openid import oidutil
 from django_openid.registration import RegistrationConsumer
-
 from pinax.apps.account.forms import OpenIDSignupForm
 from pinax.apps.account.utils import get_default_redirect, user_display
 from pinax.apps.account.views import login as account_login
-
 
 # install our own logger that does nothing
 def dummy_log(*args, **kwargs):

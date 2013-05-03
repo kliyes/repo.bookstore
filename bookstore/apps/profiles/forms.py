@@ -1,13 +1,21 @@
-# -*-coding:utf-8 -*- 
-from common.utils import ecode
+#coding=utf-8
+#
+# Copyright (C) 2013  Kliyes.com  All rights reserved.
+#
+# author: JingYang.
+#
+# This file is part of BookStore.
+
+import re
+
 from django import forms
 from django.conf import settings
 from django.utils.encoding import force_unicode
 from django.utils.safestring import mark_safe
+
 from profiles.models import City, Profile, Province
 from profiles.signals import profileUpdated
-import re
-
+from common.utils import ecode
 
 alnum_re = re.compile(r"^\w+$")
 

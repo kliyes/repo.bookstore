@@ -1,14 +1,10 @@
-#coding=utf8
-
-'''
-Created on Oct 31, 2012
-
-@author: junn
-'''
-
-"""
-All constants put in here
-"""
+#coding=utf-8
+#
+# Copyright (C) 2013  Kliyes.com  All rights reserved.
+#
+# author: JingYang.
+#
+# This file is part of BookStore.
 
 class Category:
     """操作结果信息,用于格式化操作结果成指定json对象

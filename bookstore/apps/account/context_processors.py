@@ -1,7 +1,14 @@
+#coding=utf-8
+#
+# Copyright (C) 2013  Kliyes.com  All rights reserved.
+#
+# author: JingYang.
+#
+# This file is part of BookStore.
+
 from django.conf import settings
 
 from pinax.apps.account.models import Account, AnonymousAccount
-
 
 def account(request):
     if request.user.is_authenticated():

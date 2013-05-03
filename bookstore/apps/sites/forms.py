@@ -1,14 +1,16 @@
-# -*-coding:utf-8 -*- 
-'''
-Created on Jul 30, 2012
-
-@author: junn
-'''
+#coding=utf-8
+#
+# Copyright (C) 2013  Kliyes.com  All rights reserved.
+#
+# author: JingYang.
+#
+# This file is part of BookStore.
 
 import datetime
 
-from common.utils import ecode
 from django import forms
+
+from common.utils import ecode
 from sites.models import Feedback 
 
 CONTACT_MAX_LEN = 35

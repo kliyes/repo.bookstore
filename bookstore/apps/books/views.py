@@ -1,26 +1,23 @@
 #coding=utf-8
 #
-# Copyright (C) 2012-2013  XIZHI TECH Co., Ltd. All rights reserved.
+# Copyright (C) 2013  Kliyes.com  All rights reserved.
 #
-# Created on 2013-3-18, by Administrator
+# author: JingYang.
 #
-# This file is part of lershare.com.
-#
-from books.models import Book, Cart, Order, BookComment, Grade, Category
+# This file is part of BookStore.
+
+import json
+
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib.auth.decorators import login_required
 from django.template.loader import get_template
-import json
-import datetime
-from common import pages
 from django.core.urlresolvers import reverse
 
-'''
-File feature description here
-'''
-######
+from common import pages
+from books.models import Book, Cart, Order, BookComment, Grade, Category
+
 BOOK_DATA_KEY = "bookPaging"
 BOOK_PAGE_SIZE = 10
 CMT_DATA_KEY = "cmtPaging"

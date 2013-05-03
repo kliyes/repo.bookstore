@@ -1,15 +1,19 @@
-#coding=utf8
+#coding=utf-8
+#
+# Copyright (C) 2013  Kliyes.com  All rights reserved.
+#
+# author: JingYang.
+#
+# This file is part of BookStore.
 
 from django.conf import settings
 from django.conf.urls.defaults import patterns, url
 from django.views.generic.simple import direct_to_template
 
-
 if settings.ACCOUNT_OPEN_SIGNUP:
     signup_view = "account.views.signup"
 else:
     signup_view = "pinax.apps.signup_codes.views.signup"
-
 
 urlpatterns = patterns("",
     url(r"^login/$", "account.views.login", name="acct_login"),

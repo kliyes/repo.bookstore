@@ -1,8 +1,10 @@
-'''
-Created on Nov 13, 2012
-
-@author: junn
-'''
+#coding=utf-8
+#
+# Copyright (C) 2013  Kliyes.com  All rights reserved.
+#
+# author: JingYang.
+#
+# This file is part of BookStore.
 
 """
     DONT't REMOVE THIS FILE !!! 
