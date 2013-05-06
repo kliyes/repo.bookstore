@@ -13,11 +13,11 @@ from books.models import Category
 
 urlpatterns = patterns("",
     url(r"^$", direct_to_template, {"template": "sites/management.html"}, name='management'), 
-    url(r"^reg_book/$", 'sites.views.regBooks'),
-    url(r"^add_book/$", 'sites.views.addBook'),
-    url(r"^show_book/$", 'sites.views.bookShow'),
+    url(r"^reg_book/$", 'sites.views.regBooks', name='regBook'),
+    url(r"^add_book/$", 'sites.views.addBook', name='addBook'),
+    url(r"^show_book/$", 'sites.views.bookShow', name='showBook'),
     url(r"^stat_book/$", direct_to_template, {"template": "sites/stat.html", 
-        'extra_context': {'cates': Category.objects.all()}}),
-    url(r"^update_orders/$", 'sites.views.updateOrders'),
+        'extra_context': {'cates': Category.objects.all()}}, name='statBook'),
+    url(r"^update_orders/$", 'sites.views.updateOrders', name='updateOrders'),
     
 )

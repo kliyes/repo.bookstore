@@ -1,5 +1,10 @@
-<html>
-	<body>
-		!!!!
-	</body>
-</html>
+{% extends "base/manage_base.html" %}
+
+{% block page_title %}管理导航{% endblock %}
+
+{% block body_base %}
+	<a href="{% url regBook %}">书籍信息登记/修改</a><br />
+	<a href="{% url showBook %}">书籍信息查询</a><br />
+	<a href="{% url statBook %}">分类信息统计</a><br />
+	<a href="{% url updateOrders %}">订单管理</a><br />
+{% endblock %}
