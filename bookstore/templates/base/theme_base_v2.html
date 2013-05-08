@@ -1,0 +1,51 @@
+<!--
+ * Copyright (C) 2013  Kliyes.com  All rights reserved.
+ *
+ * author: JingYang.
+ *
+ * This file is part of BookStore.
+ *-->
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- Other Page Single Title Name
+	==============-->
+<title>{% block page_title %}{% endblock %} - BookStore</title>
+
+{% block base_js %}
+<script src="{{STATIC_URL}}jquery/jquery-1.8.3.min.js"></script>
+<script src="{{STATIC_URL}}bootstrap/js/bootstrap.min.js"></script>
+{% endblock %}
+
+<!-- Other Page Single Javascript File
+	==============-->
+{% block single_js %}{% endblock %}
+
+{% block base_css %}
+<link type="text/css" rel="stylesheet" href="{{STATIC_URL}}bootstrap/css/bootstrap.min.css" />
+{% endblock %}
+
+<!-- Other Page Single Style File
+===============-->
+{% block style_css %}{% endblock %}
+</head>
+
+<body class="container">
+<!-- HEADER
+	==============-->
+{% block header_base %}
+	{% block header %} {% include "base/header_v2.html" %} {% endblock %}
+{% endblock %}
+{% block message %} {% include "base/messages.html" %} {% endblock %}
+<!-- BODY
+	==============-->
+{% block body_base %}	{% endblock %}
+<!-- FOOTER
+	==============-->
+{% block footer_base %}
+	{% block footer %} {% include "base/footer_v2.html" %} {% endblock %}
+{% endblock %}
+</body>
+</html>
