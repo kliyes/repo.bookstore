@@ -41,7 +41,7 @@ def goHome(request):
     books = Book.objects.getAll()
     
     ctx = {'showCates': showCates, 'restCates': restCates, 'recommend': recommend}
-    bookPaging = initSessionBooklistPaging(request, _getDataKey('all'), books, BOOK_PAGE_SIZE)
+    bookPaging = initSessionBooklistPaging(request, _getDataKey('cate'), books, BOOK_PAGE_SIZE)
     if bookPaging:
         ctx.update(bookPaging.result(1))
     
@@ -56,19 +56,26 @@ def initSessionCmtlistPaging(request, dataKey, cmtlist, pageSize):
     return pages.setSessionPaging(request, dataKey, cmtlist, pageSize)
 
 def getBooksByCate(request, cateName):
-    '''按书籍分类查询书籍'''
+    '''按书籍分类显示书籍, ajax request only'''
     if not cateName:
         return
     
     category = Category.objects.get(name=cateName)
-    books = Book.objects.filter(category=category)
+    if cateName == 'all':
+        books = Book.objects.getAll()
+    else:
+        books = Book.objects.filter(category=category)
+        
     ctx = {'type': 'cate'}
     
     bookPaging = initSessionBooklistPaging(request, _getDataKey('cate'), books, BOOK_PAGE_SIZE)
     if bookPaging:
         ctx.update(bookPaging.result(1))
     
-    return render_to_response('books/bookset.html', RequestContext(request, ctx))
+    t = get_template('base/books_list.html')
+    html = t.render(RequestContext(request, ctx))
+    
+    return HttpResponse(json.dumps({'html': html, 'status': 'success'}))
 
 def getBooksByName(request):
     '''按书名模糊查询书籍'''
@@ -106,10 +113,10 @@ def pagingAll(request):
     
     pageNo = pages.getRequestPageNo(request)
     request.session['currentPageNo'] = pageNo
-    paging = pages.getSessionPaging(request, _getDataKey('all'))
+    paging = pages.getSessionPaging(request, _getDataKey('cate'))
     if not paging:
         books = Book.objects.all()
-        paging = initSessionBooklistPaging(request, _getDataKey('all'), books, BOOK_PAGE_SIZE)
+        paging = initSessionBooklistPaging(request, _getDataKey('cate'), books, BOOK_PAGE_SIZE)
     
     t = get_template('base/books_list.html')
     html = t.render(RequestContext(request, paging.result(pageNo)))

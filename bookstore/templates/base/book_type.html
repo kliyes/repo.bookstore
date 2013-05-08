@@ -2,10 +2,10 @@
     {% for cate in showCates %}
     	<div class="box box-large">
     		<div class="box box-medium booktype-img">
-    			<a href="{% url book_get_by_cate cate.name %}" ><img src="{{STATIC_URL}}base/img/{{cate.name}}.png" /></a>
+    			<a href="#" ><img src="{{STATIC_URL}}base/img/{{cate.name}}.png" /></a>
     		</div>
     		<div class="booktype-info">
-    			<a href="{% url book_get_by_cate cate.name %}" class="booktype-title">{{cate.label}}</a>
+    			<a href="##" class="booktype-title" onclick="getByCate('{{cate.name}}')">{{cate.label}}</a>
     			<label class="booktype-desc">
     				<!--{{cate.desc}}-->
     			</label>

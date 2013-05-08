@@ -42,6 +42,26 @@
 			dataType: "json"
 		});
 	}
+	
+	function getByCate(cateName){
+		$.ajax({
+			url: "/books/getbycate/"+cateName,
+			data: {},
+			type: "get",
+			async: "true",
+			success: function(data){
+				if(data.status=="success"){
+					$("#all_books").html(data.html);
+				}else{
+					alert(data.status);
+				}
+			},
+			error: function(){
+				alert("error");
+			},
+			dataType: "json"
+		});
+	}
 </script>
 {% endblock %}
 <!-- Other Page Single Style File
