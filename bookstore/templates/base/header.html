@@ -1,35 +1,36 @@
-<div class="header">
-<div class="logo">
-	<a href="/"><img src="{{STATIC_URL}}base/img/logo.png" /></a>
-</div>
-
-<div class="search">
-  <div class="search-btn">
-  	<form action="{% url book_search %}" method="get">
-	    <input id="name" name="name" type="text" class="search-inp" placeholder="Search" value="" />
-	    <input type="submit" value="搜 索" class="mbtn mbtn-info" />
-  	</form>
-  </div>
-
-  <div class="search-hot">
-    <label class="f-red">热门搜索:</label> 
-    <a class="f-black" href="/books/getbyname/?name=小王子">小王子</a>
-    <a class="f-black" href="/books/getbyname/?name=烟花">烟花</a> 
-    <a class="f-black" href="/books/getbyname/?name=数学">数学</a> 
-    <a class="f-black" href="/books/getbyname/?name=django">Django</a>
-  </div>
-</div>
-
-<div class="userinfo">
-	{% if user.is_authenticated %}
-		您好，{{profile.name}}<br />
-		<a href="{% url profiles_setting %}"><input type="button" class="mbtn mbtn-info" value="设 置" /></a>
-		<a href="{% url acct_logout %}"><input type="button" class="mbtn" value="退 出" /></a>
-	{% else %}
-		<a href="{% url acct_login %}"><input type="button" class="mbtn mbtn-info" value="登 录" /></a>
-		<a href="{% url acct_signup %}"><input type="button" class="mbtn" value="注 册" /></a>
-	{% endif %}
-</div>
-</div>
-
-<div class="separate"></div>
+<!-- 导航 -->
+    <div class="navbar navbar-inverse">
+      <div class="navbar-inner">
+        <a class="brand" href="#">BookStore</a>
+        <ul class="nav pull-right">
+          {% if not user.is_authenticated %}
+          <li><a href="{% url acct_login %}"><i class="icon-user icon-white"></i> 登录</a></li>
+          <li><a href="{% url acct_signup %}"><i class="icon-user icon-white"></i> 注册</a></li>
+          <!-- 登录后显示此li 开始 -->
+          {% else %}          
+          <li>
+          	<ul class="nav nav-pills">
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                您好，{{profile.name}}
+                <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">登录后显示</a></li>
+                    <li class="divider"></li>
+                    <li><a href="{% url profiles_setting %}"><i class="icon-wrench"></i> 个人设置</a></li>
+                    <li><a href="#"><i class="icon-list"></i> 购物清单</a></li>
+                    <li><a href="{% url acct_logout %}"><i class="icon-off"></i> 离开</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <!-- 登录后显示此li 结束 -->
+          {% endif %}
+        </ul>
+        <form class="navbar-search pull-right" action="{% url book_search %}" method="get">
+		    <input type="text" class="search-query" placeholder="Search">
+        </form>
+      </div>
+    </div>
+<!-- 导航 -->

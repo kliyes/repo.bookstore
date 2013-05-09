@@ -1,12 +1,8 @@
 {% extends "base/theme_base.html" %}
-<!-- Other Page Single Title Name
-	==============-->
-{% block page_title %}Book Store{% endblock %}
-<!-- Other Page Single Javascript File
-	==============-->
+
+{% block page_title %}欢迎光临{% endblock %}
+
 {% block single_js %}
-<script type="text/javascript" src="{{STATIC_URL}}base/js/jquery-1.8.2.min.js"></script>
-<script type="text/javascript" src="{{STATIC_URL}}base/js/main.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
 		$("#all_books").delegate("#pre, #next, #num", "click", function(){
@@ -52,6 +48,7 @@
 			success: function(data){
 				if(data.status=="success"){
 					$("#all_books").html(data.html);
+					$("#hot_two").html(data.html2);
 				}else{
 					alert(data.status);
 				}
@@ -64,22 +61,52 @@
 	}
 </script>
 {% endblock %}
-<!-- Other Page Single Style File
-	==============-->
-{% block style_css %}
-<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}base/css/main.css" />
-{% endblock %}
 
-{% block body_base %}		
-<div class="main">
-	<!-- books type
-		==============-->
-	{% include "base/book_type.html" %}
-	<!-- books recommend
-		==============-->
-	{% include "base/recommend.html" %}
-	<!-- books list
-		==============-->
-	{% include "base/books_list.html" %}
-</div>
+{% block body_base %}
+	<!-- 火爆数据 -->
+	<div class="row">
+    	<div class="span12">
+        	<ul class="thumbnails">
+        	{% for book in bestsellers %}
+              <li class="span2">
+                <a href="{% url book_detail book.id %}" class="thumbnail">
+                  <img src="{{ MEDIA_URL }}img/{{book.spic}}" alt="">
+                </a>
+              </li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+    
+    <div class="row">
+    	<div class="span4">
+        	<ul class="nav nav-pills nav-stacked">
+            	<li class="active"><a href="##" onclick="getByCate('all')">全部</a></li>
+            	{% for cate in allCates %}
+              	  <li><a href="##" onclick="getByCate('{{cate.name}}')">{{cate.label}}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="span8">
+        	<ul class="thumbnails" id="hot_two">
+              {% include "base/hot_two_books.html" %}
+			</ul>
+        </div>
+    </div>
+    
+	<div class="row">
+		<div class="span12">
+		    <ul class="breadcrumb">
+		        <li><a href="#">销售</a> <span class="divider">|</span></li>
+		        <li><a href="#">价格</a> <span class="divider">|</span></li>
+		        <li><a href="#">评论数</a> <span class="divider">|</span></li>
+		        <li><a href="#">上架时间</a> <span class="divider">|</span></li>
+		        <li><a href="#">出版时间</a> <span class="divider">|</span></li>
+		    </ul>
+		</div>
+	</div>
+	
+	<div class="row">
+		    {% include "base/books_list.html" %}
+	</div>
 {% endblock %}

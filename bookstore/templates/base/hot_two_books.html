@@ -1,7 +1,7 @@
 {% for book in hotTwo %}
 <li class="span4">
 	<div class="thumbnail">
-	  <img src="static/base/img/de2.png" alt="">
+	  <img src="{{ MEDIA_URL }}img/{{book.spic}}" alt="">
 	  <div class="caption">
 	    <h3>《{{book.name}}》</h3>
 	    <p>{{book.desc}}</p>
@@ -9,3 +9,4 @@
 	  </div>
 	</div>
 </li>
+{% endfor %}

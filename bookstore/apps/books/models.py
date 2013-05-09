@@ -30,6 +30,10 @@ class Author(models.Model):
 
 
 class CateManager(models.Manager):
+    def getAllCates(self):
+        '''获取所有分类'''
+        return self.all()
+    
     def get3Cates(self):
         '''获取先显示的3个分类, 文学, 小说, 艺术'''
         return [self.get(name='letter'), 
@@ -80,6 +84,14 @@ class BookManager(models.Manager):
     def getRecommend(self):
         '''获得最近登记的4本书籍作为推荐书籍'''
         return self.all().order_by('-reg_date')[:4]
+    
+    def getBestsellers(self, num=6):
+        '''获得畅销书'''
+        return self.all().order_by('-bought_count')[:num]
+    
+    def getHotTwoByCate(self, cate):
+        '''按分类获取该分类下最热门两本书籍'''
+        return self.filter(category=cate).order_by('-bought_count')[:2]
     
 class Book(models.Model):
     '''定义Book模型'''

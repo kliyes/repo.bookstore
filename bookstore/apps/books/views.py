@@ -35,12 +35,13 @@ def _getDataKey(type):
 
 def goHome(request):
     '''首页, index.html'''
-    showCates = Category.objects.get3Cates()
-    restCates = Category.objects.getRestCates()
+    allCates = Category.objects.getAllCates()
+    bestsellers = Book.objects.getBestsellers()
+    hotTwo = Book.objects.getBestsellers(2)
     recommend = Book.objects.getRecommend()
     books = Book.objects.getAll()
     
-    ctx = {'showCates': showCates, 'restCates': restCates, 'recommend': recommend}
+    ctx = {'recommend': recommend, 'allCates': allCates, 'bestsellers': bestsellers, 'hotTwo': hotTwo}
     bookPaging = initSessionBooklistPaging(request, _getDataKey('cate'), books, BOOK_PAGE_SIZE)
     if bookPaging:
         ctx.update(bookPaging.result(1))
@@ -60,11 +61,13 @@ def getBooksByCate(request, cateName):
     if not cateName:
         return
     
-    category = Category.objects.get(name=cateName)
     if cateName == 'all':
         books = Book.objects.getAll()
+        hotTwo = Book.objects.getBestsellers(2)
     else:
+        category = Category.objects.get(name=cateName)
         books = Book.objects.filter(category=category)
+        hotTwo = Book.objects.getHotTwoByCate(category)
         
     ctx = {'type': 'cate'}
     
@@ -75,7 +78,10 @@ def getBooksByCate(request, cateName):
     t = get_template('base/books_list.html')
     html = t.render(RequestContext(request, ctx))
     
-    return HttpResponse(json.dumps({'html': html, 'status': 'success'}))
+    t2 = get_template('base/hot_two_books.html')
+    html2 = t2.render(RequestContext(request, {'hotTwo': hotTwo}))
+    
+    return HttpResponse(json.dumps({'html': html, 'html2': html2, 'status': 'success'}))
 
 def getBooksByName(request):
     '''按书名模糊查询书籍'''
