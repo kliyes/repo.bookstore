@@ -56,6 +56,16 @@ def initSessionCmtlistPaging(request, dataKey, cmtlist, pageSize):
     ''''''
     return pages.setSessionPaging(request, dataKey, cmtlist, pageSize)
 
+def _sortBooks(books, key='soldCount'):
+    '''按关键字key对books进行排序'''
+    if key == 'soldCount':
+        return books.order_by('-bought_count')
+    elif key == 'price':
+        return books.order_by('-price')
+    elif key == 'cmtsCount':
+        
+        
+
 def getBooksByCate(request, cateName):
     '''按书籍分类显示书籍, ajax request only'''
     if not cateName:
