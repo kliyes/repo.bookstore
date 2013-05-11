@@ -39,9 +39,11 @@ def goHome(request):
     bestsellers = Book.objects.getBestsellers()
     hotTwo = Book.objects.getBestsellers(2)
     recommend = Book.objects.getRecommend()
-    books = Book.objects.getAll()
+    books = _sortBooks(Book.objects.getAll())
     
-    ctx = {'recommend': recommend, 'allCates': allCates, 'bestsellers': bestsellers, 'hotTwo': hotTwo}
+    ctx = {'recommend': recommend, 'allCates': allCates, 
+           'bestsellers': bestsellers, 'hotTwo': hotTwo, 
+           'cateName': 'all'}
     bookPaging = initSessionBooklistPaging(request, _getDataKey('cate'), books, BOOK_PAGE_SIZE)
     if bookPaging:
         ctx.update(bookPaging.result(1))
@@ -63,11 +65,17 @@ def _sortBooks(books, key='soldCount'):
     elif key == 'price':
         return books.order_by('-price')
     elif key == 'cmtsCount':
-        
-        
+        return books.order_by('-comment_count')
+    elif key == 'regDate':
+        return books.order_by('-reg_date')
+    elif key == 'pubDate':
+        return books.order_by('-publish_date')
+    else:
+        return None
 
 def getBooksByCate(request, cateName):
     '''按书籍分类显示书籍, ajax request only'''
+    key = request.REQUEST.get('key', 'soldCount')
     if not cateName:
         return
     
@@ -78,8 +86,10 @@ def getBooksByCate(request, cateName):
         category = Category.objects.get(name=cateName)
         books = Book.objects.filter(category=category)
         hotTwo = Book.objects.getHotTwoByCate(category)
+    
+    books = _sortBooks(books, key)
         
-    ctx = {'type': 'cate'}
+    ctx = {'type': 'cate', 'cateName': cateName}
     
     bookPaging = initSessionBooklistPaging(request, _getDataKey('cate'), books, BOOK_PAGE_SIZE)
     if bookPaging:
@@ -127,15 +137,24 @@ def pagingAll(request):
     if not request.is_ajax():
         raise Http404
     
+    cateName = request.REQUEST.get('cateName', 'all')
+    ctx = {'cateName': cateName}
+    
     pageNo = pages.getRequestPageNo(request)
     request.session['currentPageNo'] = pageNo
     paging = pages.getSessionPaging(request, _getDataKey('cate'))
     if not paging:
-        books = Book.objects.all()
+        if cateName == 'all':
+            books = Book.objects.getAll()
+        else:
+            category = Category.objects.get(name=cateName)
+            books = Book.objects.filter(category=category)
+            
         paging = initSessionBooklistPaging(request, _getDataKey('cate'), books, BOOK_PAGE_SIZE)
     
+    ctx.update(paging.result(pageNo))
     t = get_template('base/books_list.html')
-    html = t.render(RequestContext(request, paging.result(pageNo)))
+    html = t.render(RequestContext(request, ctx))
     
     return HttpResponse(json.dumps({'status': 'success', 'html': html}))
 
@@ -277,8 +296,7 @@ def addComment(request, bookId):
     cmtContent = request.REQUEST.get('cmtContent', '')
     profile = request.user.get_profile()
     book = _getBookById(bookId)
-    cmt = BookComment(owner=profile, book=book, content=cmtContent)
-    cmt.save()
+    book.addComment(profile, cmtContent)
     
     cmts = book.getComments()
     cmtPaging = initSessionCmtlistPaging(request, CMT_DATA_KEY, cmts, CMT_PAGE_SIZE)

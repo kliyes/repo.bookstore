@@ -22,7 +22,7 @@
 		}
 		$.ajax({
 			url: "/books/page_all_books/", 
-			data: {"page": pageIndex}, 
+			data: {"page": pageIndex, "cateName": $("#cate_name").val()}, 
 			type: "get", 
 			async: "true", 
 			success: function(data){
@@ -39,10 +39,10 @@
 		});
 	}
 	
-	function getByCate(cateName){
+	function getByCate(key, cateName){
 		$.ajax({
 			url: "/books/getbycate/"+cateName,
-			data: {},
+			data: {'key': key},
 			type: "get",
 			async: "true",
 			success: function(data){
@@ -81,9 +81,9 @@
     <div class="row">
     	<div class="span4">
         	<ul class="nav nav-pills nav-stacked">
-            	<li class="active"><a href="##" onclick="getByCate('all')">全部</a></li>
+            	<li class="active"><a href="##" onclick="getByCate('soldCount', 'all')">全部</a></li>
             	{% for cate in allCates %}
-              	  <li><a href="##" onclick="getByCate('{{cate.name}}')">{{cate.label}}</a></li>
+              	  <li><a href="##" onclick="getByCate('soldCount', '{{cate.name}}')">{{cate.label}}</a></li>
                 {% endfor %}
             </ul>
         </div>
@@ -94,19 +94,7 @@
         </div>
     </div>
     
-	<div class="row">
-		<div class="span12">
-		    <ul class="breadcrumb">
-		        <li><a href="#">销售</a> <span class="divider">|</span></li>
-		        <li><a href="#">价格</a> <span class="divider">|</span></li>
-		        <li><a href="#">评论数</a> <span class="divider">|</span></li>
-		        <li><a href="#">上架时间</a> <span class="divider">|</span></li>
-		        <li><a href="#">出版时间</a> <span class="divider">|</span></li>
-		    </ul>
-		</div>
-	</div>
-	
-	<div class="row">
-		    {% include "base/books_list.html" %}
+    <div id="all_books">
+		{% include "base/books_list.html" %}
 	</div>
 {% endblock %}

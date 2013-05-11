@@ -93,6 +93,7 @@ class BookManager(models.Manager):
         '''按分类获取该分类下最热门两本书籍'''
         return self.filter(category=cate).order_by('-bought_count')[:2]
     
+    
 class Book(models.Model):
     '''定义Book模型'''
     name = models.CharField(max_length=800) # 书名
@@ -111,6 +112,7 @@ class Book(models.Model):
     stock = models.IntegerField() # 库存
     publish_date = models.CharField(max_length=50) # 出版日期
     reg_date = models.DateTimeField(default=datetime.datetime.now) # 上架时间
+    comment_count = models.IntegerField(default=0) # 被评论次数
     
     objects = BookManager()
     
@@ -162,6 +164,13 @@ class Book(models.Model):
             return self.getTotalGrade()/self.getMarkersCount()
         return 0
     
+    def addComment(self, profile, cmtContent):
+        '''为书籍添加评论'''
+        bookComment = BookComment(owner=profile, book=self, content=cmtContent)
+        bookComment.save()
+        self.comment_count += 1
+        self.save()
+        return bookComment
 
 class Grade(models.Model):
     '''定义书籍得分模型'''
