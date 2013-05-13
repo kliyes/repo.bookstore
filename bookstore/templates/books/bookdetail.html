@@ -1,16 +1,15 @@
 {% extends "base/theme_base.html" %}
 
-{% block page_title %}书籍详情{% endblock %}
+{% block page_title %}{{book.name}} - 书籍详情{% endblock %}
 
 {% block single_js %}
-	<script src="{{STATIC_URL}}xizhi/js/jquery-1.8.2.min.js"></script>
-	<script src="{{STATIC_URL}}xizhi/js/secure.js"></script>
+	<script src="{{STATIC_URL}}base/js/secure.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
-			$("#commentsArea").delegate("#pre, #next, #num", "click", function(){
+			$("#tab1").delegate("#pre, #next, #num", "click", function(){
 				cmtPageTurn(this, '{{book.id}}');
 			});
-			$("#commentsArea").delegate("#goto_page", "click", function(){
+			$("#tab1").delegate("#goto_page", "click", function(){
 				cmtPageTurn(this, '{{book.id}}');
 			});
 		});
@@ -29,7 +28,7 @@
 				async: "true", 
 				success: function(data){
 					if(data.status=="success"){
-						$("#commentsArea").html(data.html);
+						$("#tab1").html(data.html);
 					}else{
 						alert(data.status);
 					}
@@ -133,46 +132,245 @@
 {% endblock %}
 
 {% block body_base %}
-	<img src="{{ MEDIA_URL }}img/{{book.lpic}}" /><br />
-	书名：{{book.name}}<br />
-	作者：{{book.author.name}}<br />
-	出版社：{{book.press}}<br />
-	ISBN：{{book.isbn}}<br />
-	定价：{{book.price}}元<br />
-	分类：{{book.category.label}}<br />
-	评分：{{book.getAverage}}分（共有{{book.getMarkersCount}}人打过分）<br />
-	共有{{book.bought_count}}人购买过这本书<br /><br /><br />
-	书籍简介：{{book.desc}}<br /><br />
-	作者简介：{{book.author.desc}}<br /><br /><br />
-	{% if book in cart.getBooks %}
-		<a href="/books/check_the_cart/"><input type="button" class="lbtn" value="已加入购物车，去购物车中看看"/></a>
-	{% else %}
-		<input id="add" type="button" class="mbtn" value="加入购物车" onclick="addToCart({{book.id}})"/>
-		<a href="/books/check_the_cart/"><input id="added" type="button" class="lbtn" value="已加入购物车，去购物车中看看" style="display:none;"/></a>
-	{% endif %}
-	<br /><br /><br />
-	{% if user.is_authenticated %}
-		关于这本书，您想说点什么：<textarea id="comment" name="comment" style="height: 150px;"> </textarea>
-		<input id="go_comment" type="button" class="mbtn" onclick="addComment({{book.id}})" value="发表" /><br />
-		{% if book in profile.getBoughtBooks %}
-			{% if profile in book.getMarkers %}
-				您已经买过了这本书，并且为它打了{{grade.value}}分
-			{% else %}
-				<div id="mark_grade">
-					您已经买过了这本书，来打个分吧：<input type="text" id="grade" name="grade" value="1" />
-					<input type="button" class="mbtn" onclick="mark({{book.id}})" value="打分" />
-				</div>
-				<div id="marked" style="display:none;" >
-					感谢您的打分
-				</div>
-			{% endif %}
-		{% endif %}
-	{% else %}
-		您需要登录才能发表评论
-	{% endif %}
-	<br />
-	<h1>评论列表</h1>
-	<div id="commentsArea">
-		{% include "books/includes/comments.html" %}
-	</div>
+<div class="row-fluid">
+	<div class="span2">
+    	<div class="page-header">
+            <h1>推荐</h1>
+      	</div>
+    	
+    	<ul class="thumbnails">
+          <li class="span12 text-center">
+            <a href="#" class="thumbnail">
+              <img src="static/base/img/de.png" alt="">
+              <h5>吸血鬼的故事</h5>
+            </a>
+          </li>
+          <li class="span12 text-center">
+            <a href="#" class="thumbnail">
+              <img src="static/base/img/de.png" alt="">
+              <h5>吸血鬼的故事2</h5>
+            </a>
+          </li>
+          <li class="span12 text-center">
+            <a href="#" class="thumbnail">
+              <img src="static/base/img/de.png" alt="">
+              <h5>吸血鬼的故事3</h5>
+            </a>
+          </li>
+          <li class="span12 text-center">
+            <a href="#" class="thumbnail">
+              <img src="static/base/img/de.png" alt="">
+              <h5>吸血鬼的故事4</h5>
+            </a>
+          </li>
+          <li class="span12 text-center">
+            <a href="#" class="thumbnail">
+              <img src="static/base/img/de.png" alt="">
+              <h5>吸血鬼的故事5</h5>
+            </a>
+          </li>
+        </ul>
+        
+        <div class="page-header">
+            <h1>新书</h1>
+        </div>
+    	
+    	<ul class="thumbnails">
+          <li class="span12 text-center">
+            <a href="#" class="thumbnail">
+              <img src="static/base/img/de.png" alt="">
+              <h5>新书1</h5>
+            </a>
+          </li>
+          <li class="span12 text-center">
+            <a href="#" class="thumbnail">
+              <img src="static/base/img/de.png" alt="">
+              <h5>新书2</h5>
+            </a>
+          </li>
+          <li class="span12 text-center">
+            <a href="#" class="thumbnail">
+              <img src="static/base/img/de.png" alt="">
+              <h5>新书3</h5>
+            </a>
+          </li>
+          <li class="span12 text-center">
+            <a href="#" class="thumbnail">
+              <img src="static/base/img/de.png" alt="">
+              <h5>新书4</h5>
+            </a>
+          </li>
+          <li class="span12 text-center">
+            <a href="#" class="thumbnail">
+              <img src="static/base/img/de.png" alt="">
+              <h5>新书5</h5>
+            </a>
+          </li>
+        </ul>
+    </div>
+    <div class="span9 offset1">
+        <div class="page-header">
+            <h1>{{book.name}}</h1>
+        </div>
+        <div class="row-fluid">
+        <!-- 缩略图 -->
+        	<div class="span4">
+            	<ul class="thumbnails">
+                  <li class="span12">
+                    <div class="thumbnail">
+                      <img src="{{ MEDIA_URL }}img/{{book.lpic}}" alt="">
+                    </div>
+                  </li>
+                </ul>
+            </div>
+        <!-- 详细参数 -->
+        	<div class="span8">
+                <dl class="dl-horizontal">
+                    <dt>作者：</dt>
+                    <dd>{{book.author.name}}</dd>
+                    <dt>出版社：</dt>
+                    <dd>{{book.press}}</dd>
+                    <dt>ISBN：</dd>
+                    <dd>{{book.isbn}}</dt>
+                    <dt>发布时间：</dd>
+                    <dd>{{book.publish_date}}</dt>
+                    <dt>页数：</dd>
+                    <dd>{{pages}}页</dt>
+                    <dt>装帧：</dd>
+                    <dd>{{book.binding}}</dt>                                                
+                    <dt>开本：</dd>
+                    <dd>32开</dt>                        
+                    <dt>版本：</dd>
+                    <dd>1</dt>           
+                    <dt>库存：</dd>
+                    <dd>{{book.stock}}</dt>
+                    <dt>售价：</dd>
+                    <dd>{{book.price}}元</dt>                                     
+                </dl>
+            </div>            
+        </div>
+        
+        <div class="row-fluid">
+        <!-- Share 
+            <div class="span4">
+                <small>分享至</small> 新浪微博 腾讯微博
+            </div>  
+         -->
+        <!-- buy -->
+            <div class="span8">
+                <button class="btn btn-success pull-right"><i class="icon-shopping-cart icon-white"></i> 购买</button>
+            </div>           
+        </div>
+        
+        <br />
+        <ul class="breadcrumb" id="breadcrumb_menu">
+          <li><a href="#content_intro" class="lead"><small>内容简介</small></a> <span class="divider">|</span></li>
+          <li><a href="#authot_intro" class="lead"><small>作者简介</small></a> <span class="divider">|</span></li>
+          <li><a href="#other_books" class="lead"><small>该作者其他书籍</small> </a><span class="divider">|</span></li>
+          <li><a href="#valuation" class="lead"><small>用户评价</small></a></li>           
+        </ul>
+                    
+        <div class="row-fluid">
+        	<div class="page-header">
+                <h3 id="content_intro">内容简介：</h3>
+            </div>
+            <div class="span12">
+            	{{book.desc}}
+                <p><a href="#breadcrumb_menu"><span class="badge badge-success"><i class="icon-circle-arrow-up icon-white"></i> Top</span></a></p>
+            </div>
+        </div>
+        <div class="row-fluid">
+        	<div class="page-header">
+                <h3 id="authot_intro">作者简介：</h3>
+            </div>
+            <div class="span12">
+                {{book.author.desc}}
+                <p><a href="#breadcrumb_menu"><span class="badge badge-success"><i class="icon-circle-arrow-up icon-white"></i> Top</span></a></p>
+            </div>
+        </div>
+        <div class="row-fluid">
+        	<div class="page-header">
+            	<h3 id="other_books">该作者的其他书籍</h3>
+            </div>
+            <div class="span12">
+            	<ul class="thumbnails">
+                    <li class="span2 text-center">
+                        <a href="#" class="thumbnail">
+		                    <img src="static/base/img/de.png" alt="">
+                            <small>Book Name</small>
+        	            </a>
+                    </li>
+                    <li class="span2 text-center">
+                        <a href="#" class="thumbnail">
+		                    <img src="static/base/img/de.png" alt="">
+                            <small>Book Name</small>
+        	            </a>
+                    </li>
+                    <li class="span2 text-center">
+                        <a href="#" class="thumbnail">
+		                    <img src="static/base/img/de.png" alt="">
+                            <small>Book Name</small>
+        	            </a>
+                    </li>
+                    <li class="span2 text-center">
+                        <a href="#" class="thumbnail">
+		                    <img src="static/base/img/de.png" alt="">
+                            <small>Book Name</small>
+        	            </a>
+                    </li>
+                    <li class="span2 text-center">
+                        <a href="#" class="thumbnail">
+		                    <img src="static/base/img/de.png" alt="">
+                            <small>Book Name</small>
+        	            </a>
+                    </li>
+                    <li class="span2 text-center">
+                        <a href="#" class="thumbnail">
+		                    <img src="static/base/img/de.png" alt="">
+                            <small>Book Name</small>
+        	            </a>
+                    </li>
+                </ul>
+                <p><a href="#breadcrumb_menu"><span class="badge badge-success"><i class="icon-circle-arrow-up icon-white"></i> Top</span></a></p>
+            </div>
+        </div>
+        
+        <div class="row-fluid">
+            <div class="page-header">
+            	<h3 id="valuation">评价</h3>
+            </div>
+        	<div class="span12">
+            	<div class="progress progress-striped active">
+                  <div class="bar bar-success" style="width: 50%;">好评</div>
+                  <div class="bar bar-warning" style="width: 30%;">中评</div>
+                  <div class="bar bar-danger" style="width: 20%;">差评</div>
+                </div>
+            </div>
+            <div class="span12">
+                <div class="tabbable"> <!-- Only required for left/right tabs -->
+                  <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab1" data-toggle="tab">全部评价</a></li>
+                    <li><a href="#tab2" data-toggle="tab">好评</a></li>
+                    <li><a href="#tab3" data-toggle="tab">中评</a></li>
+                    <li><a href="#tab4" data-toggle="tab">差评</a></li>
+                  </ul>
+                  <div class="tab-content">
+                    <div class="tab-pane active" id="tab1">
+                    {% include "books/includes/comments.html" %}
+                    </div>
+                    <div class="tab-pane" id="tab2">
+                    {% include "books/includes/comments.html" %}
+                    </div>
+                    <div class="tab-pane" id="tab3">
+                    	{% include "books/includes/comments.html" %}
+                    </div>
+                    <div class="tab-pane" id="tab4">
+                    {% include "books/includes/comments.html" %}
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>            
+    </div>
+</div>	
 {% endblock %}

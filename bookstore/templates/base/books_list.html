@@ -10,11 +10,11 @@
 	    </ul>
 	</div>
 </div>
-<div class="row">
-	<!-- 书籍列表 -->
-	<div>
-		{% include "base/books.html" %}
-		<div class="separate"></div>
-		{% include "books/includes/book_paginator.html" %}
-	</div>
+<!-- 书籍列表 -->
+<div class="row-fluid">
+	{% include "base/books.html" %}
+</div>
+
+<div class="pagination pull-right">
+	{% include "books/includes/book_paginator.html" %}
 </div>

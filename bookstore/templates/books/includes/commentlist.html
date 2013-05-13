@@ -1,3 +1,11 @@
 {% for cmt in pageItems.object_list %}
-	{{cmt.owner.name}}于{{cmt.created_date|date:"Y-m-d H:i"}}评论到：{{cmt.content}}<br /><br />
+    <div class="media">
+        <a class="pull-left span2">
+        	<img src="{{ MEDIA_URL }}img/{{cmt.owner.normal_pic}}" alt=""><br />
+        	<label>{{cmt.owner.name}}</label>
+        </a>
+        <div class="media-body well">
+            <p>{{cmt.content}}</p>
+        </div>
+    </div>
 {% endfor %}

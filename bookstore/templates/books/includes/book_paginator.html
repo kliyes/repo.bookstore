@@ -1,4 +1,4 @@
-<div>
+<!--<div>
 	<div>
 		{% ifnotequal pageItems.paginator.num_pages 1 %}
 		
@@ -24,6 +24,39 @@
 			
 		{% endifnotequal %}
 	</div>
+	<div>
+		共{{ pageItems.paginator.num_pages }}页 到第 <input id="userinput_page" name="textfield" type="text" style="width: 25px;" /> 页
+		<a id="goto_page" rel="userinput"><input type="button" class="mbtn" value="走你"/></a>
+	</div>
+</div>-->
+
+<div>
+	<div>
+		{% ifnotequal pageItems.paginator.num_pages 1 %}
+		<ul>
+			{% if pageItems.has_previous %}
+				<li><a href="##" id="pre" rel="{{pageItems.previous_page_number}}">&larr;</a></li>
+			{% else %}
+				<li><a>&larr;</a></li>
+			{% endif %}
+			
+			{% for i in pageRange %}
+				{% ifequal i pageItems.number %}
+					<li class="active"><a>{{i}}</a></li>
+				{% else %}
+					<li><a href="##" id="num" rel="{{i}}">{{i}}</a></li>
+				{% endifequal %}
+			{% endfor %}
+			
+			{% if pageItems.has_next %}
+				<li><a href="##" id="next" rel="{{pageItems.next_page_number}}">&rarr;</a></li>
+			{% else %}
+				<li><a>&rarr;</a></li>
+			{% endif %}
+		</ul>
+		{% endifnotequal %}
+	</div>
+	
 	<div>
 		共{{ pageItems.paginator.num_pages }}页 到第 <input id="userinput_page" name="textfield" type="text" style="width: 25px;" /> 页
 		<a id="goto_page" rel="userinput"><input type="button" class="mbtn" value="走你"/></a>
