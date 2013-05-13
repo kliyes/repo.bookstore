@@ -149,14 +149,14 @@ class Book(models.Model):
     def getTotalGrade(self):
         '''获取总分'''
         total = 0
-        grades = Grade.objects.filter(book=self)
-        for grade in grades:
-            total += grade.value
+        bookCmts = BookComment.objects.filter(book=self)
+        for bookCmt in bookCmts:
+            total += bookCmt.grade
         return total
     
     def getMarkersCount(self):
         '''获取打分人数'''
-        return len(self.getMarkers())
+        return BookComment.objects.filter(book=self).count()
     
     def getAverage(self):
         '''获取平均分 总分除以总人数'''
@@ -193,6 +193,7 @@ class BookComment(models.Model):
     owner = models.ForeignKey("profiles.Profile") # 评论发表者
     book = models.ForeignKey(Book) # 所评论的书籍
     content = models.CharField(max_length=1000) # 评论内容
+    grade = models.SmallIntegerField(default=5) # 得分
     created_date = models.DateTimeField(default=datetime.datetime.now) # 评论时间
     
     class Meta:
