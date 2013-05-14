@@ -53,32 +53,6 @@
 			});
 		}
 		
-		function cmtPageTurn(obj, bookId){
-			var pageIndex = "";
-			if($(obj).attr("rel")==="userinput"){
-				pageIndex = $("#userinput_page").val();
-			}else{
-				pageIndex = $(obj).attr("rel");
-			}
-			$.ajax({
-				url: "/books/page_cmts/" + bookId, 
-				data: {"page": pageIndex}, 
-				type: "get", 
-				async: "true", 
-				success: function(data){
-					if(data.status=="success"){
-						$("#tab1").html(data.html);
-					}else{
-						alert(data.status);
-					}
-				}, 
-				error: function(){
-					alert("error");
-				}, 
-				dataType: "json"
-			});
-		}
-		
 		//检查字符串是否为空 true表示为空 false表示不为空
 		function isNull(value){
 			if(trim(value)==""){
@@ -266,25 +240,21 @@
         	<div class="span8">
                 <dl class="dl-horizontal">
                     <dt>作者：</dt>
-                    <dd>{{book.author.name}}</dd>
+                    <dd>{{book.author.name|default:"&nbsp;"}}</dd>
                     <dt>出版社：</dt>
-                    <dd>{{book.press}}</dd>
+                    <dd>{{book.press|default:"&nbsp;"}}</dd>
                     <dt>ISBN：</dd>
-                    <dd>{{book.isbn}}</dt>
+                    <dd>{{book.isbn|default:"&nbsp;"}}</dt>
                     <dt>发布时间：</dd>
-                    <dd>{{book.publish_date}}</dt>
+                    <dd>{{book.publish_date|default:"&nbsp;"}}</dt>
                     <dt>页数：</dd>
-                    <dd>{{pages}}页</dt>
+                    <dd>{{book.pages|default:"&nbsp;"}}页</dt>
                     <dt>装帧：</dd>
-                    <dd>{{book.binding}}</dt>                                                
-                    <dt>开本：</dd>
-                    <dd>32开</dt>                        
-                    <dt>版本：</dd>
-                    <dd>1</dt>           
+                    <dd>{{book.binding|default:"&nbsp;"}}</dt>                                                
                     <dt>库存：</dd>
-                    <dd>{{book.stock}}</dt>
+                    <dd>{{book.stock|default:"&nbsp;"}}</dt>
                     <dt>售价：</dd>
-                    <dd>{{book.price}}元</dt>                                     
+                    <dd>{{book.price|default:"&nbsp;"}}元</dt>                                     
                 </dl>
             </div>            
         </div>
@@ -333,42 +303,14 @@
             </div>
             <div class="span12">
             	<ul class="thumbnails">
+            		{% for book in otherBooks %}
                     <li class="span2 text-center">
-                        <a href="#" class="thumbnail">
-		                    <img src="static/base/img/de.png" alt="">
-                            <small>Book Name</small>
+                        <a href="{% url book_detail book.id %}" class="thumbnail">
+		                    <img src="{{ MEDIA_URL }}img/{{book.spic}}" alt="">
+                            <small>{{book.name}}</small>
         	            </a>
                     </li>
-                    <li class="span2 text-center">
-                        <a href="#" class="thumbnail">
-		                    <img src="static/base/img/de.png" alt="">
-                            <small>Book Name</small>
-        	            </a>
-                    </li>
-                    <li class="span2 text-center">
-                        <a href="#" class="thumbnail">
-		                    <img src="static/base/img/de.png" alt="">
-                            <small>Book Name</small>
-        	            </a>
-                    </li>
-                    <li class="span2 text-center">
-                        <a href="#" class="thumbnail">
-		                    <img src="static/base/img/de.png" alt="">
-                            <small>Book Name</small>
-        	            </a>
-                    </li>
-                    <li class="span2 text-center">
-                        <a href="#" class="thumbnail">
-		                    <img src="static/base/img/de.png" alt="">
-                            <small>Book Name</small>
-        	            </a>
-                    </li>
-                    <li class="span2 text-center">
-                        <a href="#" class="thumbnail">
-		                    <img src="static/base/img/de.png" alt="">
-                            <small>Book Name</small>
-        	            </a>
-                    </li>
+                    {% endfor %}
                 </ul>
                 <p><a href="#breadcrumb_menu"><span class="badge badge-success"><i class="icon-circle-arrow-up icon-white"></i> Top</span></a></p>
             </div>
@@ -379,19 +321,21 @@
             	<h3 id="valuation">评价</h3>
             </div>
         	<div class="span12">
+        		{% ifnotequal allCmtsCount 0 %}
             	<div class="progress progress-striped active">
-                  <div class="bar bar-success" style="width: 50%;">好评</div>
-                  <div class="bar bar-warning" style="width: 30%;">中评</div>
-                  <div class="bar bar-danger" style="width: 20%;">差评</div>
+                  <div class="bar bar-success" style="width: {{positiveCmtsPercent}}%;">好评（{{positiveCmtsPercent|floatformat:"0"}}%）</div>
+                  <div class="bar bar-warning" style="width: {{normalCmtsPercent}}%;">中评（{{normalCmtsPercent|floatformat:"0"}}%）</div>
+                  <div class="bar bar-danger" style="width: {{negativeCmtsPercent}}%;">差评（{{negativeCmtsPercent|floatformat:"0"}}%）</div>
                 </div>
+                {% endifnotequal %}
             </div>
             <div class="span12">
                 <div class="tabbable"> <!-- Only required for left/right tabs -->
                   <ul class="nav nav-tabs">
-                    <li class="active"><a href="#tab1" data-toggle="tab">全部评价</a></li>
-                    <li><a href="#tab2" data-toggle="tab">好评</a></li>
-                    <li><a href="#tab3" data-toggle="tab">中评</a></li>
-                    <li><a href="#tab4" data-toggle="tab">差评</a></li>
+                    <li class="active"><a href="#tab1" data-toggle="tab">全部评价（{{book.countAllComments}}）</a></li>
+                    <li><a href="#tab2" data-toggle="tab">好评（{{book.countPositiveComments}}）</a></li>
+                    <li><a href="#tab3" data-toggle="tab">中评（{{book.countNormalComments}}）</a></li>
+                    <li><a href="#tab4" data-toggle="tab">差评（{{book.countNegativeComments}}）</a></li>
                   </ul>
                   <div class="tab-content">
                     <div class="tab-pane active" id="tab1">

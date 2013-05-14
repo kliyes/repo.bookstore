@@ -27,6 +27,9 @@ class Author(models.Model):
     
     def getBooks(self):
         return Book.objects.filter(author=self)
+    
+    def getOtherBooks(self, book, num=6):
+        return Book.objects.filter(author=self).exclude(id=book.id)[:num]
 
 
 class CateManager(models.Manager):
@@ -92,7 +95,6 @@ class BookManager(models.Manager):
     def getHotTwoByCate(self, cate):
         '''按分类获取该分类下最热门两本书籍'''
         return self.filter(category=cate).order_by('-bought_count')[:2]
-    
     
 class Book(models.Model):
     '''定义Book模型'''

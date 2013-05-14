@@ -166,7 +166,14 @@ def _getBookById(bookId):
         return False
     
     return book
-   
+
+def _getCmtsPercent(cmtsCount, allCmtsCount):
+    '''计算cmtsCount在allCmtsCount中的比例'''
+    if allCmtsCount == 0:
+        return 0
+    
+    return (cmtsCount / float(allCmtsCount)) * 100
+
 #@login_required
 def bookDetail(request, bookId):
     book = _getBookById(bookId)
@@ -175,7 +182,14 @@ def bookDetail(request, bookId):
     
 #    profile = request.user.get_profile()
 #    cart = Cart.objects.get(owner=profile)
-    ctx = {'book': book}
+    
+    allCommentsCount = book.countAllComments()
+    
+    ctx = {'book': book, 'otherBooks': book.author.getOtherBooks(book),
+           'allCmtsCount': allCommentsCount, 
+           'positiveCmtsPercent': _getCmtsPercent(book.countPositiveComments(), allCommentsCount), 
+           'normalCmtsPercent': _getCmtsPercent(book.countNormalComments(), allCommentsCount), 
+           'negativeCmtsPercent': _getCmtsPercent(book.countNegativeComments(), allCommentsCount)}
     
     ctx.update(_initCmtsData(request, book.getAllComments(), "all"))
     ctx.update(_initCmtsData(request, book.getPositiveComments(), "positive"))
