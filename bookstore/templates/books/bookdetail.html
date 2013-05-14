@@ -12,7 +12,46 @@
 			$("#tab1").delegate("#goto_page", "click", function(){
 				cmtPageTurn(this, '{{book.id}}');
 			});
+			
+			$("#cmt_all, #cmt_positive, #cmt_normal, #cmt_negative").delegate("#all_up, #positive_up, #normal_up, #negative_up", "click", function(){
+				var pra = $(this).attr("rel");
+				pra = pra.split(",");
+				requestCmts(parseInt(pra[0]), pra[1], '{{book.id}}');
+			});
+			
+			$("#cmt_all, #cmt_positive, #cmt_normal, #cmt_negative").delegate("#all_down, #positive_down, #normal_down, #negative_down", "click", function(){
+				var pra = $(this).attr("rel");
+				pra = pra.split(",");
+				requestCmts(parseInt(pra[0]), pra[1], '{{book.id}}');
+			});
+			
+			$("#cmt_all, #cmt_positive, #cmt_normal, #cmt_negative").delegate("#all_num, #positive_num, #normal_num, #negative_num", "click", function(){
+				var pra = $(this).attr("rel");
+				pra = pra.split(",");
+				requestCmts(parseInt(pra[0]), pra[1], '{{book.id}}');
+			});
+			
 		});
+		
+		function requestCmts(page, column, bookId){
+			$.ajax({
+				url: "/books/page_book_cmts/" + bookId, 
+				data: {"page": page, "column": column}, 
+				type: "get", 
+				async: "true", 
+				success: function(data){
+					if(data.status=="success"){
+						$("#cmt_"+column).html(data.html);
+					}else{
+						alert(data.status);
+					}
+				}, 
+				error: function(){
+					alert("error");
+				}, 
+				dataType: "json"
+			});
+		}
 		
 		function cmtPageTurn(obj, bookId){
 			var pageIndex = "";
@@ -356,16 +395,24 @@
                   </ul>
                   <div class="tab-content">
                     <div class="tab-pane active" id="tab1">
-                    {% include "books/includes/comments.html" %}
+                    	<div id="cmt_all">
+                    		{% include "books/includes/cmtlist_all.html" %}
+                    	</div>
                     </div>
                     <div class="tab-pane" id="tab2">
-                    {% include "books/includes/comments.html" %}
+                    	<div id="cmt_positive">
+                    		{% include "books/includes/cmtlist_positive.html" %}
+                    	</div>
                     </div>
                     <div class="tab-pane" id="tab3">
-                    	{% include "books/includes/comments.html" %}
+                    	<div id="cmt_normal">
+                    		{% include "books/includes/cmtlist_normal.html" %}
+                    	</div>
                     </div>
                     <div class="tab-pane" id="tab4">
-                    {% include "books/includes/comments.html" %}
+                    	<div id="cmt_negative">
+                    		{% include "books/includes/cmtlist_negative.html" %}
+                    	</div>
                     </div>
                   </div>
                 </div>

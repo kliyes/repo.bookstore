@@ -167,27 +167,32 @@ def _getBookById(bookId):
     
     return book
    
-@login_required
+#@login_required
 def bookDetail(request, bookId):
     book = _getBookById(bookId)
     if not book:
         return HttpResponse(u'查无此书')
     
-    profile = request.user.get_profile()
-    cart = Cart.objects.get(owner=profile)
+#    profile = request.user.get_profile()
+#    cart = Cart.objects.get(owner=profile)
+    ctx = {'book': book}
     
-    comments = book.getComments()
-    grade = 1
-    if request.user.is_authenticated():
-        grade = book.getMarkedGrade(request.user.get_profile())
-        
-    ctx = {'book': book, 'grade': grade, 'cart': cart}
-        
-    cmtPaging = initSessionCmtlistPaging(request, CMT_DATA_KEY, comments, CMT_PAGE_SIZE)
-    if cmtPaging:
-        ctx.update(cmtPaging.result(1))
+    ctx.update(_initCmtsData(request, book.getAllComments(), "all"))
+    ctx.update(_initCmtsData(request, book.getPositiveComments(), "positive"))
+    ctx.update(_initCmtsData(request, book.getNormalComments(), "normal"))
+    ctx.update(_initCmtsData(request, book.getNegativeComments(), "negative"))
     
     return render_to_response('books/bookdetail.html', RequestContext(request, ctx))
+
+def _initCmtsData(request, cmts, keyPrefix):
+    ctx = {}
+    if cmts:
+        cmtPaging = initSessionCmtlistPaging(request, _getCmtsDataKey(keyPrefix), cmts, 5)
+        if cmtPaging:
+            ctx.update(cmtPaging.result(1, pageItemsKey=keyPrefix+'PageItems', 
+                                        pageRangeKey=keyPrefix+'PageRange'))
+        
+    return ctx
     
 @login_required
 def addToCart(request, bookId):
@@ -345,6 +350,57 @@ def pagingCmts(request, bookId):
     html = t.render(RequestContext(request,ctx))
     
     return HttpResponse(json.dumps({'status': 'success', 'html': html}))
+
+
+def _getCmtsDataKey(keyPrefix):
+    return "%s%s" % (keyPrefix, 'cmtsPaging')
+
+def pagingBookCmts(request, bookId):
+    ''''''
+    if not request.is_ajax():
+        raise Http404
+    
+    book = _getBookById(bookId)
+    pageNo = pages.getRequestPageNo(request)
+    column = request.REQUEST.get("column", '')
+    
+    request.session['currentPageNo'] = pageNo
+    paging = pages.getSessionPaging(request, _getCmtsDataKey(column))
+    if not paging:
+        cmtList = book.getComments()
+        paging = initSessionCmtlistPaging(request, _getCmtsDataKey(column), cmtList, 5)
+    
+    t = get_template('books/includes/cmtlist_%s.html' % column)
+    return HttpResponse(json.dumps({'status': "success", 
+        'html': t.render(RequestContext(
+         request, paging.result(pageNo, 
+               pageItemsKey=column+"PageItems",
+               pageRangeKey=column+"PageRange",
+    )))}))
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     

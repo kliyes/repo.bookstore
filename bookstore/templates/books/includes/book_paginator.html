@@ -1,35 +1,3 @@
-<!--<div>
-	<div>
-		{% ifnotequal pageItems.paginator.num_pages 1 %}
-		
-			{% if pageItems.has_previous %}
-			    <input type="button" class="mbtn" value="上一页" id="pre" rel="{{pageItems.previous_page_number}}"/>
-			{% else %}
-				<input type="button" class="dbtn" value="上一页" />
-			{% endif %}
-			
-			{% for i in pageRange %}
-				{% ifequal i pageItems.number %}
-					<input type="button" class="mbtn mbtn-page mbtn-page-active" value="{{i}}"/>
-				{% else %}
-					<input type="button" class="mbtn mbtn-page" value="{{i}}" id="num" rel="{{i}}"/>
-				{% endifequal %}
-			{% endfor %}
-			
-			{% if pageItems.has_next %}
-				<input type="button" class="mbtn" value="下一页" id="next" rel="{{pageItems.next_page_number}}"/>
-			{% else %}
-				<input type="button" class="dbtn" value="下一页" />
-			{% endif %}
-			
-		{% endifnotequal %}
-	</div>
-	<div>
-		共{{ pageItems.paginator.num_pages }}页 到第 <input id="userinput_page" name="textfield" type="text" style="width: 25px;" /> 页
-		<a id="goto_page" rel="userinput"><input type="button" class="mbtn" value="走你"/></a>
-	</div>
-</div>-->
-
 <div>
 	<div>
 		{% ifnotequal pageItems.paginator.num_pages 1 %}

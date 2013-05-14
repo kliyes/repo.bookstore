@@ -1,0 +1,37 @@
+{% for cmt in positivePageItems.object_list %}
+    <div class="media">
+        <a class="pull-left span2">
+        	<img src="{{ MEDIA_URL }}img/{{cmt.owner.normal_pic}}" alt=""><br />
+        	<label>{{cmt.owner.name}}</label>
+        </a>
+        <div class="media-body well">
+            <p>{{cmt.content}}</p>
+        </div>
+    </div>
+{% endfor %}
+
+<div class="pagination pull-right">
+	{% ifnotequal positivePageItems.paginator.num_pages 1 %}
+	<ul>
+		{% if positivePageItems.has_previous %}
+			<li><a href="##" id="positive_up" rel="{{positivePageItems.previous_page_number}},positive">&larr;</a></li>
+		{% else %}
+			<li style="visibility: hidden"><a>&larr;</a></li>
+		{% endif %}
+		
+		{% for i in positivePageRange %}
+			{% ifequal i positivePageItems.number %}
+				<li class="active"><a>{{i}}</a></li>
+			{% else %}
+				<li><a href="##" id="positive_num" rel="{{i}},positive">{{i}}</a></li>
+			{% endifequal %}
+		{% endfor %}
+		
+		{% if positivePageItems.has_next %}
+			<li><a href="##" id="positive_down" rel="{{positivePageItems.next_page_number}},positive">&rarr;</a></li>
+		{% else %}
+			<li style="visibility: hidden"><a>&rarr;</a></li>
+		{% endif %}
+	</ul>
+	{% endifnotequal %}
+</div>

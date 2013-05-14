@@ -124,9 +124,37 @@ class Book(models.Model):
     def __unicode__(self):
         return u"id:%s name:%s" % (self.id, self.name)
     
-    def getComments(self):
+    def getAllComments(self):
         '''获得该书的所有评论'''
         return BookComment.objects.filter(book=self).order_by('-created_date')
+    
+    def getPositiveComments(self):
+        '''获取该书的所有好评'''
+        return BookComment.objects.filter(book=self, grade=5).order_by('-created_date')
+    
+    def getNormalComments(self):
+        '''获取该书的所有中评'''
+        return BookComment.objects.filter(book=self, grade__in=[2,3,4]).order_by('-created_date')
+        
+    def getNegativeComments(self):
+        '''获取该书的所有差评'''
+        return BookComment.objects.filter(book=self, grade=1).order_by('-created_date')
+    
+    def countAllComments(self):
+        '''获取所有评价总数'''
+        return BookComment.objects.filter(book=self).count()
+    
+    def countPositiveComments(self):
+        '''获取所有好评总数'''
+        return BookComment.objects.filter(book=self, grade=5).count()
+
+    def countNormalComments(self):
+        '''获取所有中评总数'''
+        return BookComment.objects.filter(book=self, grade__in=[2,3,4]).count()
+    
+    def countNegativeComments(self):
+        '''获取所有差评总数'''
+        return BookComment.objects.filter(book=self, grade=1).count()
     
     def getMarkedGrade(self, profile):
         '''获取某用户为本书的打分'''
