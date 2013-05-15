@@ -1,6 +1,6 @@
 {% for cmt in allPageItems.object_list %}
     <div class="media">
-        <a class="pull-left span2">
+        <a class="pull-left span2 text-center">
         	<img src="{{ MEDIA_URL }}img/{{cmt.owner.normal_pic}}" alt=""><br />
         	<label>{{cmt.owner.name}}</label>
         </a>
@@ -14,9 +14,9 @@
 	{% ifnotequal allPageItems.paginator.num_pages 1 %}
 	<ul>
 		{% if allPageItems.has_previous %}
-			<li><a href="##" id="all_up" rel="{{allPageItems.previous_page_number}},all">&larr;</a></li>
+			<li><a href="##" id="all_up" rel="{{allPageItems.previous_page_number}},all">&laquo;</a></li>
 		{% else %}
-			<li style="visibility: hidden"><a>&larr;</a></li>
+			<li class="disabled"><a>&laquo;</a></li>
 		{% endif %}
 		
 		{% for i in allPageRange %}
@@ -28,9 +28,9 @@
 		{% endfor %}
 		
 		{% if allPageItems.has_next %}
-			<li><a href="##" id="all_down" rel="{{allPageItems.next_page_number}},all">&rarr;</a></li>
+			<li><a href="##" id="all_down" rel="{{allPageItems.next_page_number}},all">&raquo;</a></li>
 		{% else %}
-			<li style="visibility: hidden"><a>&rarr;</a></li>
+			<li class="disabled"><a>&raquo;</a></li>
 		{% endif %}
 	</ul>
 	{% endifnotequal %}

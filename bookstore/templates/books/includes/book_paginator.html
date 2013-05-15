@@ -3,9 +3,9 @@
 		{% ifnotequal pageItems.paginator.num_pages 1 %}
 		<ul>
 			{% if pageItems.has_previous %}
-				<li><a href="##" id="pre" rel="{{pageItems.previous_page_number}}">&larr;</a></li>
+				<li><a href="##" id="pre" rel="{{pageItems.previous_page_number}}">&laquo;</a></li>
 			{% else %}
-				<li><a>&larr;</a></li>
+				<li class="disabled"><a>&laquo;</a></li>
 			{% endif %}
 			
 			{% for i in pageRange %}
@@ -17,9 +17,9 @@
 			{% endfor %}
 			
 			{% if pageItems.has_next %}
-				<li><a href="##" id="next" rel="{{pageItems.next_page_number}}">&rarr;</a></li>
+				<li><a href="##" id="next" rel="{{pageItems.next_page_number}}">&raquo;</a></li>
 			{% else %}
-				<li><a>&rarr;</a></li>
+				<li class="disabled"><a>&raquo;</a></li>
 			{% endif %}
 		</ul>
 		{% endifnotequal %}
