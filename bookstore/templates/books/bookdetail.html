@@ -243,17 +243,17 @@
                     <dd>{{book.author.name|default:"&nbsp;"}}</dd>
                     <dt>出版社：</dt>
                     <dd>{{book.press|default:"&nbsp;"}}</dd>
-                    <dt>ISBN：</dd>
+                    <dt>ISBN：</dt>
                     <dd>{{book.isbn|default:"&nbsp;"}}</dt>
-                    <dt>发布时间：</dd>
+                    <dt>发布时间：</dt>
                     <dd>{{book.publish_date|default:"&nbsp;"}}</dt>
-                    <dt>页数：</dd>
+                    <dt>页数：</dt>
                     <dd>{{book.pages|default:"&nbsp;"}}页</dt>
-                    <dt>装帧：</dd>
+                    <dt>装帧：</dt>
                     <dd>{{book.binding|default:"&nbsp;"}}</dt>                                                
-                    <dt>库存：</dd>
+                    <dt>库存：</dt>
                     <dd>{{book.stock|default:"&nbsp;"}}</dt>
-                    <dt>售价：</dd>
+                    <dt>售价：</dt>
                     <dd>{{book.price|default:"&nbsp;"}}元</dt>                                     
                 </dl>
             </div>            
@@ -306,7 +306,7 @@
             		{% for book in otherBooks %}
                     <li class="span2 text-center">
                         <a href="{% url book_detail book.id %}" class="thumbnail">
-		                    <img src="{{ MEDIA_URL }}img/{{book.spic}}" alt="">
+		                    <img src="{{ MEDIA_URL }}img/{{book.spic}}" alt="" />
                             <small>{{book.name}}</small>
         	            </a>
                     </li>
@@ -361,7 +361,8 @@
                   </div>
                 </div>
             </div>
-        </div>            
+        </div>    
+        <p><a href="#breadcrumb_menu"><span class="badge badge-success"><i class="icon-circle-arrow-up icon-white"></i> Top</span></a></p>        
     </div>
 </div>	
 {% endblock %}

@@ -1,12 +1,15 @@
+{% load filters %}
 {% for book in hotTwo %}
 <li class="span4">
 	<div class="thumbnail">
 	  <img src="{{ MEDIA_URL }}img/{{book.mpic}}" alt="">
-	  <div class="caption">
-	    <h3>《{{book.name}}》</h3>
-	    <p>{{book.desc}}</p>
-	    <p><a href="{% url book_detail book.id %}" class="btn btn-primary"><i class="icon-barcode icon-white"></i> 详情</a>
-	  </div>
+		<div class="caption">
+			<div style="height:202px">
+				<h3>{{book.name}}</h3>
+				<p>{{book.desc|default:"暂无简介"|truncatehanzi:90}}……</p>
+			</div>
+		<p><a href="{% url book_detail book.id %}" class="btn btn-primary"><i class="icon-barcode icon-white"></i> 详情</a>
+		</div>
 	</div>
 </li>
 {% endfor %}
