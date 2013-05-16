@@ -158,29 +158,10 @@ class Book(models.Model):
         '''获取所有差评总数'''
         return BookComment.objects.filter(book=self, grade=1).count()
     
-    def getMarkedGrade(self, profile):
-        '''获取某用户为本书的打分'''
-        if profile in self.getMarkers():
-            try:
-                grade = Grade.objects.get(marker=profile, book=self)
-            except Grade.DoesNotExist:
-                return False
-            return grade
-        return False
-    
-    def getMarkers(self):
-        '''获取打分用户'''
-        markers = []
-        grades = Grade.objects.filter(book=self)
-        for grade in grades:
-            markers.append(grade.marker)
-        return markers
-    
     def getTotalGrade(self):
         '''获取总分'''
         total = 0
-        bookCmts = BookComment.objects.filter(book=self)
-        for bookCmt in bookCmts:
+        for bookCmt in BookComment.objects.filter(book=self):
             total += bookCmt.grade
         return total
     
@@ -190,8 +171,8 @@ class Book(models.Model):
     
     def getAverage(self):
         '''获取平均分 总分除以总人数'''
-        if self.getMarkersCount() != 0:
-            return self.getTotalGrade()/self.getMarkersCount()
+        if self.comment_count != 0:
+            return self.getTotalGrade() / float(self.comment_count)
         return 0
     
     def addComment(self, profile, cmtContent):
