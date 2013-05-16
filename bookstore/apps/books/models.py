@@ -72,10 +72,13 @@ class Category(models.Model):
         '''获得该分类在书籍总数中所占比例'''
         return str((self.getCount()/float(Book.objects.totalBooks()))*100)+'%'
     
-    def getHotBooks(self):
-        '''获得当前分类下被购买次数最多的5本书籍'''
-        return Book.objects.filter(category=self).order_by('-bought_count')[:5]
-
+    def getNewerExceptBook(self, book):
+        '''获取当前分类下最近上架的5本书籍'''
+        return Book.objects.filter(category=self).exclude(id=book.id).order_by('-reg_date')[:5]
+        
+    def getRecommendExceptBook(self, book):
+        '''获取当前分类下被购次数最多的5本书籍'''
+        return Book.objects.filter(category=self).exclude(id=book.id).order_by('bought_count')[:5]
 
 class BookManager(models.Manager):
     def getAll(self):
@@ -83,10 +86,6 @@ class BookManager(models.Manager):
     
     def totalBooks(self):
         return self.all().count()
-    
-    def getRecommend(self):
-        '''获得最近登记的4本书籍作为推荐书籍'''
-        return self.all().order_by('-reg_date')[:4]
     
     def getBestsellers(self, num=6):
         '''获得畅销书'''

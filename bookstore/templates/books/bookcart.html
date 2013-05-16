@@ -3,7 +3,6 @@
 {% block page_title %}购物车{% endblock %}
 
 {% block single_js %}
-	<script type="text/javascript" src="{{STATIC_URL}}base/js/jquery-1.8.2.min.js"></script>
 	<script type="text/javascript" src="{{STATIC_URL}}base/js/secure.js"></script>
 	<script type="text/javascript">
 		function makeOrder(){
@@ -52,10 +51,16 @@
 {% endblock %}
 
 {% block body_base %}
-	<h4>{{profile.name}}，欢迎进入您的购物车</h4><br />
-	<div id="cart_book_list">
-		{% include "books/includes/booklist.html" %}
+<div class="row-fluid">
+	<div class="span12">
+		<div class="page-header">
+            <h1>购物车</h1>
+        </div>
+		<div id="cart_book_list">
+			{% include "books/includes/booklist.html" %}
+		</div>
 	</div>
+</div>
 {% endblock %}
 		
 				

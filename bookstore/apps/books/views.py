@@ -38,11 +38,9 @@ def goHome(request):
     allCates = Category.objects.getAllCates()
     bestsellers = Book.objects.getBestsellers()
     hotTwo = Book.objects.getBestsellers(2)
-    recommend = Book.objects.getRecommend()
     books = _sortBooks(Book.objects.getAll())
     
-    ctx = {'recommend': recommend, 'allCates': allCates, 
-           'bestsellers': bestsellers, 'hotTwo': hotTwo, 
+    ctx = {'allCates': allCates, 'bestsellers': bestsellers, 'hotTwo': hotTwo, 
            'cateName': 'all'}
     bookPaging = initSessionBooklistPaging(request, _getDataKey('cate'), books, BOOK_PAGE_SIZE)
     if bookPaging:
@@ -182,11 +180,13 @@ def bookDetail(request, bookId):
     
 #    profile = request.user.get_profile()
 #    cart = Cart.objects.get(owner=profile)
+    recommend = book.category.getRecommendExceptBook(book)
+    newer = book.category.getNewerExceptBook(book)
     
     allCommentsCount = book.countAllComments()
     
     ctx = {'book': book, 'otherBooks': book.author.getOtherBooks(book),
-           'allCmtsCount': allCommentsCount, 
+           'recommend': recommend, 'newer': newer, 'allCmtsCount': allCommentsCount, 
            'positiveCmtsPercent': _getCmtsPercent(book.countPositiveComments(), allCommentsCount), 
            'normalCmtsPercent': _getCmtsPercent(book.countNormalComments(), allCommentsCount), 
            'negativeCmtsPercent': _getCmtsPercent(book.countNegativeComments(), allCommentsCount)}
