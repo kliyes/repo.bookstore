@@ -223,6 +223,10 @@ class Cart(models.Model):
         '''获取该购物车中所有项目'''
         return BookItem.objects.filter(cart=self)
     
+    def getItemsCount(self):
+        '''获取该购物车中项目总数'''
+        return BookItem.objects.filter(cart=self).count()
+    
     def getBooks(self):
         '''获取该购物车中的所有书籍'''
         books = []

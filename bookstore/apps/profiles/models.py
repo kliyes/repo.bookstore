@@ -231,6 +231,11 @@ class Profile(ProfileBase):
     def getOrders(self):
         '''获取该用户所有订单'''
         return Order.objects.filter(owner=self)
+    
+    def getCartItemsCount(self):
+        '''获得该用户购物车项目总数'''
+        cart = Cart.objects.get(owner=self)
+        return cart.getItemsCount()
     #===============================================
     
     def addTag(self, tag):

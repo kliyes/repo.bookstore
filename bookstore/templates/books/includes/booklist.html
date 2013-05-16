@@ -1,63 +1,55 @@
-<form id="form_cart">
-	{% for item in cart.getItems %}
-	<tr>
-        <td>
-        	<ul class="thumbnails">
-              <li class="span12">
-                <a href="{% url book_detail item.book_id %}" class="thumbnail">
-                  <img src="{{ MEDIA_URL }}img/{{item.book.spic}}" alt="">
-                </a>
-              </li>
-            </ul>
-        </td>
-        <td>{{item.book.name}}</td>
-        <td>{{item.book.price}}元</td>
-        <input type="hidden" id="price_{{item.book_id}}" value="{{item.book.price}}"/>
-        <td>
-        	<div class="input-prepend input-append">
-              <span class="add-on btn" onclick="minus({{item.book_id}})">-</span>
-              <input class="span2 text-center" id="amount_{{item.book_id}}" name="amount_{{item.book_id}}" type="text" value="{{item.amount|default:'1'}}" onchange="countPartFee({{item.book_id}})" onkeyup="countPartFee({{item.book_id}})">
-              <span class="add-on btn" onclick="plus({{item.book_id}})">+</span>
-            </div>
-        </td>
-        <td><button class="btn btn-danger"><i class="icon-remove icon-white"></i> 删除</button></td>
-        <td>567888</td>
-    </tr>
-	{% endfor %}
-</form>
+<table class="table table-hover">
+	<thead>
+		{% if cart.getBooks %}
+        <tr>
+            <th class="span2">#</th>
+            <th class="span3">书名</th>
+            <th class="span2">单价</th>
+            <th class="span2">数量</th>
+            <th class="span2">删除</th>
+        </tr>
+        {% endif %}
+    </thead>
+	<tbody>
+		<form id='form_cart'>
+			{% for item in cart.getItems %}
+			<tr>
+		        <td>
+		        	<ul class="thumbnails">
+		              <li class="span12">
+		                <a href="{% url book_detail item.book_id %}" class="thumbnail">
+		                  <img src="{{ MEDIA_URL }}img/{{item.book.spic}}" alt="">
+		                </a>
+		              </li>
+		            </ul>
+		        </td>
+		        <td>{{item.book.name}}</td>
+		        <td>{{item.book.price}}元</td>
+		        <input type="hidden" id="price_{{item.book_id}}" value="{{item.book.price}}"/>
+		        <td>
+		        	<div class="input-prepend input-append">
+		              <span class="add-on btn" onclick="minus({{item.book_id}})">-</span>
+		              <input class="span2 text-center" id="amount_{{item.book_id}}" name="amount_{{item.book_id}}" type="text" value="{{item.amount}}" onchange="countPartFee({{item.book_id}})" onkeyup="countPartFee({{item.book_id}})">
+		              <span class="add-on btn" onclick="plus({{item.book_id}})">+</span>
+		              <label class="PartFee" id="part_fee_{{item.book_id}}" style="display: none;">{{item.book.price}}</label>&nbsp;&nbsp;
+		            </div>
+		        </td>
+		        <td><a class="btn btn-danger" onclick="delFromCart({{item.book_id}})"><i class="icon-remove icon-white"></i> 删除</a></td>
+		    </tr>
+			{% endfor %}
+		</form>
+	</tbody>
+</table>
 {% if not cart.getBooks %}
 	您的购物车空空如也，快去选书吧！
 {% else %}
 	<hr />
 	<div class="row-fluid">
-        <h4 class="pull-left">总价：12345678元</h4>
-        <button class="btn btn-info btn-large pull-right"><i class="icon-ok-sign icon-white"></i> 结算</button>
+        <h4 class="pull-left">总价：<a id="total_fee">{{cart.getTotalFee}}</a>元</h4>
+        <a class="btn btn-info btn-large pull-right" onclick="makeOrder()"><i class="icon-ok-sign icon-white"></i> 结算</a>
     </div>
 {% endif %}
-<!--<label id="count">共有{{itemCount}}种书籍</label>
-<form id='form_cart'>
-	{% for item in cart.getItems %}
-		<a href="{% url book_detail item.book_id %}"><img src="{{ MEDIA_URL }}img/{{item.book.spic}}" /></a>&nbsp;&nbsp;
-		<a href="{% url book_detail item.book_id %}">《{{item.book.name}}》</a>&nbsp;&nbsp;
-		{{item.book.price}}元&nbsp;&nbsp;
-		<input type="hidden" id="price_{{item.book_id}}" value="{{item.book.price}}"/>
-		<a href="##" onclick="minus({{item.book_id}})">-1</a>
-		<input type="text" class="amount" id="amount_{{item.book_id}}" name="amount_{{item.book_id}}" value="{{item.amount}}" style="width:30;" onchange="countPartFee({{item.book_id}})" onkeyup="countPartFee({{item.book_id}})"/>
-		<a href="##" onclick="plus({{item.book_id}})">+1</a>&nbsp;&nbsp;
-		<label class="PartFee" id="part_fee_{{item.book_id}}" style="display: none;">{{item.book.price}}</label>&nbsp;&nbsp;
-		<a href="##" onclick="delFromCart({{item.book_id}})">删除</a>
-		<br /><br />
-	{% endfor %}
-</form>
-{% if not cart.getBooks %}
-	您的购物车空空如也，快去选书吧！
-{% else %}
-	<br /><br /><br />
-	共计：<label id="total_fee">{{cart.getTotalFee}}</label>元
-	<br /><br />
-	<input type="button" class="mbtn" value="下订单" onclick="makeOrder()" />
-{% endif %}
--->
+
 <script type="text/javascript">
 	function countPartFee(bookId){
 		var amount = parseFloat($("#amount_"+bookId).val());

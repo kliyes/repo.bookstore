@@ -16,7 +16,7 @@ from django.template.loader import get_template
 from django.core.urlresolvers import reverse
 
 from common import pages
-from books.models import Book, Cart, Order, BookComment, Grade, Category
+from books.models import Book, Cart, Order, BookComment, Category
 
 BOOK_DATA_KEY = "bookPaging"
 BOOK_PAGE_SIZE = 10
