@@ -11,6 +11,7 @@
 {% endfor %}
 
 <div class="pagination pull-right">
+{% if normalPageItems.object_list %}
 	{% ifnotequal normalPageItems.paginator.num_pages 1 %}
 	<ul>
 		{% if normalPageItems.has_previous %}
@@ -34,4 +35,5 @@
 		{% endif %}
 	</ul>
 	{% endifnotequal %}
+{% endif %}
 </div>

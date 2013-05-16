@@ -1,4 +1,40 @@
-<label id="count">共有{{itemCount}}种书籍</label>
+<form id="form_cart">
+	{% for item in cart.getItems %}
+	<tr>
+        <td>
+        	<ul class="thumbnails">
+              <li class="span12">
+                <a href="{% url book_detail item.book_id %}" class="thumbnail">
+                  <img src="{{ MEDIA_URL }}img/{{item.book.spic}}" alt="">
+                </a>
+              </li>
+            </ul>
+        </td>
+        <td>{{item.book.name}}</td>
+        <td>{{item.book.price}}元</td>
+        <input type="hidden" id="price_{{item.book_id}}" value="{{item.book.price}}"/>
+        <td>
+        	<div class="input-prepend input-append">
+              <span class="add-on btn" onclick="minus({{item.book_id}})">-</span>
+              <input class="span2 text-center" id="amount_{{item.book_id}}" name="amount_{{item.book_id}}" type="text" value="{{item.amount|default:'1'}}" onchange="countPartFee({{item.book_id}})" onkeyup="countPartFee({{item.book_id}})">
+              <span class="add-on btn" onclick="plus({{item.book_id}})">+</span>
+            </div>
+        </td>
+        <td><button class="btn btn-danger"><i class="icon-remove icon-white"></i> 删除</button></td>
+        <td>567888</td>
+    </tr>
+	{% endfor %}
+</form>
+{% if not cart.getBooks %}
+	您的购物车空空如也，快去选书吧！
+{% else %}
+	<hr />
+	<div class="row-fluid">
+        <h4 class="pull-left">总价：12345678元</h4>
+        <button class="btn btn-info btn-large pull-right"><i class="icon-ok-sign icon-white"></i> 结算</button>
+    </div>
+{% endif %}
+<!--<label id="count">共有{{itemCount}}种书籍</label>
 <form id='form_cart'>
 	{% for item in cart.getItems %}
 		<a href="{% url book_detail item.book_id %}"><img src="{{ MEDIA_URL }}img/{{item.book.spic}}" /></a>&nbsp;&nbsp;
@@ -21,6 +57,7 @@
 	<br /><br />
 	<input type="button" class="mbtn" value="下订单" onclick="makeOrder()" />
 {% endif %}
+-->
 <script type="text/javascript">
 	function countPartFee(bookId){
 		var amount = parseFloat($("#amount_"+bookId).val());

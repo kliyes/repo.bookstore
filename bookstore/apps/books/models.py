@@ -72,10 +72,13 @@ class Category(models.Model):
         '''获得该分类在书籍总数中所占比例'''
         return str((self.getCount()/float(Book.objects.totalBooks()))*100)+'%'
     
-    def getHotBooks(self):
-        '''获得当前分类下被购买次数最多的5本书籍'''
-        return Book.objects.filter(category=self).order_by('-bought_count')[:5]
-
+    def getNewerExceptBook(self, book):
+        '''获取当前分类下最近上架的5本书籍'''
+        return Book.objects.filter(category=self).exclude(id=book.id).order_by('-reg_date')[:5]
+        
+    def getRecommendExceptBook(self, book):
+        '''获取当前分类下被购次数最多的5本书籍'''
+        return Book.objects.filter(category=self).exclude(id=book.id).order_by('bought_count')[:5]
 
 class BookManager(models.Manager):
     def getAll(self):
@@ -83,10 +86,6 @@ class BookManager(models.Manager):
     
     def totalBooks(self):
         return self.all().count()
-    
-    def getRecommend(self):
-        '''获得最近登记的4本书籍作为推荐书籍'''
-        return self.all().order_by('-reg_date')[:4]
     
     def getBestsellers(self, num=6):
         '''获得畅销书'''
@@ -161,8 +160,7 @@ class Book(models.Model):
     def getTotalGrade(self):
         '''获取总分'''
         total = 0
-        bookCmts = BookComment.objects.filter(book=self)
-        for bookCmt in bookCmts:
+        for bookCmt in BookComment.objects.filter(book=self):
             total += bookCmt.grade
         return total
     
@@ -172,8 +170,8 @@ class Book(models.Model):
     
     def getAverage(self):
         '''获取平均分 总分除以总人数'''
-        if self.getMarkersCount() != 0:
-            return self.getTotalGrade()/self.getMarkersCount()
+        if self.comment_count != 0:
+            return self.getTotalGrade() / float(self.comment_count)
         return 0
     
     def addComment(self, profile, cmtContent):

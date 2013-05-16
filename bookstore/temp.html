@@ -1,0 +1,116 @@
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>BookStore - 购物车</title>
+<link type="text/css" rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css" />
+<script src="static/jquery/jquery-1.8.3.min.js"></script>
+<script src="static/bootstrap/js/bootstrap.min.js"></script>
+</head>
+
+<body class="container">
+<!-- 导航 -->
+    <div class="navbar navbar-inverse">
+      <div class="navbar-inner">
+        <a class="brand" href="#">BookStoreV2.0</a>
+        <ul class="nav pull-right">
+          <li><a href="#"><i class="icon-user icon-white"></i> 登录</a></li>
+          <!-- 登录后显示此li 开始 -->          
+          <li>
+          	<ul class="nav nav-pills">
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                您好: Yang.Lyu
+                <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">登录后显示</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#"><i class="icon-wrench"></i> 个人设置</a></li>
+                    <li><a href="#"><i class="icon-list"></i> 购物清单</a></li>
+                    <li><a href="#"><i class="icon-off"></i> 离开</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <!-- 登录后显示此li 结束 -->
+        </ul>
+        <form class="navbar-search pull-right">
+		    <input type="text" class="search-query" placeholder="Search">
+        </form>
+      </div>
+    </div>
+<!-- 导航结束 -->
+	<div class="row-fluid">
+        <div class="span12">
+            <div class="page-header">
+	            <h1>购物车</h1>
+            </div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="span2">#</th>
+                        <th class="span3">书名</th>
+                        <th class="span2">单价</th>
+                        <th class="span2">数量</th>
+                        <th class="span2">删除</th>
+                        <th class="span1">小计</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                        	<ul class="thumbnails">
+                              <li class="span12">
+                                <a href="#" class="thumbnail">
+                                  <img src="static/base/img/de.png" alt="">
+                                </a>
+                              </li>
+                            </ul>
+                        </td>
+                        <td>钢铁蜘蛛侠3</td>
+                        <td>88</td>
+                        <td>
+                        	<div class="input-prepend input-append">
+                              <span class="add-on btn">-</span>
+                              <input class="span2 text-center" id="appendedPrependedInput" type="text" value="1">
+                              <span class="add-on btn">+</span>
+                            </div>
+                        </td>
+                        <td><button class="btn btn-danger"><i class="icon-remove icon-white"></i> 删除</button></td>
+                        <td>567888</td>
+                    </tr>
+                    <tr>
+                        <td>
+                        	<ul class="thumbnails">
+                              <li class="span12">
+                                <a href="#" class="thumbnail">
+                                  <img src="static/base/img/de.png" alt="">
+                                </a>
+                              </li>
+                            </ul>
+                        </td>
+                        <td>钢铁蜘蛛侠3</td>
+                        <td>88</td>
+                        <td>
+                        	<div class="input-prepend input-append">
+                              <span class="add-on btn">-</span>
+                              <input class="span2 text-center" id="appendedPrependedInput" type="text" value="1">
+                              <span class="add-on btn">+</span>
+                            </div>
+                        </td>
+                        <td><button class="btn btn-danger"><i class="icon-remove icon-white"></i> 删除</button></td>
+                        <td>567888</td>
+                    </tr>
+                </tbody>
+            </table>
+            <hr />
+            <div class="row-fluid">
+	            <h4 class="pull-left">总价：12345678元</h4>
+                <button class="btn btn-info btn-large pull-right"><i class="icon-ok-sign icon-white"></i> 结算</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

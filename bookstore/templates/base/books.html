@@ -18,7 +18,7 @@
         </div>
         <div class="row-fluid">
             <div class="span6"><small>{{book.author.name}} 著 / {{book.publish_date}}</small></div>
-            <div class="span6 text-right"><small>用户评分：{{book.getAverage}} 分 <a href="#">（已有 {{book.getMarkersCount}} 人评价）</a></small></div>
+            <div class="span6 text-right"><small>用户评分：{{book.getAverage|floatformat:"1"}} 分 <a href="{% url book_detail book.id %}#valuation">（已有 {{book.comment_count}} 人评价）</a></small></div>
         </div>
         <div class="row-fluid">
             <div class="span12">
