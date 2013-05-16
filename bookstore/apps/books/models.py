@@ -158,24 +158,6 @@ class Book(models.Model):
         '''获取所有差评总数'''
         return BookComment.objects.filter(book=self, grade=1).count()
     
-    def getMarkedGrade(self, profile):
-        '''获取某用户为本书的打分'''
-        if profile in self.getMarkers():
-            try:
-                grade = Grade.objects.get(marker=profile, book=self)
-            except Grade.DoesNotExist:
-                return False
-            return grade
-        return False
-    
-    def getMarkers(self):
-        '''获取打分用户'''
-        markers = []
-        grades = Grade.objects.filter(book=self)
-        for grade in grades:
-            markers.append(grade.marker)
-        return markers
-    
     def getTotalGrade(self):
         '''获取总分'''
         total = 0
@@ -201,22 +183,6 @@ class Book(models.Model):
         self.comment_count += 1
         self.save()
         return bookComment
-
-class Grade(models.Model):
-    '''定义书籍得分模型'''
-    marker = models.ForeignKey("profiles.Profile") # 打分用户
-    book = models.ForeignKey(Book) # 打分书籍
-    value = models.SmallIntegerField(default=5) # 用户对书籍打分的分值, 满分5分, 最少1分
-    mark_date = models.DateTimeField(default=datetime.datetime.now) # 打分时间
-    
-    class Meta:
-        db_table = 't_grade'
-        verbose_name = 'BookGrade'
-        app_label = 'books'
-    
-    def __unicode__(self):
-        return u"id:%s marker:%s value:%s" % (self.id, self.marker, self.value)
-
 
 class BookComment(models.Model):
     '''定义评论模型'''
