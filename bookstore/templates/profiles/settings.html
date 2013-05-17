@@ -72,31 +72,6 @@
 						<button class="btn btn-large" type="submit" id="btn_login" onclick="return check_update()"><i class="icon-ok"></i> 更新</button>
 					</div>
 				</form>
-				<h1>我的订单</h1>
-				{% for order in orders %}
-					总价：{{order.total_fee}}<br />
-					书目：
-					{% for item in order.getItems %}
-						{{item.book.name}}&nbsp;&nbsp;
-						{{item.amount}}本<br />
-					{% endfor %}
-					状态：
-					{% ifequal order.status 1 %}
-					交易完成
-					{% endifequal %}
-					{% ifequal order.status 2 %}
-					等待发货
-					{% endifequal %}
-					{% ifequal order.status 3 %}
-					等待收货
-					{% endifequal %}
-					{% ifequal order.status 0 %}
-					交易取消
-					{% endifequal %}<br />
-					时间：{{order.created_date|date:"Y-m-d H:i"}}
-					<br /><br />
-				{% endfor %}
-				{% include "base/citylist.html" %}
 			</div>
 			<div class="span4">
 				<br /><br /><br /><br />

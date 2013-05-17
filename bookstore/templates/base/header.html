@@ -17,7 +17,8 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li><a href="{% url profiles_setting %}"><i class="icon-wrench"></i> 个人设置</a></li>
-                    <li><a href="{% url book_cart_check %}"><i class="icon-list"></i> 购物清单&nbsp;
+                    <li><a href="{% url book_cart_check %}"><i class="icon-shopping-cart"></i> 购物清单&nbsp;
+                    <li><a href="{% url profiles_order_check %}"><i class="icon-list-alt"></i> 我的订单&nbsp;
                     		{% ifnotequal profile.getCartItemsCount 0 %}
           					<span class="badge badge-info">{{profile.getCartItemsCount}}</span>  	
           					{% endifnotequal %}	

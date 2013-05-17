@@ -236,6 +236,11 @@ class Profile(ProfileBase):
         '''获得该用户购物车项目总数'''
         cart = Cart.objects.get(owner=self)
         return cart.getItemsCount()
+    
+    def getCartBooks(self):
+        '''获得该用户购物车中的书籍'''
+        cart = Cart.objects.get(owner=self)
+        return cart.getBooks()
     #===============================================
     
     def addTag(self, tag):

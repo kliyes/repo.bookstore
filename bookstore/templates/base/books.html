@@ -31,7 +31,16 @@
             <div class="span12 text-right">
                 <div style="height:10px; width:10px;">&nbsp;</div>
                 <a href="{% url book_detail book.id %}" class="btn btn-primary btn-small"><i class="icon-barcode icon-white"></i> 详情</a> 
-                <a href="#" class="btn btn-small"><i class="icon-shopping-cart"></i>  加入购物车</a>
+                {% if not user.is_authenticated %}
+					<a href="{% url acct_login %}" class="btn btn-small"><i class="icon-shopping-cart"></i> 加入购物车</a>
+				{% else %}
+					{% if book in profile.getCartBooks %}
+						<a href="{% url book_cart_check %}" class="btn btn-small btn-info" ><i class="icon-shopping-cart"></i> 已加入购物车</a>
+					{% else %}
+						<a id="add" href="##" class="btn btn-small" onclick="addToCart({{book.id}})"><i class="icon-shopping-cart"></i> 加入购物车</a>
+						<a id="added" href="{% url book_cart_check %}" class="btn btn-small btn-info" style="display: none"><i class="icon-shopping-cart"></i> 已加入购物车</a>
+					{% endif %}
+				{% endif %}
             </div>
         </div>
     </div>             

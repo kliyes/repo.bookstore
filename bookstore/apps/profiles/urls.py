@@ -21,6 +21,8 @@ urlpatterns = patterns("",
     url(r"^add_tag/$", "profiles.views.addTag", name="profiles_addtag"),
     url(r"^remove_tag/$", "profiles.views.removeTag", name="profiles_removetag"),
     
-    url(r"^save_profile/$", "profiles.views.save_profile", name="profiles_save")
+    url(r"^save_profile/$", "profiles.views.save_profile", name="profiles_save"), 
+    
+    url(r"^check_orders/$", "profiles.views.checkOrders", name="profiles_order_check")
 
 )

@@ -126,10 +126,7 @@ def setProfile(request, **kwargs):
             request.session["draftProfile"] = None
             
     return render_to_response(template, 
-        RequestContext(request, {"form": form, 
-            "cities": City.objects.getAll(),
-            "orders": request.user.get_profile().getOrders() #TODO 单独提取出作一个请求
-        }))  
+        RequestContext(request, {"form": form}))  
 
 def changeCity(request, cityId):
     """更新所在城市"""
@@ -277,5 +274,17 @@ def setPic(request, template=settings.TEMPLATE_SETTINGS):
     
     utils.addMsg(request, messages.ERROR, u"更新头像失败")
     return HttpResponseRedirect(reverse("profiles_setpic"))
+
+@login_required    
+def checkOrders(request):
+    '''查看用户订单'''
+    return render_to_response('profiles/user_orders.html', 
+        RequestContext(request, {'orders': request.user.get_profile().getOrders()}))
     
+    
+    
+    
+    
+
+
 

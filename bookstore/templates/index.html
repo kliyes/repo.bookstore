@@ -3,6 +3,7 @@
 {% block page_title %}欢迎光临{% endblock %}
 
 {% block single_js %}
+<script type="text/javascript" src="{{STATIC_URL}}base/js/secure.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
 		$("#all_books").delegate("#pre, #next, #num", "click", function(){
@@ -56,6 +57,28 @@
 			error: function(){
 				alert("error");
 			},
+			dataType: "json"
+		});
+	}
+	
+	function addToCart(bookId){
+		$.ajax({
+			url: "/books/add_to_cart/" + bookId,
+			data: {}, 
+			type: "post",
+			async: "true", 
+			success: function(data){
+				if(data.status=="success"){
+					$("#add").hide();
+					$("#added").show();
+				}
+				else{
+					alert(data.status);
+				}
+			},
+			error: function(){
+				alert("error");
+			}, 
 			dataType: "json"
 		});
 	}

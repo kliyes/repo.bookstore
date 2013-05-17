@@ -1,0 +1,38 @@
+{% extends "base/theme_base.html" %}
+
+{% block page_title %}我的订单{% endblock %}
+
+{% block body_base %}
+<div class="row-fluid">
+	<div class="span12">
+		<div class="page-header">
+			<h1>我的订单</h1>
+		</div>
+		<div id="orders_list">
+			{% for order in orders %}
+				总价：{{order.total_fee}}<br />
+				书目：
+				{% for item in order.getItems %}
+					{{item.book.name}}&nbsp;&nbsp;
+					{{item.amount}}本<br />
+				{% endfor %}
+				状态：
+				{% ifequal order.status 1 %}
+				交易完成
+				{% endifequal %}
+				{% ifequal order.status 2 %}
+				等待发货
+				{% endifequal %}
+				{% ifequal order.status 3 %}
+				等待收货
+				{% endifequal %}
+				{% ifequal order.status 0 %}
+				交易取消
+				{% endifequal %}<br />
+				时间：{{order.created_date|date:"Y-m-d H:i"}}
+				<br /><br />
+			{% endfor %}
+		</div>
+	</div>
+</div>
+{% endblock %}

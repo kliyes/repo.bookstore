@@ -35,10 +35,14 @@ def _getDataKey(type):
 
 def goHome(request):
     '''首页, index.html'''
+    ids= []
     allCates = Category.objects.getAllCates()
     bestsellers = Book.objects.getBestsellers()
     hotTwo = Book.objects.getBestsellers(2)
-    books = _sortBooks(Book.objects.getAll())
+    for ht in hotTwo:
+        ids.append(ht.id)
+        
+    books = _sortBooks(Book.objects.getAll().exclude(id__in=ids))
     
     ctx = {'allCates': allCates, 'bestsellers': bestsellers, 'hotTwo': hotTwo, 
            'cateName': 'all'}
@@ -77,13 +81,18 @@ def getBooksByCate(request, cateName):
     if not cateName:
         return
     
+    ids = []
     if cateName == 'all':
-        books = Book.objects.getAll()
         hotTwo = Book.objects.getBestsellers(2)
+        for ht in hotTwo:
+            ids.append(ht.id)
+        books = Book.objects.getAll().exclude(id__in=ids)
     else:
         category = Category.objects.get(name=cateName)
-        books = Book.objects.filter(category=category)
         hotTwo = Book.objects.getHotTwoByCate(category)
+        for ht in hotTwo:
+            ids.append(ht.id)
+        books = Book.objects.filter(category=category).exclude(id__in=ids)
     
     books = _sortBooks(books, key)
         
@@ -220,6 +229,9 @@ def addToCart(request, bookId):
     
     profile = request.user.get_profile()
     cart = Cart.objects.get(owner=profile)
+    if cart.getItemByBook(book):
+        return HttpResponse(json.dumps({'status': 'failed'}))
+    
     if not cart.addBookItem(book):
         return HttpResponse(json.dumps({'status': 'failed'}))
     
