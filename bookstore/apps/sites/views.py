@@ -37,6 +37,11 @@ from books.models import Book, Author, Category, Order
 
 log = logging.getLogger("mysite")
 
+@admin_required
+def adminHome(request):
+    '''后台管理主页'''
+    return render_to_response('sites/management.html', RequestContext(request))
+
 def _getBookCate(cateName):
     '''根据传入的cateName获取书籍分类'''
     return Category.objects.get(name=cateName)

@@ -18,6 +18,9 @@ urlpatterns = patterns("",
     url(r"^check_the_cart/$", "books.views.checkCart", name="book_cart_check"), 
     url(r"^make_order/$", "books.views.makeOrder", name="book_order"), 
     url(r"^submit_order/$", "books.views.submitOrder", name="book_order_submit"), 
+    
+    url(r"^comment/(\d+)$", "books.views.goComment", name="book_comment"), 
+    
     url(r"^add_comment/(\d+)$", "books.views.addComment", name="book_add_cmt"), 
     url(r"^mark_book/(\d+)$", "books.views.markBook", name="book_mark"), 
     url(r"^page_books/(\w+)/$", "books.views.pagingBooks"), 
@@ -26,6 +29,6 @@ urlpatterns = patterns("",
 
     url(r"^page_book_cmts/(\d+)$", "books.views.pagingBookCmts", name="book_page_cmts"), 
     
-    
+    url(r"^comment_done/$", direct_to_template, {"template": "books/comment_done.html"}, name="comment_done"),
     url(r"^thanks/$", direct_to_template, {"template": "books/success_bought.html"}, name="thanks"), 
 )

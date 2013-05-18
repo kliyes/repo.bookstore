@@ -17,6 +17,7 @@ from django.core.urlresolvers import reverse
 
 from common import pages
 from books.models import Book, Cart, Order, BookComment, Category
+import datetime
 
 BOOK_DATA_KEY = "bookPaging"
 BOOK_PAGE_SIZE = 10
@@ -272,7 +273,7 @@ def makeOrder(request):
     profile = request.user.get_profile()
     cart = Cart.objects.get(owner=profile)
     
-    if not request.is_ajax() or not cart.getBooks(): # 'POST'必须大写！ 
+    if not request.is_ajax() or not cart.getBooks():
         return render_to_response('books/bookorder.html', RequestContext(request, 
             {'cart': cart}))
     
@@ -298,18 +299,28 @@ def submitOrder(request):
     profile = request.user.get_profile()
     cart = Cart.objects.get(owner=profile)
     
-    addr = request.REQUEST.get('addr', None)
-    contact = request.REQUEST.get('contact', None)
-    makeDefault = request.REQUEST.get('default', None)
+    addr = request.REQUEST.get('addr', '')
+    contact = request.REQUEST.get('contact', '')
+    receiver = request.REQUEST.get('receiver', '')
+    makeDefault = request.REQUEST.get('default', '')
+    
     if makeDefault == 'on':
+        profile.receiver = receiver
         profile.addr = addr
         profile.contact = contact
         profile.save()
+        
+    now = datetime.datetime.now()
+    
     order = Order()
     order.owner = profile
     order.total_fee = cart.getTotalFee()
+    order.receiver = receiver
     order.addr = addr
     order.contact = contact
+    order.save()
+    # 订单编号由日期加订单ID号组成, 如201305180000018, 表示2013年5月18号订单ID为18的订单
+    order.code = str(now.year) + ('%02i' % now.month) + ('%02i' % now.day) + ('%07i' % order.id) 
     order.save()
     # 提交订单后清空购物车中书籍
     profile.buyBooks(cart.getBooks())
@@ -318,44 +329,53 @@ def submitOrder(request):
     
     return HttpResponseRedirect(reverse("thanks"))
 
-@login_required    
-def addComment(request, bookId):
-    '''添加书籍评论,ajax request only'''
-    if not request.is_ajax():
+@login_required
+def goComment(request, bookId):
+    '''跳转至评论页面'''
+    book = _getBookById(bookId)
+    if not book:
         raise Http404
     
-    cmtContent = request.REQUEST.get('cmtContent', '')
+    return render_to_response('books/comment.html', 
+        RequestContext(request, {'book': book}))
+
+
+@login_required    
+def addComment(request, bookId):
+    '''添加书籍评论'''
+    if request.method != "POST":
+        raise Http404
+    
+    content = request.REQUEST.get('content', '')
+    grade = request.REQUEST.get('grade', 4)
+    
+    print '===========>', content
+    print '<===========', grade
+    
     profile = request.user.get_profile()
     book = _getBookById(bookId)
-    book.addComment(profile, cmtContent)
+    book.addComment(profile, content, grade)
     
-    cmts = book.getComments()
-    cmtPaging = initSessionCmtlistPaging(request, CMT_DATA_KEY, cmts, CMT_PAGE_SIZE)
-    if cmtPaging:
-        ctx = cmtPaging.result(1)
-        t = get_template('books/includes/comments.html')
-        html = t.render(RequestContext(request, ctx))
-        return HttpResponse(json.dumps({'status': 'success', 'html':html}))
-    
-    return HttpResponse(json.dumps({'status': 'failed'}))
+    return HttpResponseRedirect(reverse("comment_done"))
 
 @login_required    
 def markBook(request, bookId):
     '''为书籍打分,ajax request only'''
-    if not request.is_ajax():
-        raise Http404
-    try:
-        grade = request.REQUEST.get('grade', '')
-        print grade
-        profile = request.user.get_profile()
-        book = _getBookById(bookId)
-        bookGrade = Grade(marker=profile, book=book, value=int(grade))
-        bookGrade.save()
-    except Exception, e:
-        print e
-        return HttpResponse(json.dumps({'status': 'failed'}))
-    
-    return HttpResponse(json.dumps({'status': 'success'}))
+    pass
+#    if not request.is_ajax():
+#        raise Http404
+#    try:
+#        grade = request.REQUEST.get('grade', '')
+#        print grade
+#        profile = request.user.get_profile()
+#        book = _getBookById(bookId)
+#        bookGrade = Grade(marker=profile, book=book, value=int(grade))
+#        bookGrade.save()
+#    except Exception, e:
+#        print e
+#        return HttpResponse(json.dumps({'status': 'failed'}))
+#    
+#    return HttpResponse(json.dumps({'status': 'success'}))
 
 def pagingCmts(request, bookId):
     '''处理书籍评论分页, ajax request only'''

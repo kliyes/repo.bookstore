@@ -135,6 +135,8 @@ class ProfileManager(models.Manager):
         return Profile.objects.all().count()
     
 class Profile(ProfileBase):
+    delOrderIds = [] # 用户删除（屏蔽）的订单id列表
+    
     name = models.CharField(_("name"), max_length=50, default='', null=True, blank=True)        #昵称
     desc = models.TextField(_("about"), max_length=200, default='', null=True, blank=True)      #个人介绍
     #city = models.ForeignKey(City, null=True, blank=True)                                       #城市
@@ -158,6 +160,7 @@ class Profile(ProfileBase):
     
     #===============================================
     #code in bookstore
+    receiver = models.CharField(max_length=30, null=True, blank=True) # 收货人
     contact = models.CharField(max_length=20) # 联系方式（手机号码）
     addr = models.CharField(max_length=200) # 送货地址
     #===============================================

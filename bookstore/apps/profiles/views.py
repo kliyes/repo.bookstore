@@ -21,9 +21,12 @@ from django.utils.translation import ugettext
 
 from PIL import Image, ImageFile
 
-from common import img_utils, file_utils, utils
+from common import img_utils, file_utils, utils, pages
 from profiles.forms import ProfileForm
 from profiles.models import Profile, Following, City, Tag
+from books.models import Order
+from django.template.loader import get_template
+import json
 
 
 
@@ -275,14 +278,68 @@ def setPic(request, template=settings.TEMPLATE_SETTINGS):
     utils.addMsg(request, messages.ERROR, u"更新头像失败")
     return HttpResponseRedirect(reverse("profiles_setpic"))
 
+
+def initSessionOrderlistPaging(request, dataKey, orderlist, pageSize):
+    ''''''
+    return pages.setSessionPaging(request, dataKey, orderlist, pageSize)
+
 @login_required    
 def checkOrders(request):
     '''查看用户订单'''
-    return render_to_response('profiles/user_orders.html', 
-        RequestContext(request, {'orders': request.user.get_profile().getOrders()}))
+    profile = request.user.get_profile()
     
+    orders = profile.getOrders().exclude(id__in=profile.delOrderIds)
+    ctx = {}
     
+    orderPaging = initSessionOrderlistPaging(request, 'orderData', orders, 5)
+    if orderPaging:
+        ctx.update(orderPaging.result(1)) 
     
+    return render_to_response('profiles/user_orders.html', RequestContext(request, ctx))
+    
+def pagingOrders(request):
+    '''分页订单, ajax request only'''
+    if not request.is_ajax():
+        raise Http404
+    
+    profile = request.user.get_profile()
+    
+    pageNo = pages.getRequestPageNo(request)
+    request.session['currentPageNo'] = pageNo
+    paging = pages.getSessionPaging(request, 'orderData')
+    if not paging:
+        orderlist = profile.getOrders().exclude(id__in=profile.delOrderIds)
+        paging = initSessionOrderlistPaging(request, 'orderData', orderlist, 5)
+    
+    t = get_template('profiles/includes/order_list.html')
+    html = t.render(RequestContext(request, paging.result(pageNo)))
+    
+    return HttpResponse(json.dumps({'status': 'success', 'html': html}))
+            
+def delOrderByProfile(request):
+    '''用户在个人订单列表中删除订单, ajax request only'''
+    if not request.is_ajax():
+        raise Http404
+    
+    profile = request.user.get_profile()
+    
+    orderId = request.REQUEST.get('orderId', None)
+    if not orderId:
+        return HttpResponse(json.dumps({'status': 'failed'}))
+    
+    try:
+        order = Order.objects.get(id=int(orderId))
+    except Order.DoesNotExist:
+        return HttpResponse(json.dumps({'status': 'failed'}))
+    
+    if profile == order.owner:
+        profile.delOrderIds.append(int(orderId))
+        return HttpResponse(json.dumps({'status': 'success'}))
+    
+    return HttpResponse(json.dumps({'status': 'failed'}))
+        
+        
+        
     
     
 

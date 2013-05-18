@@ -6,42 +6,12 @@
 
 {% block message %} {% include "base/messages.html" %} {% endblock %}
 
-{% block body_base %}
-<div class="container">
-	<h2>欢迎注册BookStore</h2>
-            <br /><br />
-	<form action="{% url acct_signup %}" method="post" >
-	    {% csrf_token %}
-	    <div class="action_div">
-	    	<table class="action_table">
-	    		<br /><br />
-        		<table class="action_table" >
-        			<tr>
-        				<td>{{form.email|attr:"lyu:Email"|attr:"bl:Email_msg"|attr:"placeholder:电子邮箱"|attr:"class:action_input"}}</td>
-        				<td align="left"><label id="Email_msg" class="error_msg">{{form.email.errors}}</label></td>
-        			</tr>
-        			<tr>
-        				<td>{{form.password|attr:"lyu:Password"|attr:"bl:Password_msg"|attr:"placeholder:预设密码"|attr:"class:action_input"}}</td>
-        				<td><label id="Password_msg" class="error_msg">{{form.password.errors}}</label></td>
-        			</tr>
-        			<tr>
-        				<td>{{form.nickname|attr:"lyu:Nickname"|attr:"bl:Nickname_msg"|attr:"placeholder:怎么称呼？"|attr:"class:action_input"}}</td>
-        				<td><label id="Password_msg" class="error_msg">{{form.nickname.errors}}</label></td>
-        			</tr>
-        			<tr>
-        				<td align="center"><button class="mbtn" type="submit" id="btn_reg" onclick="return check_reg()"><i class="icon-user"></i> 注册</button></td>
-        			</tr>
-	    	</table>
-	    </div>
-	</form>
-	{{motto.content}}<br />
-	————{{motto.author}}
-</div>
+{% block style_css %}
+<link type="text/css" rel="stylesheet" href="{{STATIC_URL}}base/css/login.css" />
 {% endblock %}
 
 {% block single_js %}
-<script type="text/javascript" src="{{STATIC_URL}}lyu/plug-in.js"></script>
-<script src="{{STATIC_URL}}xizhi/js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}base/js/plug-in.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
 		lyu_load();
@@ -56,3 +26,28 @@
 	}
 </script>
 {% endblock %}
+
+{% block body_base %}
+<div class="row-fluid">
+	<div class="page-header">
+        <h1>注册 BookStore</h1>
+    </div>
+    <div class="container">
+		<form action="{% url acct_signup %}" method="post" class="form-signin">
+			{% csrf_token %}
+			{{form.email|attr:"lyu:Email"|attr:"bl:Email_msg"|attr:"placeholder:邮箱"|attr:"class:input-block-level"}}<br />
+			<label id="Email_msg" class="label label-warning">{{form.email.errors}}</label>
+			
+			{{form.password|attr:"lyu:Password"|attr:"bl:Password_msg"|attr:"placeholder:预设密码"|attr:"class:input-block-level"}}<br />
+			<label id="Password_msg" class="label label-warning">{{form.password.errors}}</label>
+			
+			{{form.nickname|attr:"lyu:Nickname"|attr:"bl:Nickname_msg"|attr:"placeholder:怎么称呼您？"|attr:"class:input-block-level"}}<br />
+			<label id="Password_msg" class="label label-warning">{{form.nickname.errors}}</label>
+			
+			<button class="btn btn-large btn-primary" type="submit" id="btn_reg" onclick="return check_reg()">注册</button>
+		</form>
+    </div>
+</div>
+{% endblock %}
+
+

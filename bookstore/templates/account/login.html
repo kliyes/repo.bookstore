@@ -6,66 +6,16 @@
 
 {% block message %} {% include "base/messages.html" %} {% endblock %}
 
-{% block body_base %}
-<div class="container">
-    <div class="row">
-        <div class="span5" style="border:0px solid red;">
-            <h2>欢迎登陆BookStore</h2>
-            <br /><br />
-            <form action="{% url acct_login %}" method="post" name="login_from" >
-            	{% csrf_token %}
-            	<div class="action_div">
-            		<br /><br />
-            		<table class="action_table" >
-            			<tr>
-            				<td>{{form.email|attr:"lyu:Email"|attr:"bl:Email_msg"|attr:"class:action_input"|attr:"placeholder:Email"}}</td>
-            				<td align="left"><label id="Email_msg" class="error_msg"></label></td>
-            			</tr>
-            			<tr>
-            				<td>{{form.password|attr:"lyu:Password"|attr:"bl:Password_msg"|attr:"class:action_input"|attr:"placeholder:Password"|attr:"type:password"}}</td>
-            				<td><label id="Password_msg" class="error_msg"></label></td>
-            			</tr>
-            			{% if request.session.failedLoginCount >= 1 %}
-            			<tr>
-            				<td><input class="action_input" lvy="secure_code" type="text" id="code-input" maxlength="8" placeholder="BookStore" /></td>
-            				<td>
-            					<img id="code-img" style="vertical-align:top;display:inline;" src="{% url new_secure_code %}" />
-            					<a id="change-code" onclick="changeSecureCode('code-img','{% url new_secure_code %}');" href="#">换一个</a>
-            					<label lvy="err_msg_code" class="error_msg"></label>
-            				</td>
-            			</tr>
-            			{% endif %}
-            			<input type="hidden" value="{{next}}" name="next" id="next" />
-            			<tr>
-            				<td align="center">
-            					<button class="mbtn" type="submit" id="btn_login" onclick="return check_login()">登入</button>
-            				</td>
-            				<td><a href="{% url acct_reset_passwd %}">? 忘记密码</a></td>
-            			</tr>
-            		</table>
-            	</div>
-		    </form>
-        </div>
-    </div>
-    {{motto.content}}<br />
-    ————{{motto.author}}
-</div>
-<!-- /container -->
+{% block style_css %}
+<link type="text/css" rel="stylesheet" href="{{STATIC_URL}}base/css/login.css" />
 {% endblock %}
 
 {% block single_js %}
-
-<script type="text/javascript" src="{{STATIC_URL}}lyu/plug-in.js"></script>
-<script src="{{STATIC_URL}}xizhi/js/jquery-1.8.2.min.js"></script>
-<script src="{{STATIC_URL}}xizhi/js/secure.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}base/js/plug-in.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}base/js/secure.js"></script>
 <script>
 	$(document).ready(function(){
 		lyu_load();
-		//"{% if request.session.failedLoginCount >= 1 %}"	
-		//$("[lvy='secure_code']").blur(function() {
-			//check_secure_code();
-		//});
-		//"{% endif %}"
 	});
 	//change secure code，验证码
 	function changeSecureCode(img_obj, url) {
@@ -124,4 +74,34 @@
 		//todo success
 	}
 </script>
-{% endblock %}    
+{% endblock %}
+
+{% block body_base %}
+<div class="row-fluid">
+	<div class="page-header">
+        <h1>登录 BookStore</h1>
+    </div>
+    <div class="container">
+		<form action="{% url acct_login %}" method="post" name="login_from" class="form-signin">
+			{% csrf_token %}
+			{{form.email|attr:"lyu:Email"|attr:"bl:Email_msg"|attr:"class:input-block-level"|attr:"placeholder:邮箱"}}<br />
+			<label id="Email_msg" class="label label-warning"></label>
+			
+			{{form.password|attr:"lyu:Password"|attr:"bl:Password_msg"|attr:"class:input-block-level"|attr:"placeholder:密码"|attr:"type:password"}}<br />
+			<label id="Password_msg" class="label label-warning"></label>
+			
+			{% if request.session.failedLoginCount >= 1 %}
+				<input class="input-block-level auth-code" lvy="secure_code" type="text" id="code-input" maxlength="8" placeholder="验证码" />
+				<img id="code-img" style=style="vertical-align:top; display:inline;" src="{% url new_secure_code %}" />
+				<a id="change-code" onclick="changeSecureCode('code-img','{% url new_secure_code %}');" href="#">换一个</a><br />
+				<label lvy="err_msg_code" class="label label-warning"></label>
+			{% endif %}
+			<input type="hidden" value="{{next}}" name="next" id="next" />
+			<a href="{% url acct_reset_passwd %}">忘记密码？</a><br /><br />
+			<button id="btn_login" class="btn btn-large btn-primary" type="submit" onclick="return check_login()">登录</button>
+      	</form>
+    </div>
+</div>
+    <!--{{motto.content}}<br />
+    ————{{motto.author}}-->
+{% endblock %}

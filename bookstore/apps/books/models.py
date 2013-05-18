@@ -174,9 +174,11 @@ class Book(models.Model):
             return self.getTotalGrade() / float(self.comment_count)
         return 0
     
-    def addComment(self, profile, cmtContent):
+    def addComment(self, profile, cmtContent, grade=5):
         '''为书籍添加评论'''
-        bookComment = BookComment(owner=profile, book=self, content=cmtContent)
+        bookComment = BookComment(owner=profile, book=self, content=cmtContent, 
+            grade=grade)
+        
         bookComment.save()
         self.comment_count += 1
         self.save()
@@ -347,11 +349,13 @@ class OrderManager(models.Manager):
 
 class Order(models.Model):
     '''定义订单模型'''
+    code = models.CharField(max_length=20, null=True, blank=True) # 订单编号, 由当前日期加订单ID构成
     owner = models.ForeignKey("profiles.Profile") # 订单所有者
     total_fee = models.FloatField() # 总金额
     is_charged = models.BooleanField(default=False) # 是否付款
     charge_type = models.SmallIntegerField(default=1) # 付款方式, 1-货到付款 2-在线支付
     status = models.SmallIntegerField(default=2) # 订单状态, -1-删除订单 1-完成交易 0-取消 2-等待发货 3-等待收货
+    receiver = models.CharField(max_length=30, null=True, blank=True) # 收货人
     addr = models.CharField(max_length=200) # 送货地址
     contact = models.CharField(max_length=20) # 联系方式
     created_date = models.DateTimeField(default=datetime.datetime.now) # 订单生成时间
@@ -376,6 +380,16 @@ class Order(models.Model):
         '''获得订单中所有的书籍项目'''
         return OrderBookItem.objects.filter(order=self)
     
+    def getStatus(self):
+        '''获得订单状态'''
+        if self.status == 0:
+            return u'订单取消'
+        elif self.status == 1:
+            return u'交易完成'
+        elif self.status == 2:
+            return u'等待发货'
+        elif self.status == 3:
+            return u'等待收货'
     
 class OrderBookItem(models.Model):
     '''订单中书籍项目模型'''

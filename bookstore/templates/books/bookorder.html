@@ -3,25 +3,65 @@
 {% block page_title %}填写订单{% endblock %}
 
 {% block body_base %}
-	{% if cart.getBooks %}
-		<form action="/books/submit_order/" method="post">
-			{% csrf_token %}
-			书籍清单：<br />
-			<a href="{% url book_cart_check %}">返回修改购物车</a><br />
-			{% for item in cart.getItems %}
-				<img src="{{ MEDIA_URL }}img/{{item.book.spic}}" />&nbsp;&nbsp;
-				《{{item.book.name}}》&nbsp;&nbsp;
-				 {{item.book.price}}元&nbsp;&nbsp;
-				 {{item.amount}}本&nbsp;&nbsp;
-				 {{item.fee}}元<br /><br />
-			{% endfor %}
-			总计：{{cart.getTotalFee}}元<br /><br />
-			送货地址：<input type="text" name="addr" id="addr" value="{{profile.addr}}"/><br />
-			联系方式：<input type="text" name="contact" id="contact" value="{{profile.contact}}"/>
-			<input type="checkbox" id="default" name="default"/>保存为默认收货方式<br /><br />
-			<input type="submit" class="mbtn" value="确认提交" />
-		</form>
-	{% else %}
-		您还没有选择书籍呢！
-	{% endif %}
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="page-header">
+	            <h1>订单信息</h1>
+            </div>
+            {% if cart.getBooks %}
+            	<a href="{% url book_cart_check %}" class="btn btn-info"><i class="icon-chevron-left icon-white"></i>返回修改购物车</a><br />
+            	<form action="/books/submit_order/" method="post">
+            		{% csrf_token %}
+					<table class="table table-hover">
+		            	<thead>
+		                    <tr>
+		                        <th class="span2">#</th>
+		                        <th class="span3">书名</th>
+		                        <th class="span2">单价(元)</th>
+		                        <th class="span2">数量(本)</th>
+		                        <th class="span2">小计(元)</th>
+		                    </tr>
+		                </thead>
+		                <tbody>
+							{% for item in cart.getItems %}
+								<tr>
+									<td>
+										<ul class="thumbnails">
+											<li class="span12">
+												<a href="##" class="thumbnail">
+													<img src="{{ MEDIA_URL }}img/{{item.book.spic}}" alt="">
+												</a>
+											</li>
+										</ul>
+									</td>
+									<td>{{item.book.name}}</td>
+									<td>{{item.book.price}}</td>
+									<td>{{item.amount}}</td>
+									<td>{{item.fee}}</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+		            </table>
+		            <div class="row-fluid">
+				        <h4 class="pull-left">总价：<a>{{cart.getTotalFee}}</a>元</h4>
+				    </div>
+		            <div class="page-header">
+			            <h3>配送方式</h3>
+		            </div>
+		            <input class="input-block-level" type="text" name="addr" id="addr" value="{{profile.addr}}" placeholder="收货地址" style="width: 500px"/><br />
+		            <input type="text" name="receiver" id="receiver" value="{{profile.receiver}}" placeholder="收货人姓名"/><br />
+            		<input type="text" name="contact" id="contact" value="{{profile.contact}}" placeholder="联系方式"/><br />
+            		<input type="checkbox" id="default" name="default"/>保存为默认收货方式<br /><br />
+            		<hr />
+            		<button type="submit" class="btn btn-success btn-large pull-right"><i class="icon-ok-sign icon-white"></i>确认提交</button>
+            	</form>
+            {% else %}
+				<div class="span12 text-center well">
+			    	<h3>哎呀！购物车还是空的呢！</h3>
+			        <h4>再去看看有没有喜欢的书？</h4>
+			        <a href="{% url welcome %}" class="btn btn-info"><i class="icon-chevron-right icon-white"></i>去首页</a>
+			    </div>
+			{% endif %}
+		</div>
+	</div>
 {% endblock %}

@@ -1,0 +1,127 @@
+{% extends "base/theme_base.html" %}
+
+{% load widget_tweaks %}
+
+{% block page_title %}登录{% endblock %}
+
+{% block message %} {% include "base/messages.html" %} {% endblock %}
+
+{% block body_base %}
+<div class="container">
+    <div class="row">
+        <div class="span5" style="border:0px solid red;">
+            <h2>欢迎登陆BookStore</h2>
+            <br /><br />
+            <form action="{% url acct_login %}" method="post" name="login_from" >
+            	{% csrf_token %}
+            	<div class="action_div">
+            		<br /><br />
+            		<table class="action_table" >
+            			<tr>
+            				<td>{{form.email|attr:"lyu:Email"|attr:"bl:Email_msg"|attr:"class:action_input"|attr:"placeholder:Email"}}</td>
+            				<td align="left"><label id="Email_msg" class="error_msg"></label></td>
+            			</tr>
+            			<tr>
+            				<td>{{form.password|attr:"lyu:Password"|attr:"bl:Password_msg"|attr:"class:action_input"|attr:"placeholder:Password"|attr:"type:password"}}</td>
+            				<td><label id="Password_msg" class="error_msg"></label></td>
+            			</tr>
+            			{% if request.session.failedLoginCount >= 1 %}
+            			<tr>
+            				<td><input class="action_input" lvy="secure_code" type="text" id="code-input" maxlength="8" placeholder="BookStore" /></td>
+            				<td>
+            					<img id="code-img" style="vertical-align:top;display:inline;" src="{% url new_secure_code %}" />
+            					<a id="change-code" onclick="changeSecureCode('code-img','{% url new_secure_code %}');" href="#">换一个</a>
+            					<label lvy="err_msg_code" class="error_msg"></label>
+            				</td>
+            			</tr>
+            			{% endif %}
+            			<input type="hidden" value="{{next}}" name="next" id="next" />
+            			<tr>
+            				<td align="center">
+            					<button class="mbtn" type="submit" id="btn_login" onclick="return check_login()">登入</button>
+            				</td>
+            				<td><a href="{% url acct_reset_passwd %}">? 忘记密码</a></td>
+            			</tr>
+            		</table>
+            	</div>
+		    </form>
+        </div>
+    </div>
+    {{motto.content}}<br />
+    ————{{motto.author}}
+</div>
+<!-- /container -->
+{% endblock %}
+
+{% block single_js %}
+
+<script type="text/javascript" src="{{STATIC_URL}}lyu/plug-in.js"></script>
+<script src="{{STATIC_URL}}xizhi/js/jquery-1.8.2.min.js"></script>
+<script src="{{STATIC_URL}}xizhi/js/secure.js"></script>
+<script>
+	$(document).ready(function(){
+		lyu_load();
+		//"{% if request.session.failedLoginCount >= 1 %}"	
+		//$("[lvy='secure_code']").blur(function() {
+			//check_secure_code();
+		//});
+		//"{% endif %}"
+	});
+	//change secure code，验证码
+	function changeSecureCode(img_obj, url) {
+	    //加一个随机参数，使得每次链接地址都不一样，从而达到更新的目的                          
+	    $("#"+img_obj).attr("src",url+"?id="+Math.random());
+	}
+	//check secure code
+	function check_secure_code() {
+		if(checkSecureCode("{% url check_secure_code %}", $("#code-input").val())) {
+			$("[lvy='err_msg_code']").html("");
+			return true;	
+		} else {
+			$("[lvy='err_msg_code']").show();
+			$("[lvy='err_msg_code']").html("验证码错误，重新输入！");
+			$("#change-code").click(); //变换验证码
+			$("#code-input").val("");
+			//$("#code-input").focus();
+			return false;
+		}
+	}
+	//Ajax 检查验证码是否正确
+	function checkSecureCode(checkUrl, code){
+	    if(code == '' || code == null) {
+	        return false;
+	    }
+	    var isSecureCodeRight = false;
+	    $.ajax({url: checkUrl,
+	        async:false,
+	        type:"POST",
+	        contentType:"application/json;charset=utf-8",
+	        dataType:"json",
+	        data:{"secureCode":code,},
+	        success:function(data,textStatus,jqXHR){
+	            if(data.status == "true"){
+	                isSecureCodeRight = true;
+	            } else {
+	                isSecureCodeRight = false;        
+	            }
+	        }
+	    });
+	    return isSecureCodeRight;
+	}
+	function check_login(){
+		if(!check_email_lyu($("[lyu='Email']"))){
+			return false;
+		}
+		if(!check_password_lyu($("[lyu='Password']"))){
+			return false;
+		}
+		"{% if request.session.failedLoginCount >= 1 %}"
+		if(!check_secure_code()){
+			check_secure_code();
+			return false;
+		}
+		"{% endif %}"
+		//todo success
+	}
+</script>
+{% endblock %}    

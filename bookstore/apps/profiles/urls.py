@@ -23,6 +23,8 @@ urlpatterns = patterns("",
     
     url(r"^save_profile/$", "profiles.views.save_profile", name="profiles_save"), 
     
-    url(r"^check_orders/$", "profiles.views.checkOrders", name="profiles_order_check")
+    url(r"^check_orders/$", "profiles.views.checkOrders", name="profiles_order_check"),
+    url(r"^page_orders/$", "profiles.views.pagingOrders", name="profiles_order_page"),
+    url(r"^order_del_by_profile/$", "profiles.views.delOrderByProfile", name="profiles_order_del_by_profile"),
 
 )

@@ -2,37 +2,75 @@
 
 {% block page_title %}我的订单{% endblock %}
 
+{% block single_js %}
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#order_list").delegate("#pre, #next, #num", "click", function(){
+			bookPageTurn(this);
+		});
+		$("#order_list").delegate("#goto_page", "click", function(){
+			bookPageTurn(this);
+		});
+	});
+	
+	function bookPageTurn(obj){
+		var pageIndex = "";
+		if($(obj).attr("rel")==="userinput"){
+			pageIndex = $("#userinput_page").val();
+		}else{
+			pageIndex = $(obj).attr("rel");
+		}
+		$.ajax({
+			url: "{% url profiles_order_page %}", 
+			data: {"page": pageIndex}, 
+			type: "get", 
+			async: "true", 
+			success: function(data){
+				if(data.status=="success"){
+					$("#order_list").html(data.html);
+				}else{
+					alert(data.status);
+				}
+			}, 
+			error: function(){
+				alert("error");
+			},
+			dataType: "json"
+		});
+	}
+	
+	function delOrderByProfile(orderId){
+		$.ajax({
+			url: "{% url profiles_order_del_by_profile %}", 
+			data: {"orderId": orderId}, 
+			type: "get", 
+			async: "true", 
+			success: function(data){
+				if(data.status=="success"){
+					$("#order_"+orderId).hide(300);
+					$("#order_list tr[data-order=order_"+ orderId +"]").hide(300);
+				}else{
+					alert(data.status);
+				}
+			}, 
+			error: function(){
+				alert("error");
+			},
+			dataType: "json"
+		});
+	}
+</script>
+{% endblock %}
+
 {% block body_base %}
 <div class="row-fluid">
 	<div class="span12">
 		<div class="page-header">
 			<h1>我的订单</h1>
 		</div>
-		<div id="orders_list">
-			{% for order in orders %}
-				总价：{{order.total_fee}}<br />
-				书目：
-				{% for item in order.getItems %}
-					{{item.book.name}}&nbsp;&nbsp;
-					{{item.amount}}本<br />
-				{% endfor %}
-				状态：
-				{% ifequal order.status 1 %}
-				交易完成
-				{% endifequal %}
-				{% ifequal order.status 2 %}
-				等待发货
-				{% endifequal %}
-				{% ifequal order.status 3 %}
-				等待收货
-				{% endifequal %}
-				{% ifequal order.status 0 %}
-				交易取消
-				{% endifequal %}<br />
-				时间：{{order.created_date|date:"Y-m-d H:i"}}
-				<br /><br />
-			{% endfor %}
-		</div>
+		<div id="order_list">
+    		{% include "profiles/includes/order_list.html" %}
+    	</div>
 	</div>
 </div>
 {% endblock %}

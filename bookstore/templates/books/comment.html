@@ -1,0 +1,43 @@
+{% extends "base/theme_base.html" %}
+
+{% block page_title %}书籍评价{% endblock %}
+
+{% block body_base %}
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="page-header">
+	            <h1>评价</h1>
+	        </div>
+	        <div class="span3">
+				<li class="span12 text-center">
+					<a href="{% url book_detail book.id %}" class="thumbnail">
+						<img src="{{ MEDIA_URL }}img/{{book.spic}}" alt="">
+						<p>{{book.name}}</p>
+					</a>
+				</li>
+	        </div>
+	        <form action="{% url book_add_cmt book.id %}" method="post">
+	        	{% csrf_token %}
+		        <div class="span8">
+	            	<div class="row-fluid">
+	                	<div class="span12">
+	                    打分：
+						<select name="grade" style="width: 55px">
+							<option>1</option>
+						    <option>2</option>
+						    <option>3</option>
+						    <option>4</option>
+						    <option selected>5</option>
+						</select>&nbsp;分
+						</div>
+	                </div>
+	                <div class="row-fluid">
+	                	<textarea name="content" class="span12" rows="6" placeholder="您觉得这本书怎么样？"></textarea>
+	                </div>
+	            </div>
+	            <hr />
+	            <button type="submit" class="btn btn-success btn-large pull-right"><i class="icon-ok-sign icon-white"></i>提交评论</button>
+        	</form>
+        </div>
+	</div>
+{% endblock %}
