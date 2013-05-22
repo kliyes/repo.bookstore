@@ -29,6 +29,7 @@ from django.views.decorators.csrf import csrf_exempt
 from account.models import EmailAddress, EmailConfirmation
 from common import utils
 from sites.models import Motto
+#from BeautifulSoup import BeautifulSoup
  
 association_model = models.get_model("django_openid", "Association")
 if association_model is not None:
@@ -54,8 +55,10 @@ def adminLogin(request, **kwargs):
             if request.user.is_superuser:
                 return HttpResponseRedirect(reverse("management"))
             else:
-                utils.addMsg(request, messages.ERROR, "not admin account")
+                utils.addMsg(request, messages.ERROR, "非管理员账户不能登录")
         else:
+#            soup = BeautifulSoup(str(form.errors))
+#            utils.addMsg(request, messages.ERROR, soup.ul.li.ul.li.contents[0])
             utils.addMsg(request, messages.ERROR, form.errors)
             
     return render_to_response("account/admin_login.html", RequestContext(request,
@@ -118,6 +121,8 @@ def login(request, **kwargs):
             request.session["failedLoginCount"] = 0
             return after_login(request, success_url) 
         else:
+            #soup = BeautifulSoup(str(form.errors))
+            #utils.addMsg(request, messages.ERROR, soup.ul.li.ul.li.contents[0])
             utils.addMsg(request, messages.ERROR, form.errors)
             request.session["failedLoginCount"] = request.session.get("failedLoginCount", 0) + 1
     else:
@@ -147,9 +152,9 @@ def after_login(request, success_url):
     profile = request.user.get_profile()
     profile.updateLoginCount()
     log.debug("login_count: %s of profile: %s" % (profile.login_count, profile.id))
-    if profile.login_count == 1: 
-        utils.addMsg(request, messages.INFO, u"第一次登录, 展示一下个性吧")
-        return HttpResponseRedirect(reverse("profiles_setting"))
+#    if profile.login_count == 1: 
+#        utils.addMsg(request, messages.INFO, u"第一次登录, 展示一下个性吧")
+#        return HttpResponseRedirect(reverse("profiles_setting"))
     
     return HttpResponseRedirect(whatNext)
 
@@ -194,9 +199,8 @@ def signup(request, **kwargs):
         if form.is_valid():
             user, emailAddress = form.save(request=request)
             
-            # 若注册需要Email激活,则发送邮件,  异步邮件队列方式发送邮件 in future TODO
             if settings.ACCOUNT_EMAIL_VERIFICATION:
-                user.is_active = False #default True
+                user.is_active = False 
                 user.save()
                 
                 EmailConfirmation.objects.send_confirmation(emailAddress)
@@ -208,13 +212,14 @@ def signup(request, **kwargs):
                 ctx = RequestContext(request, ctx)
                 return render_to_response(settings.TEMPLATE_VERIFICATION_SENT, ctx)
             
-            # 不需要发送激活邮件,直接登录
             else:
                 form.login(request, user)
                 return render_to_response("account/signup_success.html", 
                     RequestContext(request, {'email': user.email, 'nickname': user.get_profile().name}))
                 
         else:
+#            soup = BeautifulSoup(str(form.errors))
+#            utils.addMsg(request, messages.ERROR, soup.ul.li.ul.li.contents[0])    
             utils.addMsg(request, messages.ERROR, form.errors)    
             
     else:
@@ -252,7 +257,7 @@ def confirm_email(request, confirmation_key):
         confirmEntity = EmailConfirmation.objects.get(confirmation_key=confirmation_key)
         if confirmEntity.email_address and confirmEntity.email_address.verified:
             return render_to_response(settings.TEMPLATE_CONFIRM_EMAIL, {
-                "verified": True ,"msg": u"账号已处于激活状态,不需要重复激活",
+                "verified": True ,"msg": u"您的账号已处于激活状态,不需要重复激活",
             }, context_instance=RequestContext(request))
     except EmailConfirmation.DoesNotExist:
         return render_to_response(settings.TEMPLATE_CONFIRM_EMAIL,
@@ -355,6 +360,12 @@ def password_change(request, **kwargs):
             password_change_form = form_class(request.user)
             
             return HttpResponseRedirect(reverse("profiles_setting"))
+        
+        else:
+#            soup = BeautifulSoup(str(password_change_form.errors))
+#            utils.addMsg(request, messages.ERROR, soup.ul.li.ul.li.contents[0])
+            utils.addMsg(request, messages.ERROR, password_change_form.errors)
+            
     else:
         password_change_form = form_class(request.user)
         
@@ -437,6 +448,12 @@ def reset_password(request, **kwargs):
             else:
                 redirect_to = reverse("acct_passwd_reset_done")
                 return HttpResponseRedirect(redirect_to+"?email="+email)
+        
+        else:    
+#            soup = BeautifulSoup(str(password_reset_form.errors))
+#            utils.addMsg(request, messages.ERROR, soup.ul.li.ul.li.contents[0])
+            utils.addMsg(request, messages.ERROR, password_reset_form.errors)
+        
     else:
         password_reset_form = form_class()
     

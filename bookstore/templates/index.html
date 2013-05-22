@@ -40,7 +40,10 @@
 		});
 	}
 	
-	function getByCate(key, cateName){
+	function getByCate(key, cateName,o){
+		//$("[id*=cate]").removeClass("active");
+		$(o).parent().siblings().removeClass("active");
+		$(o).parent().addClass("active");
 		$.ajax({
 			url: "/books/getbycate/"+cateName,
 			data: {'key': key},
@@ -93,7 +96,7 @@
         	{% for book in bestsellers %}
               <li class="span2">
                 <a href="{% url book_detail book.id %}" class="thumbnail">
-                  <img src="{{ MEDIA_URL }}img/{{book.spic}}" alt="">
+                  <img src="{{ MEDIA_URL }}img/{{book.spic}}" alt="" title="{{book.name}}">
                 </a>
               </li>
             {% endfor %}
@@ -104,9 +107,9 @@
     <div class="row">
     	<div class="span4">
         	<ul class="nav nav-pills nav-stacked">
-            	<li class="active"><a href="##" onclick="getByCate('soldCount', 'all')"><i class="icon-chevron-right pull-right"></i>全部</a></li>
+            	<li id="cate_0" class="active"><a href="##" onclick="getByCate('soldCount', 'all',this)">全部</a></li>
             	{% for cate in allCates %}
-              	  <li><a href="##" onclick="getByCate('soldCount', '{{cate.name}}')">{{cate.label}}</a></li>
+					<li id="cate_{{cate.id}}"><a href="##" onclick="getByCate('soldCount', '{{cate.name}}',this)">{{cate.label}}</a></li>
                 {% endfor %}
             </ul>
         </div>

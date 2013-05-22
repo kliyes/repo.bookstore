@@ -13,7 +13,7 @@
 	<tbody>
 		<form id='form_cart'>
 			{% for item in cart.getItems %}
-			<tr>
+			<tr id="item_{{item.book_id}}">
 		        <td>
 		        	<ul class="thumbnails">
 		              <li class="span12">
@@ -40,19 +40,11 @@
 		</form>
 	</tbody>
 </table>
-{% if not cart.getBooks %}
-	<div class="span12 text-center well">
-    	<h3>哎呀！购物车还是空的呢！</h3>
-        <h4>再去看看有没有喜欢的书？</h4>
-        <a href="{% url welcome %}" class="btn btn-info"><i class="icon-chevron-right icon-white"></i>去首页</a>
-    </div>
-{% else %}
-	<hr />
-	<div class="row-fluid">
-        <h4 class="pull-left">总价：<a id="total_fee">{{cart.getTotalFee}}</a>元</h4>
-        <a class="btn btn-info btn-large pull-right" onclick="makeOrder()"><i class="icon-ok-sign icon-white"></i> 结算</a>
-    </div>
-{% endif %}
+<hr />
+<div class="row-fluid">
+    <h4 class="pull-left">总价：<a id="total_fee">{{cart.getTotalFee}}</a>元</h4>
+    <a class="btn btn-info btn-large pull-right" onclick="makeOrder()"><i class="icon-ok-sign icon-white"></i> 结算</a>
+</div>
 
 <script type="text/javascript">
 	function countPartFee(bookId){

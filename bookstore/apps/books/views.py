@@ -18,6 +18,7 @@ from django.core.urlresolvers import reverse
 from common import pages
 from books.models import Book, Cart, Order, BookComment, Category
 import datetime
+from django.db.models.query_utils import Q
 
 BOOK_DATA_KEY = "bookPaging"
 BOOK_PAGE_SIZE = 10
@@ -114,7 +115,7 @@ def getBooksByCate(request, cateName):
 def getBooksByName(request):
     '''按书名模糊查询书籍'''
     name = request.REQUEST.get('name', '')
-    books = Book.objects.filter(name__icontains=name)
+    books = Book.objects.filter(Q(name__icontains=name) | Q(desc__icontains=name))
     ctx = {'type': 'name'}
     
     bookPaging = initSessionBooklistPaging(request, _getDataKey('name'), books, BOOK_PAGE_SIZE)
@@ -253,10 +254,7 @@ def delFromCart(request, bookId):
     if not cart.removeBookItem(book):
         return HttpResponse(json.dumps({'status': 'failed'}))
     
-    t = get_template('books/includes/booklist.html')
-    html = t.render(RequestContext(request, {'cart': cart, 'itemCount': len(cart.getItems())}))
-    
-    return HttpResponse(json.dumps({'status': 'success', 'html': html}))
+    return HttpResponse(json.dumps({'status': 'success'}))
 
 @login_required
 def checkCart(request):
@@ -319,7 +317,7 @@ def submitOrder(request):
     order.addr = addr
     order.contact = contact
     order.save()
-    # 订单编号由日期加订单ID号组成, 如201305180000018, 表示2013年5月18号订单ID为18的订单
+    # 订单编号由日期加订单ID号组成, 如201305180000018, 表示2013年5月18号产生的订单ID为18的订单
     order.code = str(now.year) + ('%02i' % now.month) + ('%02i' % now.day) + ('%07i' % order.id) 
     order.save()
     # 提交订单后清空购物车中书籍
@@ -348,9 +346,6 @@ def addComment(request, bookId):
     
     content = request.REQUEST.get('content', '')
     grade = request.REQUEST.get('grade', 4)
-    
-    print '===========>', content
-    print '<===========', grade
     
     profile = request.user.get_profile()
     book = _getBookById(bookId)

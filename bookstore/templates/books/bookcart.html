@@ -35,7 +35,7 @@
 				async: "true", 
 				success: function(data){
 					if(data.status=="success"){
-						$("#cart_book_list").html(data.html);
+						$("#item_"+bookId).hide(300);
 					}
 					else{
 						alert(data.status);
@@ -56,11 +56,17 @@
 		<div class="page-header">
             <h1>购物车</h1>
         </div>
-		<div id="cart_book_list">
-			{% include "books/includes/booklist.html" %}
-		</div>
+        {% if cart.getBooks %}
+			<div id="cart_book_list">
+				{% include "books/includes/booklist.html" %}
+			</div>
+		{% else %}
+			<div class="span12 text-center well">
+		    	<h3>哎呀！购物车还是空的呢！</h3>
+		        <h4>再去看看有没有喜欢的书？</h4>
+		        <a href="{% url welcome %}" class="btn btn-info"><i class="icon icon-chevron-right icon-white"></i> 去首页</a>
+		    </div>
+		{% endif %}
 	</div>
 </div>
-{% endblock %}
-		
-				
+{% endblock %}		

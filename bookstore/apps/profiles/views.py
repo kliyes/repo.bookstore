@@ -27,6 +27,7 @@ from profiles.models import Profile, Following, City, Tag
 from books.models import Order
 from django.template.loader import get_template
 import json
+#from BeautifulSoup import BeautifulSoup
 
 
 
@@ -121,6 +122,12 @@ def setProfile(request, **kwargs):
             if profile:
                 utils.addMsg(request, messages.SUCCESS, ugettext(u"更新设置成功."))
                 return HttpResponseRedirect(reverse("profiles_setting"))
+            
+        else:
+#            soup = BeautifulSoup(str(form.errors))
+#            utils.addMsg(request, messages.ERROR, soup.ul.li.ul.li.contents[0])
+            utils.addMsg(request, messages.ERROR, form.errors)
+        
     else :
         draftProfile = request.session.get("draftProfile", None)
         form = ProfileForm(user=request.user, draftProfile=draftProfile)
@@ -144,11 +151,10 @@ DRAFT_PROFILE_KEY = "draftProfile"
 def save_profile(request):
     profile = Profile()
     profile.name = request.POST["tmp_name"]
-    #profile.website = request.POST["tmp_website"]
-    #profile.spacename = request.POST["tmp_spacename"]
     profile.desc = request.POST["tmp_desc"]
-    #profile.city_id = request.POST["tmp_city"]
-    profile.sex = request.POST["tmp_sex"]
+    profile.addr = request.POST["tmp_addr"]
+    profile.contact = request.POST["tmp_contact"]
+    profile.receiver = request.POST["tmp_receiver"]
     request.session[DRAFT_PROFILE_KEY] = profile 
     
     next = request.POST.get("next", '')
@@ -238,10 +244,10 @@ def setPic(request, template=settings.TEMPLATE_SETTINGS):
     XY = ()
     try:            
         XY = (
-            int(request.REQUEST.get("x1")), 
-            int(request.REQUEST.get("y1")), 
-            int(request.REQUEST.get("x2")),
-            int(request.REQUEST.get("y2"))
+            int(request.REQUEST.get("x1", '0')), 
+            int(request.REQUEST.get("y1", '0')), 
+            int(request.REQUEST.get("x2", '50')),
+            int(request.REQUEST.get("y2", '50'))
         )
         logger.debug(XY)
     except Exception, e:
@@ -261,10 +267,13 @@ def setPic(request, template=settings.TEMPLATE_SETTINGS):
         ## 删除临时图片及设置之前的图片
         if profile.tmp_pic != settings.DEFAULT_PIC:
             file_utils.remove(PIC_ROOT, profile.tmp_pic)
-            
-        file_utils.remove(PIC_ROOT, profile.big_pic)
-        file_utils.remove(PIC_ROOT, profile.normal_pic)
-        file_utils.remove(PIC_ROOT, profile.small_pic)
+        
+        if profile.big_pic != settings.DEFAULT_PIC:
+            file_utils.remove(PIC_ROOT, profile.big_pic)
+        if profile.normal_pic != settings.DEFAULT_PIC_NORMAL:
+            file_utils.remove(PIC_ROOT, profile.normal_pic)
+        if profile.small_pic != settings.DEFAULT_PIC_SMALL:
+            file_utils.remove(PIC_ROOT, profile.small_pic)
         
         profile.tmp_pic = big_pic
         profile.big_pic = big_pic

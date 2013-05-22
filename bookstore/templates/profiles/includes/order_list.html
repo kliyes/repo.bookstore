@@ -15,7 +15,22 @@
 			<tr id="order_{{order.id}}">
 				<td colspan="4">订单号：{{order.code}} <label class="label">{{order.created_date|date:"Y-m-d H:i"}}</label></td>
 			    <td><label class="label">{{order.total_fee}}</label></td>
-			    <td colspan="1"><label class="label label-success">{{order.getStatus}}</label></td>
+			    <td colspan="1">
+			    	{% ifequal order.status 1 %}
+				    	<label class="label label-success">
+			    	{% endifequal %}
+			    	{% ifequal order.status 0 %}
+			    		<label class="label label-important">
+			    	{% endifequal %}
+			    	{% ifequal order.status 2 %}
+			    		<label class="label label-info">
+			    	{% endifequal %}
+			    	{% ifequal order.status 3 %}
+			    		<label class="label label-warning">
+			    	{% endifequal %}
+			    			{{order.getStatus}}
+			    		</label>
+				</td>
 			    <td><a href="##" onclick="delOrderByProfile({{order.id}})" class="btn btn-danger btn-small">删除</a></td>
 			</tr>
 			{% for item in order.getItems %}
@@ -42,9 +57,3 @@
 <div class="pagination pull-right">
 	{% include "books/includes/book_paginator.html" %}
 </div>
-
-
-
-
-
-

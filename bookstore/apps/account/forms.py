@@ -312,7 +312,7 @@ class ChangePasswordForm(UserForm):
     
     def clean_oldpassword(self):
         if not self.user.check_password(self.cleaned_data.get("oldpassword")):
-            raise forms.ValidationError(_(u"密码输入错误."))
+            raise forms.ValidationError(_(u"原密码输入错误."))
         return self.cleaned_data["oldpassword"]
     
     def clean_password2(self):

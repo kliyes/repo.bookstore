@@ -351,7 +351,8 @@ BACK_GROUND = (255,255,255)
 LINE_COLOR = (0, 0, 0)
 IMG_WIDTH = 120
 IMG_HEIGHT = 40
-FONT_COLOR =['#000', '#16496b', '#666']  # also can set to FONT_COLOR = ['darkblue','darkred', 'green'] 
+#FONT_COLOR =['#000', '#16496b', '#666']  # also can set to 
+FONT_COLOR = ['darkblue','blue'] 
 FONT_SIZE = 30
 FONT_PATH = "static/lershare/font/arial.ttf"
 CHAR_RANGE = '0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz'

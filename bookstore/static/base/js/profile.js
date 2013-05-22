@@ -5,6 +5,12 @@ $(document).ready(function(e) {
 	passwordInfoClose();
 });
 
+var changeAddrInfo = function(){
+	alert($("#addr").val());
+	alert($("#receiver").val());
+	alert($("#contact").val());
+}
+
 var addressInfoShow = function(){
 	showSys("#edit_address","#old_address_info","#new_address_info",addressInfoCallBack);
 }
@@ -33,7 +39,9 @@ var passwordInfoClose = function(){
 	showSysClose("#edit_done_password","#none_password","#new_password",passwordInfoCloseCallBack);
 }
 var passwordInfoCloseCallBack = function(){
-	console.log(12);
+	$("#edit_done_password").fadeOut(300,function(){
+		$("#edit_passwod").fadeIn(300);
+	});
 }
 
 var showSys = function(o1,o2,o3,callback){

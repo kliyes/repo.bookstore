@@ -1,31 +1,20 @@
 {% extends "base/theme_base.html" %}
 
-{% block page_title %}查收验证邮件{% endblock %}
+{% block page_title %}账号激活邮件发送完成{% endblock %}
 
 {% block message %} {% include "base/messages.html" %} {% endblock %}
 
-{% block subject_bar %}
-<h4>查收验证邮件</h4>
-{% endblock %}
-
 {% block body_base %}
-<div class="summary">
-    <p class="textarea-style">注册成功!<br/>已发送激活邮件到&nbsp;{{ email }} &nbsp;，请登录邮箱激活账号.</p>
-    <p><a href="{{ success_url }}"></a></p>
-    
-    <br /><br /><br />
-    
-    
-    <div class="job">
-    <h2>若未收到邮件，你可以尝试：</h2>
-    <p class="textarea-style">
-        请检查Email地址是否正确，输错了可以&nbsp;<a href="{% url acct_signup %}">重新注册</a><br/>
-        或者耐心等待几分钟再检查邮件，同时看看会不会在垃圾邮件里<br/>
-        
-        也可以&nbsp;<a href="{% url acct_send_email %}?email={{email}}" rel="facebox">重发邮件</a>
-    </p>
-    </div>  
+<div class="row-fluid">
+	<div class="page-header">
+        <h1>注册完成</h1>
+    </div>
+    <div class="span12 text-center well">
+    	<h3>感谢您的注册！激活邮件已发送到{{email}}</h3>
+        <h4>请登录邮箱完成账号激活</h4>
+        <h5>没有收到邮件？检查下邮箱地址是否正确，或者看看是不是在垃圾邮件里</h5>
+        <a href="{% url acct_signup %}" class="btn btn-info"><i class="icon-chevron-right icon-white"></i> 重新注册</a>
+        <a href="{% url acct_send_email %}?email={{email}}" class="btn btn-info"><i class="icon-chevron-right icon-white"></i> 重发邮件</a>
+    </div>
 </div>
-
-      
 {% endblock %}

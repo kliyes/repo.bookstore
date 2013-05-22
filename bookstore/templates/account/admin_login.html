@@ -1,4 +1,4 @@
-{% extends "base/manage_base.html" %}
+{% extends "base/theme_base.html" %}
 
 {% load widget_tweaks %}
 
@@ -6,158 +6,32 @@
 
 {% block message %} {% include "base/messages.html" %} {% endblock %}
 
-{% block body_base %}
-<div class="container">
-	<p class="title"></p>
-	<form action="{% url admin_login %}" method="post" >
-	    {% csrf_token %}
-		<div class="main">
-			<div>
-				<label for="id_email">邮 箱</label> {{ form.email|attr:"lvy:email"|attr:"title:请输入格式正确的Email" }}
-				
-			</div>
-			<div>
-				<label lvy="err_msg_email" class="err_msg"></label>
-			</div>
-			
-			<div>
-				<label for="id_password">密 码</label> {{ form.password|attr:"lvy:password"|attr:"title:请输入密码" }}
-			</div>
-			<div>
-				<label lvy="err_msg_password" class="err_msg"></label>
-			</div>
-			
-			<div>
-				<input lvy="login_submit" type="submit" value="登 入" title="准备好了吗？" />
-				&nbsp;&nbsp;<a href="{% url acct_reset_passwd %}">忘记密码?</a>
-			</div>
-		</div>
-	</form>
-</div>
+{% block header %}
+	<div class="navbar navbar-inverse">
+      <div class="navbar-inner">
+        <a class="brand" href="{% url management %}">BookStore管理后台</a>
+      </div>
+    </div>
 {% endblock %}
 
-{% block single_js %}
-<script>
-//change secure code，验证码
-function changeSecureCode(img_obj, url) {
-    //加一个随机参数，使得每次链接地址都不一样，从而达到更新的目的                          
-    $("#"+img_obj).attr("src",url+"?id="+Math.random());
-}
+{% block style_css %}
+<link type="text/css" rel="stylesheet" href="{{STATIC_URL}}base/css/login.css" />
+{% endblock %}
 
-//Ajax 检查验证码是否正确
-function checkSecureCode(checkUrl, code){
-    if(code.trim() == '') {
-        return false;
-    }
-    var isSecureCodeRight = false;
-    $.ajax({url: checkUrl,
-        async:false,
-        type:"POST",
-        contentType:"application/json;charset=utf-8",
-        dataType:"json",
-        data:{"secureCode":code,},
-        success:function(data,textStatus,jqXHR){
-            if(data.status == "true"){
-                isSecureCodeRight = true;
-            } else {
-                isSecureCodeRight = false;        
-            }
-        }
-    });
-    return isSecureCodeRight;
-}
-
-$(document).ready(function(e) {
-	//加载模块名称
-	var titlename = $("title").html();
-	$(".title").html(titlename);
-	//加载提示栏目
-	var tooltips = $( "[title]" ).tooltip();
-	//加载按钮样式
-	$( "input[type=submit]" ).button();
-	
-	$("[lvy='email']").blur(function(){
-		check_email();
-	});
-	
-	$("[lvy='password']").blur(function(){
-		check_password();	
-	});
-
-	"{% if request.session.failedLoginCount >= 1 %}"	
-	$("[lvy='secure_code']").blur(function() {
-		check_secure_code();
-	});
-	"{% endif %}"
-	
-	$("[lvy='login_submit']").click(function() {
-		if(!check_email()){
-			check_email();
-			return false;
-		}
-		if(!check_password()){
-			check_password();
-			return false;	
-		}
+{% block body_base %}
+<div class="row-fluid">
+	<div class="page-header">
+        <h1>管理员登录</h1>
+    </div>
+    <div class="container">
+		<form action="{% url admin_login %}" method="post" class="form-signin" >
+		    {% csrf_token %}
+			{{ form.email|attr:"placeholder:邮箱" }}<br />
 		
-		"{% if request.session.failedLoginCount >= 1 %}"
-		if(!check_secure_code()){
-			check_secure_code();
-			return false;	
-		}
-		"{% endif %}"
-		
-		$("[lvy='login_submit']").submit();
-	});
-	
-});
-
-//check secure code
-function check_secure_code() {
-	if(checkSecureCode("{% url check_secure_code %}", $("#code-input").val())) {
-		$("[lvy='err_msg_code']").empty();
-		return true;	
-	} else {
-		$("[lvy='err_msg_code']").show("fast");
-		$("[lvy='err_msg_code']").html("验证码输入错误");
-		$("#change-code").click(); //变换验证码
-		$("#code-input").empty();
-		$("#code-input").focus();
-		return false;
-	}
-}
-
-//检查邮箱
-function check_email(){
-	if(isNull($("[lvy='email']").val())){
-		$("[lvy='err_msg_email']").show("fast");
-		$("[lvy='err_msg_email']").html("没有输邮件哒，乖乖！");
-		return false;
-	}
-	if(!isEmailFormatRight($("[lvy='email']").val())){
-		$("[lvy='err_msg_email']").show("fast");
-		$("[lvy='err_msg_email']").html("邮件的格式错的，娃儿。");
-		return false;
-	}
-	$("[lvy='err_msg_email']").hide("fast");
-	clearMsg($("[lvy='err_msg_email']"));
-	return true;
-}
-//检查密码
-function check_password(){
-	if(isNull($("[lvy='password']").val())){
-		$("[lvy='err_msg_password']").show("fast");
-		$("[lvy='err_msg_password']").html("你到底输不输密码的？");
-		return false;
-	}
-	if(!CheckMessageLength($("[lvy='password']").val(),6)){
-		$("[lvy='err_msg_password']").show("fast");
-		$("[lvy='err_msg_password']").html("姐妹儿，密码长度不够啊。");
-		return false;
-	}
-	$("[lvy='err_msg_password']").hide("fast");
-	clearMsg($("[lvy='err_msg_password']"));
-	return true;
-}
-</script>
-{% endblock %}    
+			{{ form.password|attr:"placeholder:密码" }}<br />
+			
+			<button class="btn btn-large btn-primary" type="submit" >登录</button>
+		</form>
+	</div>
+</div>
+{% endblock %}

@@ -30,19 +30,19 @@
 {% block body_base %}
 <div class="row-fluid">
 	<div class="page-header">
-        <h1>注册 BookStore</h1>
+        <h1>注册</h1>
     </div>
     <div class="container">
 		<form action="{% url acct_signup %}" method="post" class="form-signin">
 			{% csrf_token %}
 			{{form.email|attr:"lyu:Email"|attr:"bl:Email_msg"|attr:"placeholder:邮箱"|attr:"class:input-block-level"}}<br />
-			<label id="Email_msg" class="label label-warning">{{form.email.errors}}</label>
+			<label id="Email_msg" class="label label-warning"></label>
 			
 			{{form.password|attr:"lyu:Password"|attr:"bl:Password_msg"|attr:"placeholder:预设密码"|attr:"class:input-block-level"}}<br />
-			<label id="Password_msg" class="label label-warning">{{form.password.errors}}</label>
+			<label id="Password_msg" class="label label-warning"></label>
 			
 			{{form.nickname|attr:"lyu:Nickname"|attr:"bl:Nickname_msg"|attr:"placeholder:怎么称呼您？"|attr:"class:input-block-level"}}<br />
-			<label id="Password_msg" class="label label-warning">{{form.nickname.errors}}</label>
+			<label id="Password_msg" class="label label-warning"></label>
 			
 			<button class="btn btn-large btn-primary" type="submit" id="btn_reg" onclick="return check_reg()">注册</button>
 		</form>

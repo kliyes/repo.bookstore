@@ -1,10 +1,55 @@
-{% extends "base/manage_base.html" %}
+{% extends "base/theme_base.html" %}
 
 {% block page_title %}管理导航{% endblock %}
 
-{% block body_base %}
-	<a href="{% url regBook %}">书籍信息登记/修改</a><br />
-	<a href="{% url showBook %}">书籍信息查询</a><br />
-	<a href="{% url statBook %}">分类信息统计</a><br />
-	<a href="{% url updateOrders %}">订单管理</a><br />
+{% block header %}
+	<div class="navbar navbar-inverse">
+      <div class="navbar-inner">
+        <a class="brand" href="{% url management %}">BookStore管理后台</a>
+        <ul class="nav pull-right">
+	        <ul class="nav nav-pills">
+	        	<li class="dropdown">
+	        		<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+	                您好，管理员
+					<b class="caret"></b>
+	                </a>
+	                <ul class="dropdown-menu">
+	                	<a href="{% url acct_logout %}"><i class="icon-off"></i> 离开</a>
+	                </ul>
+	        	</li>
+	        </ul>
+	     </ul>
+      </div>
+    </div>
 {% endblock %}
+
+{% block body_base %}
+	<div class="row-fluid">
+    	<div class="page-header">
+	    	<h1>后台管理</h1>
+        </div>
+    </div>
+    <div class="row-fluid">
+    	<div class="well span3">
+              <div class="span12 text-center">
+                <a href="{% url regBook %}" class="thumbnail">书籍信息登记/修改</a>
+              </div>
+        </div>
+    	<div class="well span3">
+              <div class="span12 text-center">
+                <a href="{% url showBook %}" class="thumbnail">书籍信息查询</a>
+              </div>
+        </div>
+        <div class="well span3">
+              <div class="span12 text-center">
+                <a href="{% url statBook %}" class="thumbnail">分类信息统计</a>
+              </div>
+        </div>
+        <div class="well span3">
+              <div class="span12 text-center">
+                <a href="{% url updateOrders %}" class="thumbnail">订单管理</a>
+              </div>
+        </div>            
+    </div>
+{% endblock %}
+

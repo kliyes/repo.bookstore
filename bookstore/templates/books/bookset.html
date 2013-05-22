@@ -3,8 +3,7 @@
 {% block page_title %}查询结果{% endblock %}
 
 {% block single_js %}
-    <script type="text/javascript" src="{{STATIC_URL}}xizhi/js/jquery-1.8.2.min.js"></script>
-    <script type="text/javascript" src="{{STATIC_URL}}xizhi/js/secure.js"></script>
+	<script type="text/javascript" src="{{STATIC_URL}}xizhi/js/secure.js"></script>
     <script type="text/javascript">
 		$(document).ready(function(){
 			$("#booklist").delegate("#pre, #next, #num", "click", function(){
@@ -40,19 +39,47 @@
 				dataType: "json"
 			});
 		}
+		
+		function addToCart(bookId){
+			$.ajax({
+				url: "/books/add_to_cart/" + bookId,
+				data: {}, 
+				type: "post",
+				async: "true", 
+				success: function(data){
+					if(data.status=="success"){
+						$("#add_"+bookId).hide();
+						$("#added_"+bookId).show();
+					}
+					else{
+						alert(data.status);
+					}
+				},
+				error: function(){
+					alert("error");
+				}, 
+				dataType: "json"
+			});
+		}
 	</script>
 {% endblock %}
 
-{% block style_css %}
-<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}base/css/main.css" />
-{% endblock %}
-		
 {% block body_base %}
-		{% if not pageItems %}
-		查无此书
-		{% endif %}
+<div class="row-fluid">
+	<div class="page-header">
+    	<h1>查询结果</h1>
+    </div>	
+    {% if not pageItems.object_list %}
+		<div class="span12 text-center well">
+	    	<h3>哎呀！对不起，没有找到您想要的书籍</h3>
+	        <h4>请检查输入的查询关键字是否正确</h4>
+	        <a href="{% url welcome %}" class="btn btn-info"><i class="icon-chevron-right icon-white"></i>回首页</a>
+	    </div>
+	{% else %}
 		<div class="books-all" id="booklist">
 			{% include "books/includes/resultlist.html" %}
 		</div>
+	{% endif %}
+</div>
 {% endblock %}	
 	

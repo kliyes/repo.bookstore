@@ -4,28 +4,27 @@
 
 {% block page_title %}重置密码{% endblock %}
 
+{% block message %} {% include "base/messages.html" %} {% endblock %}
+
 {% block body_base %}
-<div class="container">
-	<form action="{% url acct_reset_passwd %}" method="POST">
-		{% csrf_token %}
-		<div class="input-prepend">
-			<span class="add-on"><i class="icon-envelope"></i></span>{{resetForm.email|attr:"lyu:Email"|attr:"bl:Email_msg"|attr:"placeholder:邮箱 | Email"|attr:"class:span2"|attr:"type:text"|attr:"style:margin:0px;"}} <label id="Email_msg" class="help-inline error_msg"></label>
-			<p class="help-block">
-				输入您已激活的注册邮箱地址
-			</p>
-			{{resetForm.errors.email}}
-		</div>
-		<div class="input-prepend">
-			<button class="btn btn-small" type="submit" id="btn_login" onclick="return check_resetPwd()">
-				<i class="icon-ok"></i> 重置密码
-			</button>
-		</div>
-	</form>
+<div class="row-fluid">
+	<div class="page-header">
+        <h1>重置密码</h1>
+    </div>
+    <div class="container">
+    	<form action="{% url acct_reset_passwd %}" method="post">
+    		{% csrf_token %}
+    		{{resetForm.email|attr:"lyu:Email"|attr:"bl:Email_msg"|attr:"placeholder:邮箱"|attr:"class:span2"|attr:"type:text"|attr:"style:width:300px;"}}
+    		<label id="Email_msg" class="label label-warning"></label><br />
+    		
+    		<button id="btn_login" class="btn btn-small btn-success" type="submit" onclick="return check_resetPwd()"><i class="icon icon-ok icon-white"></i> 确认</button>
+    	</form>
+    </div>
 </div>
 {% endblock %}
 
 {% block single_js %}
-<script type="text/javascript" src="{{STATIC_URL}}lyu/plug-in.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}base/js/plug-in.js"></script>
 <script type="text/javascript">
     $(document).ready(function(e) {
         lyu_load();

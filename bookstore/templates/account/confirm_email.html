@@ -1,23 +1,31 @@
 {% extends "base/theme_base.html" %}
 
-{% block page_title %}邮件确认{% endblock %}
+{% block page_title %}账号激活{% endblock %}
 
 {% block body_base %}
-    {% if verified %}
-        <h4>{{msg}}</h4><br/>
-        <a href="{% url acct_login %}"> 立即登录</a>
-        <p></p>
-    {% else %}
-    	{% if invalid %}
-    		<h4>{{msg}}</h4><br/>
+<div class="row-fluid">
+	<div class="page-header">
+        <h1>账号激活</h1>
+    </div>
+    <div class="span12 text-center well">
+    	{% if verified %}
+    		<h3>{{msg}}</h3><br />
+    		<a href="{% url acct_login %}" class="btn btn-info"><i class="icon-chevron-right icon-white"></i> 登录</a>
     	{% else %}
-	        {% if email_address %}
-	            <h4>账号已激活</h4><br/>
-	            <a href="{% url acct_login %}"> 立即登录</a>
-	            <p></p>
-	        {% else %}
-	            <h4>激活失败</h4><br/>
-	        {% endif %}
-	    {% endif %}    
-    {% endif %}
+    		{% if invalid %}
+    			<h3>很抱歉，{{msg}}</h3><br />
+    			<a href="{% url acct_signup %}" class="btn btn-info"><i class="icon-chevron-right icon-white"></i> 重新注册</a>
+    		{% else %}
+    			{% if email_address %}
+    				<h3>恭喜，账号激活成功！</h3>
+    				<h4>现在就可以去看看你喜欢的书籍了！</h4>
+    				<a href="{% url acct_login %}" class="btn btn-info"><i class="icon-chevron-right icon-white"></i> 立即登录</a>
+    			{% else %}
+    				<h3>很抱歉，激活失败了</h3><br />
+    				<a href="{% url acct_signup %}" class="btn btn-info"><i class="icon-chevron-right icon-white"></i> 重新注册</a>
+    			{% endif %}
+    		{% endif %}
+    	{% endif %}
+	</div>
+</div>
 {% endblock %}

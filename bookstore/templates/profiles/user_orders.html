@@ -68,9 +68,17 @@
 		<div class="page-header">
 			<h1>我的订单</h1>
 		</div>
-		<div id="order_list">
-    		{% include "profiles/includes/order_list.html" %}
-    	</div>
+		{% if pageItems.object_list %}
+			<div id="order_list">
+	    		{% include "profiles/includes/order_list.html" %}
+	    	</div>
+	    {% else %}
+	    	<div class="span12 text-center well">
+		    	<h3>哎呀！暂时没有订单信息哦！</h3>
+		        <h4>去看看有没有喜欢的书？</h4>
+		        <a href="{% url welcome %}" class="btn btn-info"><i class="icon-chevron-right icon-white"></i> 去首页</a>
+		    </div>
+    	{% endif %}
 	</div>
 </div>
 {% endblock %}

@@ -17,13 +17,13 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li><a href="{% url profiles_setting %}"><i class="icon-wrench"></i> 个人设置</a></li>
-                    <li><a href="{% url book_cart_check %}"><i class="icon-shopping-cart"></i> 购物清单&nbsp;
-                    <li><a href="{% url profiles_order_check %}"><i class="icon-list-alt"></i> 我的订单&nbsp;
-                    		{% ifnotequal profile.getCartItemsCount 0 %}
-          					<span class="badge badge-info">{{profile.getCartItemsCount}}</span>  	
-          					{% endifnotequal %}	
-                    	</a>
-                    </li>
+					<li><a href="{% url profiles_order_check %}"><i class="icon-list-alt"></i> 我的订单</a></li>
+					<li><a href="{% url book_cart_check %}"><i class="icon-shopping-cart"></i> 购物清单&nbsp;
+							{% ifnotequal profile.getCartItemsCount 0 %}
+							<span class="badge badge-info">{{profile.getCartItemsCount}}</span>  	
+							{% endifnotequal %}	
+						</a>
+					</li>
                     <li class="divider"></li>
                     <li><a href="{% url acct_logout %}"><i class="icon-off"></i> 离开</a></li>
                 </ul>
@@ -34,8 +34,7 @@
           {% endif %}
         </ul>
         <form class="navbar-search pull-right" action="{% url book_search %}" method="get">
-		    <input id="name" name="name" type="text" class="search-query" placeholder="Search">
-		    <a href="javascript:void(0)" class="icon-search icon-white" onclick="submit()"></a>
+		    <input id="name" name="name" type="text" class="search-query" placeholder="搜索">
         </form>
       </div>
     </div>

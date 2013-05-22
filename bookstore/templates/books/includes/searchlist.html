@@ -1,29 +1,48 @@
 {% load filters %}
-<div class="books-all">
-	{% for book in pageItems.object_list %}
-		<div class="info">
-				<div class="poster">
-	                <div class="box box-medium">
-	                     <a href="{% url book_detail book.id %}"><img src="{{ MEDIA_URL }}img/{{book.mpic}}" width="80px" height="80px" /></a>
-	                </div>
-            	</div>
-            	<div class="books-info">
-	                <ul>
-	                    <li>
-	                        <a href="{% url book_detail book.id %}" class="title">{{book.name}}</a>
-	                    </li>
-	                    <li>
-	                        <label class="author">
-	                            {{book.author.name}}
-	                        </label>
-	                    </li>
-	                    <li>
-	                        <div class="desc">
-	                            <a class="f-black" href="{% url book_detail book.id %}" >{{book.desc|truncatehanzi:70}}……</a>
-	                        </div>
-	                    </li>
-	                </ul>
-            	</div>
-		</div>
-	{% endfor %}
+{% for book in pageItems.object_list %}
+	<div class="row-fluid">
+    <div class="span3">
+        <ul class="thumbnails">
+          <li class="span12">
+            <a href="{% url book_detail book.id %}" class="thumbnail text-center" style="text-decoration:none">
+              <img src="{{ MEDIA_URL }}img/{{book.mpic}}" alt="">
+              <div style="height:10px; width:10px;">&nbsp;</div>
+              <p><i class="icon-gift"></i> {{book.price}} 元</p>
+            </a>
+          </li>
+        </ul>
+    </div>
+    <div class="span9">
+        <div class="row-fluid">
+            <div class="span12"><h3><a href="{% url book_detail book.id %}">{{book.name}}</a></h3></div>
+        </div>
+        <div class="row-fluid">
+            <div class="span6"><small>{{book.author.name}} 著 / {{book.publish_date}}</small></div>
+            <div class="span6 text-right"><small>用户评分：{{book.getAverage|floatformat:"1"}} 分 <a href="{% url book_detail book.id %}#valuation">（已有 {{book.comment_count}} 人评价）</a></small></div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12">
+                <small>
+                {{book.desc|default:"暂无简介"|truncatehanzi:100}}……
+                </small>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12 text-right">
+                <div style="height:10px; width:10px;">&nbsp;</div>
+                <a href="{% url book_detail book.id %}" class="btn btn-primary btn-small"><i class="icon-barcode icon-white"></i> 详情</a> 
+                {% if not user.is_authenticated %}
+					<a href="{% url acct_login %}" class="btn btn-small"><i class="icon-shopping-cart"></i> 加入购物车</a>
+				{% else %}
+					{% if book in profile.getCartBooks %}
+						<a href="{% url book_cart_check %}" class="btn btn-small btn-info" ><i class="icon-shopping-cart"></i> 已加入购物车</a>
+					{% else %}
+						<a id="add_{{book.id}}" href="##" class="btn btn-small" onclick="addToCart({{book.id}})"><i class="icon-shopping-cart"></i> 加入购物车</a>
+						<a id="added_{{book.id}}" href="{% url book_cart_check %}" class="btn btn-small btn-info" style="display: none"><i class="icon-shopping-cart"></i> 已加入购物车</a>
+					{% endif %}
+				{% endif %}
+            </div>
+        </div>
+    </div>             
 </div>
+{% endfor %}

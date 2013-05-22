@@ -40,6 +40,22 @@ class ProfileForm(forms.Form):
         max_length=200,
         widget=forms.Textarea(), 
     )
+    addr = forms.CharField(
+        required=False, 
+        max_length=300, 
+        widget=forms.TextInput()
+    )
+    contact = forms.CharField(
+        required=False, 
+        max_length=30, 
+        widget=forms.TextInput()
+    )
+    receiver = forms.CharField(
+        required=False, 
+        max_length=10, 
+        widget=forms.TextInput()
+    )
+    
     
 #    website = forms.CharField(
 #        required = False,                          
@@ -60,6 +76,7 @@ class ProfileForm(forms.Form):
     #cityName = forms.CharField()
     
     sex = forms.ChoiceField(
+       required=False,
        initial='unknown',                    
        choices=(('male', u"男"), ('female', u'女'), ('unknown', u"保密")),
        widget=forms.RadioSelect(renderer=SimpleRadioFieldRenderer),
@@ -86,36 +103,28 @@ class ProfileForm(forms.Form):
                 raise Profile.DoesNotExist
             
             self.fields["name"].initial = p.name
-            
-#            if p.city:
-#                self.fields["city"].initial = p.city.id
-#                self.cityName = City.objects.getById(id=p.city.id).name
-            
-            #if p.city is not None:
-            #    self.fields["location"].initial = p.city.id
-                 
-            self.fields["sex"].initial = p.sex
+            #self.fields["sex"].initial = p.sex
             self.fields["desc"].initial = p.desc
-            self.fields["email"].initial = p.user.email
-            #self.fields["website"].initial = p.website
-            #self.fields["spacename"].initial = p.spacename
+            self.fields['contact'].initial = p.contact
+            self.fields['addr'].initial = p.addr
+            self.fields['receiver'].initial = p.receiver
+            #self.fields["email"].initial = p.user.email
             
         # 如果之前进入过setup页面，且用户已输入数据，则从session中取得输入数据草稿
         # 该session中的值由之前请求中的save_profile函数设定
         if draftProfile:
             self.fields["name"].initial = draftProfile.name
             self.fields["desc"].initial = draftProfile.desc
-            self.fields["sex"].initial = draftProfile.sex
-            #self.fields["website"].initial = draftProfile.website
-            #self.fields["spacename"].initial = draftProfile.spacename
-            #self.fields["city"].initial = draftProfile.city_id
-            #self.cityName = City.objects.getById(id=draftProfile.city.id).name
+            self.fields['contact'].initial = draftProfile.contact
+            self.fields['addr'].initial = draftProfile.addr
+            self.fields['receiver'].initial = draftProfile.receiver
+            #self.fields["sex"].initial = draftProfile.sex
             
     def clean_name(self):
         #other code later
         value = self.cleaned_data.get("name")
         if len(ecode(value)) > 16 or len(ecode(value)) <= 0:
-            raise forms.ValidationError(u"不能为空或者多于8个汉字(或16个英文字符)")
+            raise forms.ValidationError(u"昵称不能为空或者多于8个汉字(或16个英文字符)")
         return value
     
 #    def clean_city(self):
@@ -161,7 +170,7 @@ class ProfileForm(forms.Form):
     def clean_desc(self):
         value = self.cleaned_data.get("desc")
         if len(ecode(value)) > 400:
-            raise forms.ValidationError(u"字数应限制在200汉字(或400英文字符)以内")
+            raise forms.ValidationError(u"个人简介字数应限制在200汉字(或400英文字符)以内")
         return value
     
     def clean(self):
@@ -174,6 +183,9 @@ class ProfileForm(forms.Form):
             
         profile.name = self.cleaned_data.get("name")
         profile.sex = self.cleaned_data.get("sex")
+        profile.contact = self.cleaned_data.get("contact")
+        profile.addr = self.cleaned_data.get("addr")
+        profile.receiver = self.cleaned_data.get("receiver")
         #profile.city = self.getCity()
         #profile.website = self.cleaned_data.get("website")
         #profile.spacename = self.cleaned_data.get("spacename")
