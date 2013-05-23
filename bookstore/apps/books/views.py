@@ -183,14 +183,11 @@ def _getCmtsPercent(cmtsCount, allCmtsCount):
     
     return (cmtsCount / float(allCmtsCount)) * 100
 
-#@login_required
 def bookDetail(request, bookId):
     book = _getBookById(bookId)
     if not book:
         return HttpResponse(u'查无此书')
     
-#    profile = request.user.get_profile()
-#    cart = Cart.objects.get(owner=profile)
     recommend = book.category.getRecommendExceptBook(book)
     newer = book.category.getNewerExceptBook(book)
     
@@ -278,12 +275,13 @@ def makeOrder(request):
     for book in cart.getBooks():
         try:
             amount = request.REQUEST.get('amount_'+str(book.id), '1')
+            if int(amount) < 1:
+                raise Exception
             bookItem = cart.getItemByBook(book)
             bookItem.amount = int(amount)
             bookItem.save()
             bookItem.fee = bookItem.setFee()
-        except Exception, e:
-            print e
+        except Exception:
             return HttpResponse(json.dumps({'status': 'failed'}))
         
     return HttpResponse(json.dumps({'status': 'success'}))
@@ -352,25 +350,6 @@ def addComment(request, bookId):
     book.addComment(profile, content, grade)
     
     return HttpResponseRedirect(reverse("comment_done"))
-
-@login_required    
-def markBook(request, bookId):
-    '''为书籍打分,ajax request only'''
-    pass
-#    if not request.is_ajax():
-#        raise Http404
-#    try:
-#        grade = request.REQUEST.get('grade', '')
-#        print grade
-#        profile = request.user.get_profile()
-#        book = _getBookById(bookId)
-#        bookGrade = Grade(marker=profile, book=book, value=int(grade))
-#        bookGrade.save()
-#    except Exception, e:
-#        print e
-#        return HttpResponse(json.dumps({'status': 'failed'}))
-#    
-#    return HttpResponse(json.dumps({'status': 'success'}))
 
 def pagingCmts(request, bookId):
     '''处理书籍评论分页, ajax request only'''

@@ -22,7 +22,6 @@ urlpatterns = patterns("",
     url(r"^comment/(\d+)$", "books.views.goComment", name="book_comment"), 
     
     url(r"^add_comment/(\d+)$", "books.views.addComment", name="book_add_cmt"), 
-    url(r"^mark_book/(\d+)$", "books.views.markBook", name="book_mark"), 
     url(r"^page_books/(\w+)/$", "books.views.pagingBooks"), 
     url(r"^page_all_books/$", "books.views.pagingAll"), 
     url(r"^page_cmts/(\d+)$", "books.views.pagingCmts"), 

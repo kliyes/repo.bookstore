@@ -29,7 +29,7 @@ from django.views.decorators.csrf import csrf_exempt
 from account.models import EmailAddress, EmailConfirmation
 from common import utils
 from sites.models import Motto
-#from BeautifulSoup import BeautifulSoup
+from BeautifulSoup import BeautifulSoup
  
 association_model = models.get_model("django_openid", "Association")
 if association_model is not None:
@@ -57,9 +57,9 @@ def adminLogin(request, **kwargs):
             else:
                 utils.addMsg(request, messages.ERROR, "非管理员账户不能登录")
         else:
-#            soup = BeautifulSoup(str(form.errors))
-#            utils.addMsg(request, messages.ERROR, soup.ul.li.ul.li.contents[0])
-            utils.addMsg(request, messages.ERROR, form.errors)
+            soup = BeautifulSoup(str(form.errors))
+            utils.addMsg(request, messages.ERROR, soup.ul.li.ul.li.contents[0])
+#            utils.addMsg(request, messages.ERROR, form.errors)
             
     return render_to_response("account/admin_login.html", RequestContext(request,
         {"form": form_class(), }))
@@ -121,9 +121,9 @@ def login(request, **kwargs):
             request.session["failedLoginCount"] = 0
             return after_login(request, success_url) 
         else:
-            #soup = BeautifulSoup(str(form.errors))
-            #utils.addMsg(request, messages.ERROR, soup.ul.li.ul.li.contents[0])
-            utils.addMsg(request, messages.ERROR, form.errors)
+            soup = BeautifulSoup(str(form.errors))
+            utils.addMsg(request, messages.ERROR, soup.ul.li.ul.li.contents[0])
+#            utils.addMsg(request, messages.ERROR, form.errors)
             request.session["failedLoginCount"] = request.session.get("failedLoginCount", 0) + 1
     else:
         form = form_class(group=group)
@@ -218,9 +218,9 @@ def signup(request, **kwargs):
                     RequestContext(request, {'email': user.email, 'nickname': user.get_profile().name}))
                 
         else:
-#            soup = BeautifulSoup(str(form.errors))
-#            utils.addMsg(request, messages.ERROR, soup.ul.li.ul.li.contents[0])    
-            utils.addMsg(request, messages.ERROR, form.errors)    
+            soup = BeautifulSoup(str(form.errors))
+            utils.addMsg(request, messages.ERROR, soup.ul.li.ul.li.contents[0])    
+#            utils.addMsg(request, messages.ERROR, form.errors)    
             
     else:
         form = form_class(group=group)
@@ -362,9 +362,9 @@ def password_change(request, **kwargs):
             return HttpResponseRedirect(reverse("profiles_setting"))
         
         else:
-#            soup = BeautifulSoup(str(password_change_form.errors))
-#            utils.addMsg(request, messages.ERROR, soup.ul.li.ul.li.contents[0])
-            utils.addMsg(request, messages.ERROR, password_change_form.errors)
+            soup = BeautifulSoup(str(password_change_form.errors))
+            utils.addMsg(request, messages.ERROR, soup.ul.li.ul.li.contents[0])
+#            utils.addMsg(request, messages.ERROR, password_change_form.errors)
             
     else:
         password_change_form = form_class(request.user)
@@ -450,9 +450,9 @@ def reset_password(request, **kwargs):
                 return HttpResponseRedirect(redirect_to+"?email="+email)
         
         else:    
-#            soup = BeautifulSoup(str(password_reset_form.errors))
-#            utils.addMsg(request, messages.ERROR, soup.ul.li.ul.li.contents[0])
-            utils.addMsg(request, messages.ERROR, password_reset_form.errors)
+            soup = BeautifulSoup(str(password_reset_form.errors))
+            utils.addMsg(request, messages.ERROR, soup.ul.li.ul.li.contents[0])
+#            utils.addMsg(request, messages.ERROR, password_reset_form.errors)
         
     else:
         password_reset_form = form_class()

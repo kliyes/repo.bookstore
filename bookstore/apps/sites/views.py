@@ -56,6 +56,10 @@ def _downloadImg(url, size="medium"):
         imgPath = settings.LBPIC_ROOT
     urlOpen = urllib.urlopen(url)
     imgDataRead = urlOpen.read(8192)
+    try:
+        os.makedirs(imgPath)
+    except:
+        pass
     imgDir = os.path.join(imgPath, os.path.basename(url))
     imgSave = open(imgDir, 'wb')
     while imgDataRead:

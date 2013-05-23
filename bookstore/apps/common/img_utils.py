@@ -48,7 +48,7 @@ def _save(img, path, filename, format="JPEG", _quality=IMG_QUALITY, create_dir=T
     
     if not file_utils.isFileExist(path):
         if create_dir:
-            os.mkdir(path)
+            os.makedirs(path)
             logger.info("path [%s] not exist, new one created" % path)
         else:
             logger.error("save file failed, path [%s] not exist" % path)

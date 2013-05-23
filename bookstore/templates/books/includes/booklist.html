@@ -29,7 +29,7 @@
 		        <td>
 		        	<div class="input-prepend input-append">
 		              <span class="add-on btn" onclick="minus({{item.book_id}})">-</span>
-		              <input class="span2 text-center" id="amount_{{item.book_id}}" name="amount_{{item.book_id}}" type="text" value="{{item.amount}}" onchange="countPartFee({{item.book_id}})" onkeyup="countPartFee({{item.book_id}})">
+		              <input class="span3 text-center" id="amount_{{item.book_id}}" maxlength="2" name="amount_{{item.book_id}}" type="text" value="{{item.amount}}" onchange="countPartFee({{item.book_id}})" onkeyup="countPartFee({{item.book_id}})">
 		              <span class="add-on btn" onclick="plus({{item.book_id}})">+</span>
 		              <label class="PartFee" id="part_fee_{{item.book_id}}" style="display: none;">{{item.book.price}}</label>&nbsp;&nbsp;
 		            </div>

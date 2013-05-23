@@ -27,7 +27,7 @@ from profiles.models import Profile, Following, City, Tag
 from books.models import Order
 from django.template.loader import get_template
 import json
-#from BeautifulSoup import BeautifulSoup
+from BeautifulSoup import BeautifulSoup
 
 
 
@@ -124,9 +124,9 @@ def setProfile(request, **kwargs):
                 return HttpResponseRedirect(reverse("profiles_setting"))
             
         else:
-#            soup = BeautifulSoup(str(form.errors))
-#            utils.addMsg(request, messages.ERROR, soup.ul.li.ul.li.contents[0])
-            utils.addMsg(request, messages.ERROR, form.errors)
+            soup = BeautifulSoup(str(form.errors))
+            utils.addMsg(request, messages.ERROR, soup.ul.li.ul.li.contents[0])
+#            utils.addMsg(request, messages.ERROR, form.errors)
         
     else :
         draftProfile = request.session.get("draftProfile", None)
@@ -182,6 +182,7 @@ def cancelPicSetup(request):
     profile.save()
     return HttpResponseRedirect(reverse("profiles_setting"))
 
+@login_required
 def initPic(request, template=settings.TEMPLATE_SETUP_PICTURE, **kwargs):
     '''处理用户上传头像图片，或用户已有头像初始化显示'''
 
@@ -221,7 +222,7 @@ def initPic(request, template=settings.TEMPLATE_SETUP_PICTURE, **kwargs):
     
     return HttpResponseRedirect(reverse("profiles_setpic"))
 
-
+@login_required
 def setPic(request, template=settings.TEMPLATE_SETTINGS):
     """切剪并设置头像"""
     
@@ -249,14 +250,14 @@ def setPic(request, template=settings.TEMPLATE_SETTINGS):
             int(request.REQUEST.get("x2", '50')),
             int(request.REQUEST.get("y2", '50'))
         )
-        logger.debug(XY)
-    except Exception, e:
-        logger.error(''+e)
+        if XY[0] == XY[2] and XY[1] == XY[3]:
+            raise Exception
+        img = img.crop(XY)
+    except:
         utils.addMsg(request, messages.WARNING, u"""还没有对头像进行剪切。剪切请在
             大头像上按住、并拖动鼠标。若不需要剪切，可点击'撤销'""")
         return HttpResponseRedirect(reverse("profiles_setpic")) 
     
-    img = img.crop(XY)
     
     big_pic = img_utils.scalePic(img, PIC_ROOT, "profile", utils.genUuid()+'_b', settings.PIC_SIZE_BIG, 100)
     normal_pic = img_utils.scalePic(img, PIC_ROOT, "profile", utils.genUuid()+'_n', settings.PIC_SIZE_NORMAL, 80)
