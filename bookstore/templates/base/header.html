@@ -4,8 +4,8 @@
         <a class="brand" href="{% url welcome %}">BookStore</a>
         <ul class="nav pull-right">
           {% if not user.is_authenticated %}
-          <li><a href="{% url acct_login %}"><i class="icon-user icon-white"></i> 登录</a></li>
-          <li><a href="{% url acct_signup %}"><i class="icon-user icon-white"></i> 注册</a></li>
+            <li><a href="{% url acct_login %}"><i class="icon-user icon-white"></i> 登录</a></li>
+            <li><a href="{% url acct_signup %}"><i class="icon-user icon-white"></i> 注册</a></li>
           <!-- 登录后显示此li 开始 -->
           {% else %}          
           <li>

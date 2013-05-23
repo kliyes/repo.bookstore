@@ -26,20 +26,6 @@ TEMPLATE_PASSWORD_RESET_FROM_KEY = "account/password_reset_from_key.html"
 """ profiles """
 TEMPLATE_SETTINGS = "profiles/settings.html"
 TEMPLATE_SETUP_PICTURE = "profiles/set_picture.html"
-TEMPLATE_USER_PAGE = "profiles/user_page.html"
-
-TEMPLATE_NOTIFICATIONS = "profiles/notifications.html"
-TEMPLATE_MYFANS = "profiles/myfans.html"
-TEMPLATE_MYHEROS = "profiles/myheros.html"
-TEMPLATE_ONESFANS = "profiles/onesfans.html"
-
-""" activity """
-TEMPLATE_CREATE_ACTIVITY = "activity/create_activity.html"
-TEMPLATE_ACTIVITY_DETAIL = "activity/activity_detail.html"
-TEMPLATE_SET_POSTER = "activity/set_poster.html"
-TEMPLATE_ACTIVITY_CREATE_DONE = 'activity/activity_create_done.html'
-TEMPLATE_LATEST_ACTIVITY = "activity/includes/latest_activity.html"
-TEMPLATE_HOTEST_ACTIVITY = "activity/includes/hotest_activity.html"
 
 """ site """
 TEMPLATE_FEEDBACK = "site/feedback.html"

@@ -79,7 +79,6 @@ LANGUAGES = [
     ("en", u"English")
 ]
 
-# 1-xizhi.com
 SITE_ID = 1
 
 # 站点是否正在维护中,默认False
@@ -138,13 +137,11 @@ MIDDLEWARE_CLASSES = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django_openid.consumer.SessionConsumer",
     "django.contrib.messages.middleware.MessageMiddleware",
-    #"pinax.apps.account.middleware.LocaleMiddleware",
     "account.middleware.LocaleMiddleware",
     "pagination.middleware.PaginationMiddleware",
     "pinax.middleware.security.HideSensistiveFieldsMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     
-    # added by junn
     "onlineuser.middleware.OnlineUserMiddleware",
 ]
 
@@ -171,7 +168,6 @@ TEMPLATE_CONTEXT_PROCESSORS = [
     "notification.context_processors.notification",
     "announcements.context_processors.site_wide_announcements",
     
-    #added by junn
     "profiles.context_processors.get_profile",
     "profiles.context_processors.getNoticeCount",
     "context_processors.importSettings",
@@ -207,14 +203,11 @@ INSTALLED_APPS = [
     "PIL",
     "onlineuser",
     
-    # django wsgi server
-    #"gunicorn",
     "widget_tweaks",  #to add attrs on html page, not in python form code
      
     "common",
     "account",
     "profiles",
-    #"activity",
     "books", 
     "sites", 
 ]
@@ -274,11 +267,6 @@ PASSWD_RESET_SUBJECT = u"密码重置｜BookStore"
 EMAIL_CONFIRMATION_MESSAGE = "account/mailtemplates/email_confirmation_message.txt"
 PWD_RESET_MSG = "account/mailtemplates/password_reset_message.txt"
 
-# reserved_words, 保留域名字符串,用户设置个性域名时不允许被使用
-RESERVED_WORDS = [
-                   
-]
-
 # Email server setup
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'mail.dannysite.net' 
@@ -292,15 +280,11 @@ EMAIL_USE_TLS = True
 DEFAULT_PIC = "default_pic"
 DEFAULT_PIC_NORMAL = "default_pic_normal"
 DEFAULT_PIC_SMALL = "default_pic_small"
-DEFAULT_POSTER = "default_poster"
-DEFAULT_POSTER_NORMAL = "default_poster_normal"
-DEFAULT_POSTER_SMALL = "default_poster_small"
 
 DEFAULT_IMG = "default_img"
 
 #上传图片大小限制
 PIC_UPPER_BOUND = 2  # 2M
-POSTER_UPPER_BOUND = 5 #5M
 
 ALLOWED_IMG_FORMAT = (".jpg", ".jpe", ".gif", ".jpeg", ".bmp", ".png")
 
@@ -351,18 +335,10 @@ BACK_GROUND = (255,255,255)
 LINE_COLOR = (0, 0, 0)
 IMG_WIDTH = 120
 IMG_HEIGHT = 40
-#FONT_COLOR =['#000', '#16496b', '#666']  # also can set to 
-FONT_COLOR = ['darkblue','blue'] 
+FONT_COLOR =['#000', '#16496b', '#666']
 FONT_SIZE = 30
-FONT_PATH = "static/lershare/font/arial.ttf"
-CHAR_RANGE = '0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz'
-
-########### The following global data is initialized while related class imported 
-CACHED_CITIES = {}          # 所有城市
-CACHED_AREAES = {}          # 所有城市区域
-CACHED_TAGS = {}            # 所有个性标签
-CACHED_ACTIVITY_TAGS = {}   # 所有活动标签
-CACHED_CLIENTS = {}         # 所有客户端(访问key值)
+FONT_PATH = "static/base/font/arial.ttf"
+CHAR_RANGE = '123456789AaBbCcDdEeFfGgHhiJjKkLMmNnPpQqRrSsTtUuVvWwXxYyZz'
 
 TEMPLATE_TEST = "tests/login.html"
 

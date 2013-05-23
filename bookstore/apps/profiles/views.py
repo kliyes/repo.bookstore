@@ -34,82 +34,6 @@ from BeautifulSoup import BeautifulSoup
 logger = logging.getLogger("mysite")
 
 @login_required
-def addTag(request):
-    """添加个性标签"""
-    template = "profiles/tag.html"
-    if request.method != 'POST':
-        ownedTags = request.user.get_profile().getOwnedTags()
-        return render_to_response(template, RequestContext(request, {
-            "tags": request.user.get_profile().getNotOwnedTags(ownedTags), 
-            "ownedTags": ownedTags}))
-    
-    tagId = request.REQUEST.get("tagId", "")
-    tag = None
-    try:
-        tag = Tag.objects.get(id=tagId)
-    except Tag.DoesNotExist:
-        return utils.jsonResponse({"status": "-1", "msg": "tag %s not exist" % tagId})
-    if request.user.get_profile().addTag(tag):
-        return utils.jsonResponse({"status": "0", "msg": "Add tag success"})
-    return utils.jsonResponse({"status": "-1", "msg": "Add tag failed"})       
-    
-@login_required
-def removeTag(request):
-    """删除个性标签"""
-    tag = None
-    tagId = request.REQUEST.get("tagId", "")
-    try:
-        tag = Tag.objects.get(id=tagId)
-    except Tag.DoesNotExist:
-        return utils.jsonResponse({"status": "-1", "msg": "tag %s not exist" % tagId})
-    if request.user.get_profile().removeTag(tag):
-        return utils.jsonResponse({"status": "0", "msg": "Remove tag success"})
-    return utils.jsonResponse({"status": "-1", "msg": "Remove tag failed"})       
-
-
-def goUserHome(request, profileId):
-    """访问用户个人主页,以该函数为壳, 若website存在,则通过个性域名访问个人主页,否则通过用户
-        id访问个人主页
-    """
-    
-    try:
-        profile = Profile.objects.get(id=profileId)
-        if profile.website:
-            return HttpResponseRedirect(reverse("profiles_user_website", args=[profile.website]))
-        return _userPage(request, profile)
-    except Profile.DoesNotExist:
-        raise Http404    
-
-def userPagePro(request, website):
-    """通过个性域名访问用户个人主页"""
-    try:
-        profile = Profile.objects.get(website__iexact=website)
-        return _userPage(request, profile)
-    except Profile.DoesNotExist:
-        raise Http404
-
-#added by tom.jing for userPage test
-def _userPage(request, profile):
-    """通过用户id访问其个人主页, 私有函数
-    """
-    
-    if request.user.is_authenticated() and request.user.get_profile() == profile:
-        taProfile = None
-    else:
-        taProfile = profile
-
-    publishedActivities = profile.getPublishedActivities()
-    joinedActivities = profile.getJoinedActivities()
-    likedActivities = profile.getLikedActivities() 
-    
-    return render_to_response(settings.TEMPLATE_USER_PAGE, RequestContext(request, { 
-        "publishedActivities": publishedActivities,
-        "joinedActivities": joinedActivities,
-        "likedActivities": likedActivities,
-        "taProfile": taProfile})
-    )   
-
-@login_required
 def setProfile(request, **kwargs):
     """用户profile设置"""
     
@@ -138,15 +62,8 @@ def setProfile(request, **kwargs):
     return render_to_response(template, 
         RequestContext(request, {"form": form}))  
 
-def changeCity(request, cityId):
-    """更新所在城市"""
-    profile = request.user.get_profile()
-    profile.city = City.objects.getById(id=int(cityId)) 
-    profile.save()
-    return HttpResponseRedirect(reverse("profiles_setting"))
 
 DRAFT_PROFILE_KEY = "draftProfile"
-
 # 设置图片或密码前,保存已输入的profile信息草稿
 def save_profile(request):
     profile = Profile()
@@ -298,7 +215,7 @@ def checkOrders(request):
     '''查看用户订单'''
     profile = request.user.get_profile()
     
-    orders = profile.getOrders().exclude(id__in=profile.delOrderIds)
+    orders = profile.getOrders().exclude(id__in=profile.delOrderIds).order_by('-created_date')
     ctx = {}
     
     orderPaging = initSessionOrderlistPaging(request, 'orderData', orders, 5)

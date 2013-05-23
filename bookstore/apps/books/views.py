@@ -349,7 +349,13 @@ def addComment(request, bookId):
     book = _getBookById(bookId)
     book.addComment(profile, content, grade)
     
-    return HttpResponseRedirect(reverse("comment_done"))
+    return HttpResponseRedirect('/books/comment_done/?bookId=%s' % book.id)
+
+def commentDone(request):
+    '''完成评论'''
+    bookId = request.REQUEST.get('bookId', None)
+    return render_to_response('books/comment_done.html', RequestContext(request, 
+        {'bookId': bookId}))
 
 def pagingCmts(request, bookId):
     '''处理书籍评论分页, ajax request only'''

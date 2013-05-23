@@ -170,30 +170,21 @@ def upload(file, size, path, quality):
 
 
 #验证码参数设置
-""" 
-background #随机背景
-line_color #随机干扰线条
-img_width #画布宽度
-img_height #画布高度
-font_color #验证码字体颜色
-font_size #验证码字体尺寸
-font #验证码字体
-"""
-background = (random.randrange(150,200),random.randrange(150,200),random.randrange(150,200))
-line_color = (random.randrange(100,101),random.randrange(100,101),random.randrange(100,200))
-img_width = 80
-img_height = 30
-font_color =['black','darkblue','darkred']
-font_size = 18
-font_path = "static/xizhi/font/arial.ttf"
-font = ImageFont.truetype(font_path, font_size)
-CHAR_RANGE = '0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz'
+BACK_GROUND = settings.BACK_GROUND
+LINE_COLOR = settings.LINE_COLOR
+IMG_WIDTH = settings.IMG_WIDTH
+IMG_HEIGHT = settings.IMG_HEIGHT
+FONT_COLOR =settings.FONT_COLOR 
+FONT_SIZE = settings.FONT_SIZE
+FONT_PATH = settings.FONT_PATH
+CHAR_RANGE = settings.CHAR_RANGE
+FONT = ImageFont.truetype(FONT_PATH, FONT_SIZE)
 
 def drawSecureImg(code):
     """根据传入的code字符串,绘制验证码图片"""
     
     #新建画布
-    im = Image.new('RGB', (img_width, img_height), background)
+    im = Image.new('RGB', (IMG_WIDTH, IMG_HEIGHT), BACK_GROUND)
     ImageDraw.Draw(im)
     
     #新建画笔
@@ -201,16 +192,16 @@ def drawSecureImg(code):
     
     #画干扰线
     for i in range(random.randrange(3, 5)):
-        xy = (random.randrange(0,img_width),random.randrange(0,img_height),
-                random.randrange(0,img_width),random.randrange(0,img_height))
-        draw.line(xy, fill=line_color, width=1)
+        xy = (random.randrange(0,IMG_WIDTH),random.randrange(0,IMG_HEIGHT),
+                random.randrange(0,IMG_WIDTH),random.randrange(0,IMG_HEIGHT))
+        draw.line(xy, fill=LINE_COLOR, width=1)
         
     #绘制验证码文字
     x = 2
     for i in code:
         y = random.randrange(0,10)
-        draw.text((x,y), i, font = font, fill = random.choice(font_color))
-        x += 14
+        draw.text((x,y), i, font = FONT, fill = random.choice(FONT_COLOR))
+        x += 20 #字符间距
     del x
     del draw
     
@@ -218,6 +209,57 @@ def drawSecureImg(code):
     buf = StringIO.StringIO()
     im.save(buf,'gif')
     return buf
+
+
+##验证码参数设置
+#""" 
+#background #随机背景
+#line_color #随机干扰线条
+#img_width #画布宽度
+#img_height #画布高度
+#font_color #验证码字体颜色
+#font_size #验证码字体尺寸
+#font #验证码字体
+#"""
+#background = (random.randrange(150,200),random.randrange(150,200),random.randrange(150,200))
+#line_color = (random.randrange(100,101),random.randrange(100,101),random.randrange(100,200))
+#img_width = 80
+#img_height = 30
+#font_color =['black','darkblue','darkred']
+#font_size = 18
+#font_path = "static/base/font/arial.ttf"
+#font = ImageFont.truetype(font_path, font_size)
+#CHAR_RANGE = '0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz'
+#
+#def drawSecureImg(code):
+#    """根据传入的code字符串,绘制验证码图片"""
+#    
+#    #新建画布
+#    im = Image.new('RGB', (img_width, img_height), background)
+#    ImageDraw.Draw(im)
+#    
+#    #新建画笔
+#    draw = ImageDraw.Draw(im)
+#    
+#    #画干扰线
+#    for i in range(random.randrange(3, 5)):
+#        xy = (random.randrange(0,img_width),random.randrange(0,img_height),
+#                random.randrange(0,img_width),random.randrange(0,img_height))
+#        draw.line(xy, fill=line_color, width=1)
+#        
+#    #绘制验证码文字
+#    x = 2
+#    for i in code:
+#        y = random.randrange(0,10)
+#        draw.text((x,y), i, font = font, fill = random.choice(font_color))
+#        x += 14
+#    del x
+#    del draw
+#    
+#    #写入缓存
+#    buf = StringIO.StringIO()
+#    im.save(buf,'gif')
+#    return buf
 
 def generateCode():
     return random.sample(CHAR_RANGE, 5)

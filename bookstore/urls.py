@@ -34,19 +34,9 @@ urlpatterns = patterns("",
     url(r"^profiles/", include("profiles.urls")),
     url(r"^books/", include("books.urls")),
     
-    # user home page
-    url(r"^u/(\d+)/$", "profiles.views.goUserHome", name="profiles_user_home"),
-    # user home page, using domain website
-    url(r"^u/(\w+)/$", "profiles.views.userPagePro", name="profiles_user_website"),
-    
     ## use this to test html page
     url(r"^test/", include("tests.urls")),
     
-    # API interface
-    url(r"^get_json/$", direct_to_template, {"template": "tests/api.json"}, name="get_json"),
-    
-#    url(r"^notification/$", "profiles.views.getNotices", {"template": "profiles/notifications.html",}, name="acct_notify"),
-#    
      # site navigation
     url(r"^us/555/$", 'sites.views.siteAnnouncement', name="us_555"),
 #    url(r"^us/about/$", direct_to_template, {"template": "site/about.html"}, name="us_about"),
@@ -62,12 +52,4 @@ urlpatterns = patterns("",
     
 )
 
-
-# Used in debug mode for handling user-uploaded files, by jun
 urlpatterns += static(settings.MEDIA_URL , document_root = settings.MEDIA_ROOT )
-#
-#urlpatterns += patterns("",
-#    url(r'^static/(?P<path>.*)$', 'django.views.static.serve',
-#        {'document_root': '/path/to/static/root'}
-#    ),
-#)

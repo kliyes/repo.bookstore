@@ -28,6 +28,6 @@ urlpatterns = patterns("",
 
     url(r"^page_book_cmts/(\d+)$", "books.views.pagingBookCmts", name="book_page_cmts"), 
     
-    url(r"^comment_done/$", direct_to_template, {"template": "books/comment_done.html"}, name="comment_done"),
+    url(r"^comment_done/$", 'books.views.commentDone', name="comment_done"),
     url(r"^thanks/$", direct_to_template, {"template": "books/success_bought.html"}, name="thanks"), 
 )
