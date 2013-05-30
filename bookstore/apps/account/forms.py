@@ -216,7 +216,7 @@ class SignupForm(GroupForm):
             profile = Profile(user=user)
         
         profile.name = self.cleaned_data.get("nickname")
-        profile.city = City.objects.getById(id=2)  #TODO, load from cities cache
+        #profile.city = City.objects.getById(id=2)  #TODO, load from cities cache
         profile.save()
         
         #=======================================================

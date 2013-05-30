@@ -33,27 +33,27 @@ class Province(models.Model):
         db_table = 't_province'
         verbose_name = 'Province'  
 
-class CityManager(models.Manager):
-    def getById(self, id):
-        if not settings.CACHED_CITIES:
-            initGlobalCityData()
-        return settings.CACHED_CITIES.get("%s%s" % (CITY_KEY_PREFIX, id), None)
-    
-    def getAll(self):
-        '''得到所有城市'''
-        if not settings.CACHED_CITIES:
-            initGlobalCityData()
-        return settings.CACHED_CITIES.values() 
-    
-    def getAllAreas(self, city):
-        '''获取某城市所有区域'''
-        return city.getAllAreas()
+#class CityManager(models.Manager):
+#    def getById(self, id):
+#        if not settings.CACHED_CITIES:
+#            initGlobalCityData()
+#        return settings.CACHED_CITIES.get("%s%s" % (CITY_KEY_PREFIX, id), None)
+#    
+#    def getAll(self):
+#        '''得到所有城市'''
+#        if not settings.CACHED_CITIES:
+#            initGlobalCityData()
+#        return settings.CACHED_CITIES.values() 
+#    
+#    def getAllAreas(self, city):
+#        '''获取某城市所有区域'''
+#        return city.getAllAreas()
 
 class City(models.Model):
     name = models.CharField(max_length=40)
     province = models.ForeignKey(Province, null=True, blank=True)
     
-    objects = CityManager()
+    #objects = CityManager()
     
     class Meta:
         db_table = 't_city'
@@ -62,23 +62,23 @@ class City(models.Model):
     def __unicode__(self):
         return u"%s %s" % (self.id, self.name)
     
-    def getAllAreas(self):
-        if not settings.CACHED_AREAES:
-            initGlobalAreaData()
-        allareas = settings.CACHED_AREAES.values()
-        
-        resultAreas = []
-        for current in allareas:
-            if current.city == self:
-                resultAreas.append(current) 
-        return resultAreas  
+#    def getAllAreas(self):
+#        if not settings.CACHED_AREAES:
+#            initGlobalAreaData()
+#        allareas = settings.CACHED_AREAES.values()
+#        
+#        resultAreas = []
+#        for current in allareas:
+#            if current.city == self:
+#                resultAreas.append(current) 
+#        return resultAreas  
 
 class Area(models.Model):
     '''城市区域'''
     name = models.CharField(max_length=40)
     city = models.ForeignKey(City)
     
-    objects = CityManager()
+    #objects = CityManager()
     
     class Meta:
         db_table = 't_area'
@@ -106,24 +106,24 @@ class Tag(models.Model):
 #############################################
 # Initialize global data
 #############################################
-def initGlobalCityData():
-    cities = City.objects.exclude(id=1)
-    for city in cities:
-        settings.CACHED_CITIES["%s%s" % (CITY_KEY_PREFIX, city.id)] = city
-    
-    logger.info("====> Global city data initialized")    
-
-def initGlobalAreaData():    
-    areas = Area.objects.all()
-    for area in areas:
-        settings.CACHED_AREAES["%s%s" % (AREA_KEY_PREFIX, area.id)] = area  
-    logger.info("====> Global area data initialized")   
-    
-def initGlobalTagData():    
-    tags = Tag.objects.all()
-    for tag in tags:
-        settings.CACHED_TAGS["%s%s" % (TAG_KEY_PREFIX, tag.id)] = tag  
-    logger.info("====> Global personal tag data initialized")      
+#def initGlobalCityData():
+#    cities = City.objects.exclude(id=1)
+#    for city in cities:
+#        settings.CACHED_CITIES["%s%s" % (CITY_KEY_PREFIX, city.id)] = city
+#    
+#    logger.info("====> Global city data initialized")    
+#
+#def initGlobalAreaData():    
+#    areas = Area.objects.all()
+#    for area in areas:
+#        settings.CACHED_AREAES["%s%s" % (AREA_KEY_PREFIX, area.id)] = area  
+#    logger.info("====> Global area data initialized")   
+#    
+#def initGlobalTagData():    
+#    tags = Tag.objects.all()
+#    for tag in tags:
+#        settings.CACHED_TAGS["%s%s" % (TAG_KEY_PREFIX, tag.id)] = tag  
+#    logger.info("====> Global personal tag data initialized")      
 
 #initGlobalCityData()
 #initGlobalAreaData()   
