@@ -10,30 +10,6 @@ from django.utils import unittest
 from django.test.client import Client
 
 from profiles.forms import ProfileForm
-from profiles.models import City, Area
-
-class CityTest(unittest.TestCase):
-    def testGetAllAreas4city(self):
-        cityId = 2
-        city = City.objects.getById(id=cityId)
-        print "city:", city.name
-         
-        areas = city.getAllAreas()
-        print "area len:", len(areas)
-        for i in range(0, len(areas)):
-            print "areas: \n", areas[i].name 
-        
-    def testGetAllAreas(self):
-        cityId = 11
-        city = City.objects.getById(id=cityId)
-        print "city:", city.name
-         
-        areas = City.objects.getAllAreas(city)
-        print "area len:", len(areas)
-        for i in range(0, len(areas)):
-            print "areas: \n", areas[i].name
-        
-        
 
 class ProfileFormTest(unittest.TestCase):
     def testForm(self):

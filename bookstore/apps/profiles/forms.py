@@ -13,7 +13,7 @@ from django.conf import settings
 from django.utils.encoding import force_unicode
 from django.utils.safestring import mark_safe
 
-from profiles.models import City, Profile, Province
+from profiles.models import Profile
 from profiles.signals import profileUpdated
 from common.utils import ecode
 

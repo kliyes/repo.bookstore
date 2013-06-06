@@ -23,7 +23,7 @@ from PIL import Image, ImageFile
 
 from common import img_utils, file_utils, utils, pages
 from profiles.forms import ProfileForm
-from profiles.models import Profile, Following, City, Tag
+from profiles.models import Profile
 from books.models import Order
 from django.template.loader import get_template
 import json

@@ -15,7 +15,7 @@
 	{% ifnotequal normalPageItems.paginator.num_pages 1 %}
 	<ul>
 		{% if normalPageItems.has_previous %}
-			<li><a href="##" id="normal_up" rel="{{normalPageItems.previous_page_number}},normal">&laquo;</a></li>
+			<li><a javascript:void(0) id="normal_up" rel="{{normalPageItems.previous_page_number}},normal">&laquo;</a></li>
 		{% else %}
 			<li class="disabled"><a>&laquo;</a></li>
 		{% endif %}
@@ -24,12 +24,12 @@
 			{% ifequal i normalPageItems.number %}
 				<li class="active"><a>{{i}}</a></li>
 			{% else %}
-				<li><a href="##" id="normal_num" rel="{{i}},normal">{{i}}</a></li>
+				<li><a javascript:void(0) id="normal_num" rel="{{i}},normal">{{i}}</a></li>
 			{% endifequal %}
 		{% endfor %}
 		
 		{% if normalPageItems.has_next %}
-			<li><a href="##" id="normal_down" rel="{{normalPageItems.next_page_number}},normal">&raquo;</a></li>
+			<li><a javascript:void(0) id="normal_down" rel="{{normalPageItems.next_page_number}},normal">&raquo;</a></li>
 		{% else %}
 			<li class="disabled"><a>&raquo;</a></li>
 		{% endif %}

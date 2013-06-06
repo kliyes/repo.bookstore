@@ -28,7 +28,7 @@ from account.decorators import check_reset_email_sent_count
 from books.models import Cart
 from common.utils import ecode
 from common import utils 
-from profiles.models import Profile, City
+from profiles.models import Profile
 
 alnum_re = re.compile(r"^\w+$")
 

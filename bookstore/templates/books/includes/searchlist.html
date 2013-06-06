@@ -37,7 +37,7 @@
 					{% if book in profile.getCartBooks %}
 						<a href="{% url book_cart_check %}" class="btn btn-small btn-info" ><i class="icon-shopping-cart"></i> 已加入购物车</a>
 					{% else %}
-						<a id="add_{{book.id}}" href="##" class="btn btn-small" onclick="addToCart({{book.id}})"><i class="icon-shopping-cart"></i> 加入购物车</a>
+						<a id="add_{{book.id}}" javascript:void(0) class="btn btn-small" onclick="addToCart({{book.id}})"><i class="icon-shopping-cart"></i> 加入购物车</a>
 						<a id="added_{{book.id}}" href="{% url book_cart_check %}" class="btn btn-small btn-info" style="display: none"><i class="icon-shopping-cart"></i> 已加入购物车</a>
 					{% endif %}
 				{% endif %}

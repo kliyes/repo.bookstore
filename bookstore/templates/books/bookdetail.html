@@ -251,8 +251,8 @@
 					{% if book in profile.getCartBooks %}
 						<a href="{% url book_cart_check %}" class="btn btn-info" ><i class="icon-shopping-cart"></i> 已加入购物车</a>
 					{% else %}
-						<a href="##" class="btn btn-success" onclick="buyNow({{book.id}})"><i class="icon-ok icon-white"></i> 立即购买</a>
-						<a id="add" href="##" class="btn" onclick="addToCart({{book.id}})"><i class="icon-shopping-cart"></i> 加入购物车</a>
+						<a javascript:void(0) class="btn btn-success" onclick="buyNow({{book.id}})"><i class="icon-ok icon-white"></i> 立即购买</a>
+						<a id="add" javascript:void(0) class="btn" onclick="addToCart({{book.id}})"><i class="icon-shopping-cart"></i> 加入购物车</a>
 						<a id="added" href="{% url book_cart_check %}" class="btn btn-info" style="display: none"><i class="icon-shopping-cart"></i> 已加入购物车</a>
 					{% endif %}
 				{% endif %}

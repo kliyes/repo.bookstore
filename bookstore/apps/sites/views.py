@@ -71,112 +71,120 @@ def _downloadImg(url, size="medium"):
 @admin_required
 def regFromDouban(request):
     '''利用豆瓣API获取书籍信息加入数据库'''
-    DOUBAN = "https://api.douban.com/v2/book/search?q="
-    q = request.REQUEST.get('q', '')
-    q = urllib.quote(q.decode('utf8').encode('utf8'))  
-    DOUBAN += q
-
-    req = urllib.urlopen(DOUBAN)
-    resp = req.read()
-    result = simplejson.loads(resp)
-    books = result['books']
-    for i in range(len(books)):
-        author = Author()
-        author.name = books[i]['author'][0]
-        author.desc = books[i]['author_intro']
-        author.save()
+    try:
+        DOUBAN = "https://api.douban.com/v2/book/search?q="
+        q = request.REQUEST.get('q', '')
+        q = urllib.quote(q.decode('utf8').encode('utf8'))  
+        DOUBAN += q
+    
+        req = urllib.urlopen(DOUBAN)
+        resp = req.read()
+        result = simplejson.loads(resp)
+        books = result['books']
         
-        try:
-            book = Book.objects.get(isbn=books[i]['isbn13'])
-        except Book.DoesNotExist:
-            book = Book()
-            book.name = books[i]['title']
-            book.author = author
-            book.price = float(''.join([ item for item in books[i]['price'] if item in '1234567890.' ]))
-            if not books[i]['isbn13']:
-                book.isbn = books[i]['isbn10']
-            else:
-                book.isbn = books[i]['isbn13']
-            book.press = books[i]['publisher']
-            book.desc = books[i]['summary']
-            book.binding = books[i]['binding']
-            book.pages = books[i]['pages']
-            book.spic = _downloadImg(books[i]['images']['small'], 'small')   
-            book.mpic = _downloadImg(books[i]['images']['medium'], 'medium')   
-            book.lpic = _downloadImg(books[i]['images']['large'], 'large')   
-            book.stock = 140
-            book.publish_date = books[i]['pubdate']
-            book.category = _getBookCate('letter')
-            book.save()
+        
+        for i in range(len(books)):
+            author = Author()
+            author.name = books[i]['author'][0]
+            author.desc = books[i]['author_intro']
+            author.save()
             
-    return HttpResponse('success')
+            try:
+                book = Book.objects.get(isbn=books[i]['isbn13'])
+            except Book.DoesNotExist:
+                book = Book()
+                book.name = books[i]['title']
+                book.author = author
+                book.price = float(''.join([ item for item in books[i]['price'] if item in '1234567890.' ]))
+                if not books[i]['isbn13']:
+                    book.isbn = books[i]['isbn10']
+                else:
+                    book.isbn = books[i]['isbn13']
+                book.press = books[i]['publisher']
+                book.desc = books[i]['summary']
+                book.binding = books[i]['binding']
+                book.pages = books[i]['pages']
+                book.spic = _downloadImg(books[i]['images']['small'], 'small')   
+                book.mpic = _downloadImg(books[i]['images']['medium'], 'medium')   
+                book.lpic = _downloadImg(books[i]['images']['large'], 'large')   
+                book.stock = 140
+                book.publish_date = books[i]['pubdate']
+                book.category = _getBookCate('letter')
+                book.save()
+                
+        return HttpResponse('success')
+    except Exception:
+        return HttpResponse('error')
 
 @admin_required
 def regBooks(request):
     '''调用豆瓣API,根据图书isbn号获取图书信息'''
-    URL = 'https://api.douban.com/v2/book/isbn/'
-    if request.method != "POST":
-        return render_to_response('sites/regbook.html', RequestContext(request))
-    
-    isbn = request.REQUEST.get('isbn', '')
-    if isbn != '':
-        try:
-            book = Book.objects.get(isbn=isbn)
-            author_name = book.author.name
-            author_desc = book.author.desc
-            book_name = book.name
-            book_price = book.price
-            book_isbn = book.isbn
-            book_press = book.press
-            book_desc = book.desc
-            book_binding = book.binding
-            book_pages = book.pages
-            book_spic = book.spic
-            book_mpic = book.mpic
-            book_lpic = book.lpic
-            book_publish_date = book.publish_date
-            book_stock = book.stock
-            book_cate = book.category.label
-        except Book.DoesNotExist:
-            req = urllib.urlopen(URL+str(isbn))
-            resp = req.read()
-            result = simplejson.loads(resp)
-            author_name = result['author'][0]
-            author_desc = result['author_intro']
-            
-            book_name = result['title']
-            book_price = result['price']
-            if not result['isbn13']:
-                book_isbn = result['isbn10']
-            else:
-                book_isbn = result['isbn13']
-            book_press = result['publisher']
-            book_desc = result['summary']
-            book_binding = result['binding']
-            book_pages = result['pages']
-            book_spic = _downloadImg(result['images']['small'], 'small')   
-            book_mpic = _downloadImg(result['images']['medium'], 'medium')   
-            book_lpic = _downloadImg(result['images']['large'], 'large')   
-            book_publish_date = result['pubdate']
-            book_stock = 0
-            book_cate = _getBookCate('letter').label
+    try:
+        URL = 'https://api.douban.com/v2/book/isbn/'
+        if request.method != "POST":
+            return render_to_response('sites/regbook.html', RequestContext(request))
         
-    ctx = {'authorName': author_name, 
-           'authorDesc': author_desc, 
-           'bookName': book_name, 
-           'bookPrice': book_price, 
-           'bookIsbn': book_isbn, 
-           'bookPress': book_press, 
-           'bookDesc': book_desc, 
-           'bookBinding': book_binding, 
-           'bookPages': book_pages, 
-           'bookSpic': book_spic, 
-           'bookMpic': book_mpic, 
-           'bookLpic': book_lpic, 
-           'bookPublishDate': book_publish_date, 
-           'bookstock': book_stock, 
-           'bookcate': book_cate}
-    return render_to_response('sites/regbook.html', RequestContext(request, ctx))
+        isbn = request.REQUEST.get('isbn', '')
+        if isbn != '':
+            try:
+                book = Book.objects.get(isbn=isbn)
+                author_name = book.author.name
+                author_desc = book.author.desc
+                book_name = book.name
+                book_price = book.price
+                book_isbn = book.isbn
+                book_press = book.press
+                book_desc = book.desc
+                book_binding = book.binding
+                book_pages = book.pages
+                book_spic = book.spic
+                book_mpic = book.mpic
+                book_lpic = book.lpic
+                book_publish_date = book.publish_date
+                book_stock = book.stock
+                book_cate = book.category.label
+            except Book.DoesNotExist:
+                req = urllib.urlopen(URL+str(isbn))
+                resp = req.read()
+                result = simplejson.loads(resp)
+                author_name = result['author'][0]
+                author_desc = result['author_intro']
+                
+                book_name = result['title']
+                book_price = result['price']
+                if not result['isbn13']:
+                    book_isbn = result['isbn10']
+                else:
+                    book_isbn = result['isbn13']
+                book_press = result['publisher']
+                book_desc = result['summary']
+                book_binding = result['binding']
+                book_pages = result['pages']
+                book_spic = _downloadImg(result['images']['small'], 'small')   
+                book_mpic = _downloadImg(result['images']['medium'], 'medium')   
+                book_lpic = _downloadImg(result['images']['large'], 'large')   
+                book_publish_date = result['pubdate']
+                book_stock = 0
+                book_cate = _getBookCate('letter').label
+            
+        ctx = {'authorName': author_name, 
+               'authorDesc': author_desc, 
+               'bookName': book_name, 
+               'bookPrice': book_price, 
+               'bookIsbn': book_isbn, 
+               'bookPress': book_press, 
+               'bookDesc': book_desc, 
+               'bookBinding': book_binding, 
+               'bookPages': book_pages, 
+               'bookSpic': book_spic, 
+               'bookMpic': book_mpic, 
+               'bookLpic': book_lpic, 
+               'bookPublishDate': book_publish_date, 
+               'bookstock': book_stock, 
+               'bookcate': book_cate}
+        return render_to_response('sites/regbook.html', RequestContext(request, ctx))
+    except Exception:
+        return HttpResponse('error')
 
 @admin_required    
 def addBook(request):
