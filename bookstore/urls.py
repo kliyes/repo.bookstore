@@ -24,13 +24,12 @@ urlpatterns = patterns("",
     #url(r"", direct_to_template, {"template": "index.html",}, name="index"), #工程下所有链接都将被重置到index.html页面
     url(r"^$", "books.views.goHome", name="welcome"),
 
-    url(r"^admin/invite_user/$", "pinax.apps.signup_codes.views.admin_invite_user", 
-        name="admin_invite_user"),
-    #url(r"^admin/", include(admin.site.urls)),    
+    #url(r"^admin/invite_user/$", "pinax.apps.signup_codes.views.admin_invite_user", name="admin_invite_user"),
+    url(r"^admin/", include(admin.site.urls)),    
 
     #url(r"^home/$", {"template": "index.html",}, name="home"),
     url(r"^account/", include("account.urls")),
-    url(r"^admin/login/$", "account.views.adminLogin", name="admin_login"),
+    #url(r"^admin/login/$", "account.views.adminLogin", name="admin_login"),
     url(r"^profiles/", include("profiles.urls")),
     url(r"^books/", include("books.urls")),
     
@@ -47,6 +46,13 @@ urlpatterns = patterns("",
 #    url(r"^us/onlines/$", "sites.views.getOnlines", name="online_info"),
     url(r"^addbooks/$", "sites.views.regFromDouban"),
     url(r"^manage/", include("sites.urls")),
+    
+    #url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    
+    url(r"^api/books/", include("books.api_urls")),
+    
+    #django-oauth2-provider
+    url(r'^oauth2/', include('provider.oauth2.urls', namespace = 'oauth2')),
     
 #    url(r"^notices/", include("notification.urls")),
     

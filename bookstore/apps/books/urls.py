@@ -30,4 +30,6 @@ urlpatterns = patterns("",
     
     url(r"^comment_done/$", 'books.views.commentDone', name="comment_done"),
     url(r"^thanks/$", direct_to_template, {"template": "books/success_bought.html"}, name="thanks"), 
+    
+    
 )

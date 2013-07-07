@@ -203,6 +203,12 @@ INSTALLED_APPS = [
     "PIL",
     "onlineuser",
     
+    "rest_framework",
+    
+    #django-oauth2-provider
+    'provider',
+    'provider.oauth2',
+    
     "widget_tweaks",  #to add attrs on html page, not in python form code
      
     "common",
@@ -211,6 +217,23 @@ INSTALLED_APPS = [
     "books", 
     "sites", 
 ]
+
+REST_FRAMEWORK = {
+    # Use hyperlinked styles by default.
+    # Only used if the `serializer_class` attribute is not set on a view.
+    'DEFAULT_MODEL_SERIALIZER_CLASS':
+        'rest_framework.serializers.HyperlinkedModelSerializer',
+    
+    'PAGINATE_BY': 10,
+    
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+                  
+        
+}
 
 FIXTURE_DIRS = [
     os.path.join(PROJECT_ROOT, "fixtures"),
