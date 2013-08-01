@@ -13,6 +13,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.utils import simplejson as json 
 from django.conf import settings
+from rest_framework.fields import Field, SerializerMethodField
 
 # 用于求字符串长度，中文汉字计为两个英文字母长度
 ecode = lambda s: s.encode('gb18030')
@@ -145,6 +146,24 @@ class NewQueue(Queue):
             return Queue.get(self, block, timeout)
         finally:
             mutex.release()    
+#==========================================================
+
+class CustomSerializerMethodField(SerializerMethodField):
+    ''''''
+    
+    def __init__(self, method_name, obj_attr):
+        self.method_name = method_name
+        self.obj_attr = obj_attr
+
+    def field_to_native(self, obj, field_name):
+        value = getattr(self.parent, self.method_name)(obj, self.obj_attr)
+        return self.to_native(value)
+
+
+def strTime(time):
+    return time.strftime('%Y-%m-%d %H:%M:%S')
+
+
     
     
     

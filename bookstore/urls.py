@@ -50,12 +50,22 @@ urlpatterns = patterns("",
     #url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     
     url(r"^api/books/", include("books.api_urls")),
+    url(r"^api/account/", include("account.api_urls")),
     
     #django-oauth2-provider
-    url(r'^oauth2/', include('provider.oauth2.urls', namespace = 'oauth2')),
+    #url(r'^oauth2/', include('provider.oauth2.urls', namespace = 'oauth2')),
     
 #    url(r"^notices/", include("notification.urls")),
     
 )
 
-urlpatterns += static(settings.MEDIA_URL , document_root = settings.MEDIA_ROOT )
+#urlpatterns += static(settings.MEDIA_URL , document_root = settings.MEDIA_ROOT )
+if settings.DEBUG:
+    urlpatterns += patterns("",
+        url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
+            {'document_root': settings.MEDIA_ROOT}
+        ),
+    )
+
+
+
