@@ -206,8 +206,8 @@ INSTALLED_APPS = [
     "rest_framework",
     
     #django-oauth2-provider
-    #'provider',
-    #'provider.oauth2',
+    'provider',
+    'provider.oauth2',
     
     "widget_tweaks",  #to add attrs on html page, not in python form code
      
@@ -223,8 +223,10 @@ REST_FRAMEWORK = {
     # Only used if the `serializer_class` attribute is not set on a view.
     'DEFAULT_MODEL_SERIALIZER_CLASS':
         'rest_framework.serializers.HyperlinkedModelSerializer',
-    
     'PAGINATE_BY': 10,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+       'rest_framework.authentication.OAuth2Authentication',
+    )
     
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.

@@ -9,7 +9,7 @@
 {% block header %}
 	<div class="navbar navbar-inverse">
       <div class="navbar-inner">
-        <a class="brand" href="{% url management %}">BookStore管理后台</a>
+        <a class="brand" href="{% url 'management' %}">BookStore管理后台</a>
       </div>
     </div>
 {% endblock %}
@@ -24,7 +24,7 @@
         <h1>管理员登录</h1>
     </div>
     <div class="container">
-		<form action="{% url admin_login %}" method="post" class="form-signin" >
+		<form action="{% url 'admin_login' %}" method="post" class="form-signin" >
 		    {% csrf_token %}
 			{{ form.email|attr:"placeholder:邮箱" }}<br />
 		

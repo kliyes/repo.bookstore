@@ -10,19 +10,19 @@
     <div class="span12 text-center well">
     	{% if verified %}
     		<h3>{{msg}}</h3><br />
-    		<a href="{% url acct_login %}" class="btn btn-info"><i class="icon-chevron-right icon-white"></i> 登录</a>
+    		<a href="{% url 'acct_login' %}" class="btn btn-info"><i class="icon-chevron-right icon-white"></i> 登录</a>
     	{% else %}
     		{% if invalid %}
     			<h3>很抱歉，{{msg}}</h3><br />
-    			<a href="{% url acct_signup %}" class="btn btn-info"><i class="icon-chevron-right icon-white"></i> 重新注册</a>
+    			<a href="{% url 'acct_signup' %}" class="btn btn-info"><i class="icon-chevron-right icon-white"></i> 重新注册</a>
     		{% else %}
     			{% if email_address %}
     				<h3>恭喜，账号激活成功！</h3>
     				<h4>现在就可以去看看你喜欢的书籍了！</h4>
-    				<a href="{% url acct_login %}" class="btn btn-info"><i class="icon-chevron-right icon-white"></i> 立即登录</a>
+    				<a href="{% url 'acct_login' %}" class="btn btn-info"><i class="icon-chevron-right icon-white"></i> 立即登录</a>
     			{% else %}
     				<h3>很抱歉，激活失败了</h3><br />
-    				<a href="{% url acct_signup %}" class="btn btn-info"><i class="icon-chevron-right icon-white"></i> 重新注册</a>
+    				<a href="{% url 'acct_signup' %}" class="btn btn-info"><i class="icon-chevron-right icon-white"></i> 重新注册</a>
     			{% endif %}
     		{% endif %}
     	{% endif %}

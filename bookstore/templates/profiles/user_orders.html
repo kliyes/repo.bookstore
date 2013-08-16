@@ -21,7 +21,7 @@
 			pageIndex = $(obj).attr("rel");
 		}
 		$.ajax({
-			url: "{% url profiles_order_page %}", 
+			url: "{% url 'profiles_order_page' %}", 
 			data: {"page": pageIndex}, 
 			type: "get", 
 			async: "true", 
@@ -41,7 +41,7 @@
 	
 	function delOrderByProfile(orderId){
 		$.ajax({
-			url: "{% url profiles_order_del_by_profile %}", 
+			url: "{% url 'profiles_order_del_by_profile' %}", 
 			data: {"orderId": orderId}, 
 			type: "get", 
 			async: "true", 
@@ -76,7 +76,7 @@
 	    	<div class="span12 text-center well">
 		    	<h3>哎呀！暂时没有订单信息哦！</h3>
 		        <h4>去看看有没有喜欢的书？</h4>
-		        <a href="{% url welcome %}" class="btn btn-info"><i class="icon-chevron-right icon-white"></i> 去首页</a>
+		        <a href="{% url 'welcome' %}" class="btn btn-info"><i class="icon-chevron-right icon-white"></i> 去首页</a>
 		    </div>
     	{% endif %}
 	</div>

@@ -12,7 +12,7 @@
         <h1>重置密码</h1>
     </div>
     <div class="container">
-    	<form action="{% url acct_reset_passwd %}" method="post">
+    	<form action="{% url 'acct_reset_passwd' %}" method="post">
     		{% csrf_token %}
     		{{resetForm.email|attr:"lyu:Email"|attr:"bl:Email_msg"|attr:"placeholder:邮箱"|attr:"class:span2"|attr:"type:text"|attr:"style:width:300px;"}}
     		<label id="Email_msg" class="label label-warning"></label><br />

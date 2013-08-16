@@ -124,6 +124,12 @@ class Book(models.Model):
     
     def __unicode__(self):
         return u"id:%s name:%s" % (self.id, self.name)
+
+    def natural_key(self):
+        return self.author.name
+#    @property
+#    def author_name(self):
+#        return self.author.name
     
     def getAllComments(self):
         '''获得该书的所有评论'''

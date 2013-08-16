@@ -25,7 +25,7 @@
 
 {% block body_base %}
 <div class="row-fluid">
-	<form id="tmp_profile" action="{% url profiles_save %}" method="post" style="display:none;">
+	<form id="tmp_profile" action="{% url 'profiles_save' %}" method="post" style="display:none;">
 		{% csrf_token %}
 		<input type="text" id="tmp_name" name="tmp_name" />
 		<input type="text" id="tmp_receiver" name="tmp_receiver" />
@@ -34,7 +34,7 @@
 		<input type="text" id="tmp_desc" name="tmp_desc" />
 		<input type="text" id="next" name="next" />
 	</form>
-	<form action="{% url profiles_setting %}" method="post">
+	<form action="{% url 'profiles_setting' %}" method="post">
 		{% csrf_token %}
 		<div class="row-fluid">
 	    	<div class="span12">
@@ -57,7 +57,7 @@
 			<div class="span3">
 				<ul class="thumbnails">
 		          <li class="span12">
-		            <a javascript:void(0) lvy="headimg" class="thumbnail" onclick="doPost('{% url profiles_initpic %}');">
+		            <a javascript:void(0) lvy="headimg" class="thumbnail" onclick="doPost('{% url 'profiles_initpic' %}');">
 		              <img id="preview" src="{{ MEDIA_URL }}img/{{profile.normal_pic}}" alt="个人头像" title="点击修改头像">
 		            </a>
 		          </li>
@@ -92,7 +92,7 @@
 	            <div class="page-header">
 	                <h1>安全选项</h1>
 	            </div>
-	            <p><a class="btn btn-info" javascript:void(0) id="edit_passwod" onclick="doPost('{% url acct_change_pwd %}');">修改密码 &raquo;</a></p>
+	            <p><a class="btn btn-info" javascript:void(0) id="edit_passwod" onclick="doPost('{% url 'acct_change_pwd' %}');">修改密码 &raquo;</a></p>
 	        </div>
 		</div>
 		

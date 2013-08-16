@@ -8,7 +8,6 @@
 
 from django.conf import settings
 from django.conf.urls.defaults import *
-from django.views.generic.simple import direct_to_template
 
 from django.contrib import admin
 from django.conf.urls.static import static
@@ -53,7 +52,7 @@ urlpatterns = patterns("",
     url(r"^api/account/", include("account.api_urls")),
     
     #django-oauth2-provider
-    #url(r'^oauth2/', include('provider.oauth2.urls', namespace = 'oauth2')),
+    url(r'^oauth2/', include('provider.oauth2.urls', namespace = 'oauth2')),
     
 #    url(r"^notices/", include("notification.urls")),
     

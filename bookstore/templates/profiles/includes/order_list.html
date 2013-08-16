@@ -36,7 +36,7 @@
 			{% for item in order.getItems %}
 				<tr data-order="order_{{order.id}}" >
 					<td class="span1">
-				        <a href="{% url book_detail item.book_id %}"><img class="span12" src="{{ MEDIA_URL }}img/{{item.book.spic}}" alt=""></a>
+				        <a href="{% url 'book_detail' item.book_id %}"><img class="span12" src="{{ MEDIA_URL }}img/{{item.book.spic}}" alt=""></a>
 				    </td>
 				    <td>{{item.book.name}}</td>
 				    <td>{{item.book.price}}</td>
@@ -45,7 +45,7 @@
 				    <td>/</td>
 				    <td>
 				    	{% ifequal order.status 1 %}
-				    		<a href="{% url book_comment item.book_id %}" class="btn btn-info btn-small">评论</a> 
+				    		<a href="{% url 'book_comment' item.book_id %}" class="btn btn-info btn-small">评论</a> 
 				    	{% endifequal %}
 				    </td>
 				</tr>

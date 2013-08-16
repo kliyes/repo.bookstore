@@ -5,7 +5,7 @@
 {% block header %}
 	<div class="navbar navbar-inverse">
       <div class="navbar-inner">
-        <a class="brand" href="{% url management %}">BookStore管理后台</a>
+        <a class="brand" href="{% url 'management' %}">BookStore管理后台</a>
         <ul class="nav pull-right">
 	        <ul class="nav nav-pills">
 	        	<li class="dropdown">
@@ -14,7 +14,7 @@
 					<b class="caret"></b>
 	                </a>
 	                <ul class="dropdown-menu">
-	                	<a href="{% url acct_logout %}"><i class="icon-off"></i> 离开</a>
+	                	<a href="{% url 'acct_logout' %}"><i class="icon-off"></i> 离开</a>
 	                </ul>
 	        	</li>
 	        </ul>
@@ -32,22 +32,22 @@
     <div class="row-fluid">
     	<div class="well span3">
               <div class="span12 text-center">
-                <a href="{% url regBook %}" class="thumbnail">书籍信息登记/修改</a>
+                <a href="{% url 'regBook' %}" class="thumbnail">书籍信息登记/修改</a>
               </div>
         </div>
     	<div class="well span3">
               <div class="span12 text-center">
-                <a href="{% url showBook %}" class="thumbnail">书籍信息查询</a>
+                <a href="{% url 'showBook' %}" class="thumbnail">书籍信息查询</a>
               </div>
         </div>
         <div class="well span3">
               <div class="span12 text-center">
-                <a href="{% url statBook %}" class="thumbnail">分类信息统计</a>
+                <a href="{% url 'statBook' %}" class="thumbnail">分类信息统计</a>
               </div>
         </div>
         <div class="well span3">
               <div class="span12 text-center">
-                <a href="{% url updateOrders %}" class="thumbnail">订单管理</a>
+                <a href="{% url 'updateOrders' %}" class="thumbnail">订单管理</a>
               </div>
         </div>            
     </div>

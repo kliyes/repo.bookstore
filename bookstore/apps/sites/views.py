@@ -18,7 +18,6 @@ from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
-from django.views.generic.simple import direct_to_template
 from django.contrib import messages
 from django.core.urlresolvers import reverse 
 from django.utils import simplejson
@@ -323,7 +322,8 @@ def submitFeedback(request):
 
 
 def siteAnnouncement(request):
-    if settings.SITE_MAINTAINED:
-        return direct_to_template(request, template="555.html")
-    
-    raise Http404
+    pass
+#    if settings.SITE_MAINTAINED:
+#        return direct_to_template(request, template="555.html")
+#    
+#    raise Http404

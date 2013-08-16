@@ -14,7 +14,6 @@ from django.core.mail import EmailMessage
 from django.core.mail import send_mail  
 from django.conf import settings
 from django.template import loader  
-from django.views.generic.simple import direct_to_template
 from django.utils import simplejson as json
 from django.contrib.auth.models import AnonymousUser
 from django.core.cache import cache  
@@ -46,7 +45,8 @@ def testAjax(request):
     return HttpResponse(json.dumps({"status": "error",})) 
 
 def direct2template(request):
-    return direct_to_template(request, "404.html")
+    pass
+#    return direct_to_template(request, "404.html")
 
   
 def sendEmail(request):

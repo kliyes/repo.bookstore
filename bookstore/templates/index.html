@@ -95,7 +95,7 @@
         	<ul class="thumbnails">
         	{% for book in bestsellers %}
               <li class="span2">
-                <a href="{% url book_detail book.id %}" class="thumbnail">
+                <a href="{% url 'book_detail' book.id %}" class="thumbnail">
                   <img src="{{ MEDIA_URL }}img/{{book.spic}}" alt="" title="{{book.name}}">
                 </a>
               </li>

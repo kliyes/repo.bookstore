@@ -33,7 +33,7 @@
         <h1>注册</h1>
     </div>
     <div class="container">
-		<form action="{% url acct_signup %}" method="post" class="form-signin">
+		<form action="{% url 'acct_signup' %}" method="post" class="form-signin">
 			{% csrf_token %}
 			{{form.email|attr:"lyu:Email"|attr:"bl:Email_msg"|attr:"placeholder:邮箱"|attr:"class:input-block-level"}}<br />
 			<label id="Email_msg" class="label label-warning"></label>

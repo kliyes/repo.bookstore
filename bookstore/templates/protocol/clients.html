@@ -19,7 +19,7 @@
 				<td rowspan="2">{{ client.name }}</td>
 				<td class="right">Key:</td>
 				<td class="left">{{ client.key }}</td>
-				<td rowspan="2"><a href="{% url protocol_remove_client client.id %}"> Remove</a></td>
+				<td rowspan="2"><a href="{% url 'protocol_remove_client' client.id %}"> Remove</a></td>
 			</tr>
 			<tr>
 				<td class="right">Password:</td>
@@ -39,7 +39,7 @@
 	<br/>
 	
 	<div class="form_container">
-	<form method="POST" action="{% url protocol_create_client %}">
+	<form method="POST" action="{% url 'protocol_create_client' %}">
 	   {% csrf_token %}
 	   <label>客户端名称</label>
 	   <input id="client_name" name="clientName" type="text" /><input type="submit" value="创建客户端" />

@@ -13,8 +13,8 @@
     	<h3>感谢您的注册！激活邮件已发送到{{email}}</h3>
         <h4>请登录邮箱完成账号激活</h4>
         <h5>没有收到邮件？检查下邮箱地址是否正确，或者看看是不是在垃圾邮件里</h5>
-        <a href="{% url acct_signup %}" class="btn btn-info"><i class="icon-chevron-right icon-white"></i> 重新注册</a>
-        <a href="{% url acct_send_email %}?email={{email}}" class="btn btn-info"><i class="icon-chevron-right icon-white"></i> 重发邮件</a>
+        <a href="{% url 'acct_signup' %}" class="btn btn-info"><i class="icon-chevron-right icon-white"></i> 重新注册</a>
+        <a href="{% url 'acct_send_email' %}?email={{email}}" class="btn btn-info"><i class="icon-chevron-right icon-white"></i> 重发邮件</a>
     </div>
 </div>
 {% endblock %}

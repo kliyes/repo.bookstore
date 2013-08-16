@@ -19,6 +19,7 @@ from common import pages
 from books.models import Book, Cart, Order, BookComment, Category
 import datetime
 from django.db.models.query_utils import Q
+from django.core import serializers
 
 BOOK_DATA_KEY = "bookPaging"
 BOOK_PAGE_SIZE = 10
@@ -403,34 +404,10 @@ def pagingBookCmts(request, bookId):
                pageItemsKey=column+"PageItems",
                pageRangeKey=column+"PageRange",
     )))}))
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 
 
-
-    
+def test_serializer(request):
+    data = serializers.serialize("json", Book.objects.all(), 
+        use_natural_keys=True)
+    print 'type:', type(data)
+    return HttpResponse(data)

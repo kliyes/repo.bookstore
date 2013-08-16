@@ -8,7 +8,7 @@
 
 from django.conf import settings
 from django.conf.urls.defaults import patterns, url
-from django.views.generic.simple import direct_to_template
+from django.views.generic import TemplateView
 
 if settings.ACCOUNT_OPEN_SIGNUP:
     signup_view = "account.views.signup"
@@ -26,7 +26,7 @@ urlpatterns = patterns("",
     url(r"^logout/$", "account.views.logout", {"template_name": "account/logout.html"}, name="acct_logout"),
     url(r"^confirm_email/(\w+)/$", "account.views.confirm_email", name="acct_confirm_email"),
     url(r"^send_confirm_email/$", "account.views.send_confirm_email", name="acct_send_email"),
-    url(r"^agreement/$", direct_to_template, {"template": "account/agreement.html"}, name="acct_agreement"),
+    url(r"^agreement/$", TemplateView.as_view(template_name="account/agreement.html"), name="acct_agreement"),
 
     # if we should use post request for safety ?
     url(r"^check_login/$", "account.views.checkIsLogin", name="acct_check_login"),

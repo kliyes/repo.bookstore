@@ -7,7 +7,7 @@
 # This file is part of BookStore.
 
 from django.conf.urls.defaults import *
-from django.views.generic.simple import direct_to_template
+from django.views.generic import TemplateView
 
 urlpatterns = patterns("",
     url(r"^getbyname/$", "books.views.getBooksByName", name="book_search"),
@@ -29,7 +29,6 @@ urlpatterns = patterns("",
     url(r"^page_book_cmts/(\d+)$", "books.views.pagingBookCmts", name="book_page_cmts"), 
     
     url(r"^comment_done/$", 'books.views.commentDone', name="comment_done"),
-    url(r"^thanks/$", direct_to_template, {"template": "books/success_bought.html"}, name="thanks"), 
-    
-    
+    url(r"^thanks/$", TemplateView.as_view(template_name="books/success_bought.html"), name="thanks"), 
+    url(r"^test/$", "books.views.test_serializer"),
 )

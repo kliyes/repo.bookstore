@@ -53,14 +53,14 @@
         <h1>设置头像</h1>
     </div>
     <div class="container">
-    	<form name="submit_form" action="{% url profiles_initpic %}" method="post" enctype="multipart/form-data">
+    	<form name="submit_form" action="{% url 'profiles_initpic' %}" method="post" enctype="multipart/form-data">
 			{% csrf_token %}
 			<img src="{{ MEDIA_URL }}img/{{profile.tmp_pic}}" id="xuwanting" /><br /><br />
 		    <input type="file" id="picture" name="picture" onchange="change_files()" style="display: none;" />
 		    <a class="btn btn-info" id="open_files" ><i class="icon icon-picture"></i> 选择图片</a>
 		</form>
 	
-		<form action="{% url profiles_setpic %}" method="post">
+		<form action="{% url 'profiles_setpic' %}" method="post">
 			{% csrf_token %}
 			<div style="display: none">
 				<b class="ml5">x1</b><input type="text" size="4" id="x1" name="x1"/>
@@ -71,7 +71,7 @@
 			<!---以上为隐性参数---->
 			<p>
 				<button type="submit" class="btn btn-success"><i class="icon icon-ok"></i> 确认修改</button>
-				<a href="{% url profiles_setting %}" class="cancel">撤销</a>
+				<a href="{% url 'profiles_setting' %}" class="cancel">撤销</a>
 			</p>
 		</form>
     </div>

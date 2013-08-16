@@ -18,11 +18,11 @@
     <!-- 导航 -->
     <div class="navbar navbar-inverse">
       <div class="navbar-inner">
-        <a class="brand" href="{% url welcome %}">BookStore</a>
+        <a class="brand" href="{% url 'welcome' %}">BookStore</a>
         <ul class="nav pull-right">
           {% if not user.is_authenticated %}
-            <li><a href="{% url acct_login %}"><i class="icon-user icon-white"></i> 登录</a></li>
-            <li><a href="{% url acct_signup %}"><i class="icon-user icon-white"></i> 注册</a></li>
+			<li><a href="{% url 'acct_login' %}"><i class="icon-user icon-white"></i> 登录</a></li>
+            <li><a href="{% url 'acct_signup' %}"><i class="icon-user icon-white"></i> 注册</a></li>
           <!-- 登录后显示此li 开始 -->
           {% else %}          
           <li>
@@ -33,16 +33,16 @@
                 <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a href="{% url profiles_setting %}"><i class="icon-wrench"></i> 个人设置</a></li>
-                    <li><a href="{% url profiles_order_check %}"><i class="icon-list-alt"></i> 我的订单</a></li>
-                    <li><a href="{% url book_cart_check %}"><i class="icon-shopping-cart"></i> 购物清单&nbsp;
+                    <li><a href="{% url 'profiles_setting' %}"><i class="icon-wrench"></i> 个人设置</a></li>
+                    <li><a href="{% url 'profiles_order_check' %}"><i class="icon-list-alt"></i> 我的订单</a></li>
+                    <li><a href="{% url 'book_cart_check' %}"><i class="icon-shopping-cart"></i> 购物清单&nbsp;
                             {% ifnotequal profile.getCartItemsCount 0 %}
                             <span class="badge badge-info">{{profile.getCartItemsCount}}</span>     
                             {% endifnotequal %} 
                         </a>
                     </li>
                     <li class="divider"></li>
-                    <li><a href="{% url acct_logout %}"><i class="icon-off"></i> 离开</a></li>
+                    <li><a href="{% url 'acct_logout' %}"><i class="icon-off"></i> 离开</a></li>
                 </ul>
               </li>
             </ul>
@@ -50,7 +50,7 @@
           <!-- 登录后显示此li 结束 -->
           {% endif %}
         </ul>
-        <form class="navbar-search pull-right" action="{% url book_search %}" method="get">
+        <form class="navbar-search pull-right" action="{% url 'book_search' %}" method="get">
             <input id="name" name="name" type="text" class="search-query" placeholder="搜索">
         </form>
       </div>
@@ -63,7 +63,7 @@
             <div class="span12 text-center well">
                 <h3>很抱歉！服务器故障了</h3>
                 <h4>我们将尽快处理异常, 您也可以联系管理员反馈意见</h4>
-                <a href="{% url welcome %}" class="btn btn-info"><i class="icon icon-chevron-right icon-white"></i> 去首页</a>
+                <a href="{% url 'welcome' %}" class="btn btn-info"><i class="icon icon-chevron-right icon-white"></i> 去首页</a>
             </div>
         </div>
     </div>
