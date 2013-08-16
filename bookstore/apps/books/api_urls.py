@@ -4,7 +4,7 @@ Created on 2013-7-7
 
 @author: Tom
 '''
-from django.conf.urls.defaults import patterns, url
+from django.conf.urls.defaults import *
 from rest_framework.urlpatterns import format_suffix_patterns
 from books import api_views
 

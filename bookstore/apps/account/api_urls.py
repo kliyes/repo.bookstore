@@ -4,8 +4,8 @@
 # Created on 2013-8-1, by Tom
 #
 #
-from django.conf.urls import patterns, url
 from account import api_views
+from django.conf.urls.defaults import patterns, url
 
 
 urlpatterns = patterns("",
