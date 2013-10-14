@@ -8,6 +8,9 @@ from rest_framework.generics import GenericAPIView
 from account.forms import LoginForm
 from rest_framework.response import Response
 from rest_framework import status
+from provider.oauth2.models import AccessToken
+import datetime
+from django.conf import settings
 
 class Login(GenericAPIView):
     '''登录'''
@@ -20,3 +23,17 @@ class Login(GenericAPIView):
             return Response({'id': profile.id, 'name': profile.name})
         else:
             return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetUserInfo(GenericAPIView):
+    """获取用户信息"""
+    def get(self, request):
+        token = request.GET.get('access_token')
+        try:
+            access_token = AccessToken.objects.get(token=token,
+                                                   expires__gt=datetime.datetime.now)
+        except AccessToken.DoesNotExist:
+            return Response({'error': "access token invalid"})
+        profile = access_token.user.get_profile()
+        return Response({'id': profile.id, 'name': profile.name,
+                         'avatar': '%s%s' % (settings.MEDIA_URL, profile.big_pic)})

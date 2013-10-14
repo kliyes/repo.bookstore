@@ -1,0 +1,14 @@
+{% extends "base/theme_base.html" %}
+
+{% block page_title %}注册应用{% endblock %}
+
+{% block body_base %}
+	<form action='.' method="post">
+		{% csrf_token %}
+		应用名称：{{ form.name }}<br />
+		应用地址：{{ form.url }}<br />
+		回调地址：{{ form.redirect_uri }}<br />
+		应用类型：{{ form.client_type }}<br />
+		<input type="submit" value="确定"/>
+	</form>
+{% endblock %}

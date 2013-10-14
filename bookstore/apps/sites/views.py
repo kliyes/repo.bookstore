@@ -30,9 +30,10 @@ from onlineuser.models import Online
 from common import utils
 from account.forms import LoginForm
 from account.decorators import admin_required
-from sites.forms import FeedbackForm
+from sites.forms import FeedbackForm, ClientForm
 from sites.models import Feedback 
 from books.models import Book, Author, Category, Order
+from provider.oauth2.models import Client
 
 log = logging.getLogger("mysite")
 
@@ -319,6 +320,23 @@ def submitFeedback(request):
         form = FeedbackForm()
         
     return render_to_response(settings.TEMPLATE_FEEDBACK, RequestContext(request,{'form':form,}))
+
+
+@login_required
+def reg_client(request):
+    """register client for oauth2"""
+    if request.method == "POST":
+        form = ClientForm(request.POST)
+        if form.is_valid():
+            form.cleaned_data['user'] = request.user
+            client = Client(**form.cleaned_data)
+            client.save()
+            return render_to_response('sites/reg_client_done.html',
+                RequestContext(request, {'client_id': client.client_id,
+                                         'client_secret': client.client_secret}))
+
+    return render_to_response('sites/reg_client.html',
+                              RequestContext(request, {'form': ClientForm()}))
 
 
 def siteAnnouncement(request):

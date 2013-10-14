@@ -1,0 +1,9 @@
+{% extends "base/theme_base.html" %}
+
+{% block page_title %}应用注册成功{% endblock %}
+
+{% block body_base %}
+	应用注册成功！请牢记您的client_id和client_secret：<br />
+	client_id: {{ client_id }}<br />
+	client_secret: {{ client_secret }}
+{% endblock %}

@@ -142,7 +142,7 @@ MIDDLEWARE_CLASSES = [
     "pinax.middleware.security.HideSensistiveFieldsMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     
-    "onlineuser.middleware.OnlineUserMiddleware",
+    #"onlineuser.middleware.OnlineUserMiddleware",
 ]
 
 ROOT_URLCONF = "bookstore.urls"
@@ -201,7 +201,7 @@ INSTALLED_APPS = [
     "idios",
     "metron",
     "PIL",
-    "onlineuser",
+    #"onlineuser",
     
     "rest_framework",
     

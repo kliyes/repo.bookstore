@@ -12,6 +12,7 @@ from django import forms
 
 from common.utils import ecode
 from sites.models import Feedback 
+from provider.oauth2.models import Client
 
 CONTACT_MAX_LEN = 35
 class FeedbackForm(forms.Form):
@@ -51,3 +52,9 @@ class FeedbackForm(forms.Form):
         feed.profile = profile
         feed.save()
         return feed
+
+
+class ClientForm(forms.ModelForm):
+    class Meta:
+        model = Client
+        fields = ('name', 'url', 'redirect_uri', 'client_type')

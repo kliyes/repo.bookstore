@@ -1,0 +1,43 @@
+{% extends "base/theme_base.html" %}
+
+{% block page_title %}授权{% endblock %}
+
+{% load scope %}
+{% load url from future %}
+{% block body_base %}
+    {% if not error %}
+        <p>将授权
+        	<a href="{{ client.url }}" target="_blank">{{ client.name }}</a>
+        	拥有以下权限</p>
+        <ul>
+            {% for permission in oauth_data.scope|scopes %}
+                <li>
+                    {% if permission == "read" %}
+                    读取您的用户数据
+                    {% else %}
+                    修改您的用户数据
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+        <form method="post" action="{% url "oauth2:authorize" %}">
+            {% csrf_token %}
+            {{ form.errors }}
+            {{ form.non_field_errors }}
+            <fieldset>
+                <div style="display: none;" />
+                    <select type="select" name="scope" multiple="multiple">
+                    {% for scope in oauth_data.scope|scopes %}
+                        <option value="{{ scope }}" selected="selected">{{ scope }}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+                <input type="submit" class="btn btn-info" name="authorize" value="授权" />
+                <input type="submit" class="btn btn-danger" value="取消" />
+            </fieldset>
+        </form>
+    {% else %}
+        {{ error }}
+        {{ error_description }}
+    {% endif %}
+{% endblock %}

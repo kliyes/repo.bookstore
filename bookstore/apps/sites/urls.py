@@ -18,5 +18,6 @@ urlpatterns = patterns("",
     url(r"^show_book/$", 'sites.views.bookShow', name='showBook'),
 #    url(r"^stat_book/$", TemplateView.as_view(temelate_name="sites/stat.html", extra_context={'cates': Category.objects.all()}}, name='statBook'),
     url(r"^update_orders/$", 'sites.views.updateOrders', name='updateOrders'),
-    
+    url(r"^client/$", 'sites.views.reg_client', name='reg_client'),
+
 )
